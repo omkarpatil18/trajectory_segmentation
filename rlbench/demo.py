@@ -7,6 +7,8 @@ class Demo(object):
         self._observations = observations
         self.random_seed = random_seed
         self.num_reset_attempts = num_reset_attempts
+        self.instructions = observations[0].instruction
+        self.change_point = [sum(bool(x) for x in obs.success_state) for obs in observations]
 
     def __len__(self):
         return len(self._observations)

@@ -65,6 +65,8 @@ class Observation(object):
         self.gripper_touch_forces = gripper_touch_forces
         self.task_low_dim_state = task_low_dim_state
         self.misc = misc
+        self.success_state = None
+        self.instruction = None
 
     def get_low_dim_data(self) -> np.ndarray:
         """Gets a 1D array of all the low-dimensional obseervations.

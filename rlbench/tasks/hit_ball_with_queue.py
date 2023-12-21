@@ -20,6 +20,15 @@ class HitBallWithQueue(Task):
         ], order_matters=True)
         self.register_success_conditions([cond_set])
 
+        self.register_change_point_conditions([
+            GraspedCondition(self.robot.gripper, queue),
+            DetectedCondition(ball, success_sensor)
+        ])
+
+        self.register_instructions([
+            ['pick up the queue', 'use the queue to put the ball into the goal']
+        ])
+
     def init_episode(self, index: int) -> List[str]:
         return ['hit ball with queue in to the goal',
                 'pot the ball in the goal',

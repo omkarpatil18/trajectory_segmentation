@@ -35,6 +35,8 @@ class Task(object):
             '(?<!^)(?=[A-Z])', '_', self.__class__.__name__).lower()
         self.robot = robot
         self._waypoints = None
+        self._change_point_conditions = []
+        self._instructions = []
         self._success_conditions = []
         self._fail_conditions = []
         self._graspable_objects = []
@@ -157,6 +159,8 @@ class Task(object):
         :param observation: The Observation for this time step.
         :return: The modified Observation.
         """
+        observation.success_state = [condition.condition_met()[0] for condition in self._change_point_conditions]
+        observation.instruction = self._instructions
         return observation
 
     def is_static_workspace(self) -> bool:
@@ -176,6 +180,22 @@ class Task(object):
     #########################
     # Registering functions #
     #########################
+
+    def register_change_point_conditions(self, condition: List[Condition]):
+        """Array of conditions, which becomes true one by one as the partial 
+        conditions becomes true. Each segment can be conditioned and marked as
+        completed as condition gets in true state.
+
+        :param condition: A list of conditions.
+        """
+        self._change_point_conditions = condition
+
+    def register_instructions(self, instruction: List[str]):
+        """Array of instructions, for each segments to mark change point detection.
+
+        :param instruction: A list of instructions.
+        """
+        self._instructions = instruction
 
     def register_success_conditions(self, condition: List[Condition]):
         """What conditions need to be met for the task to be a success.
