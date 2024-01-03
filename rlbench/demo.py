@@ -9,6 +9,11 @@ class Demo(object):
         self.num_reset_attempts = num_reset_attempts
         self.instructions = observations[0].instruction
         self.change_point = [sum(bool(x) for x in obs.success_state) for obs in observations]
+        
+        min_element = self.change_point[-1]
+        for i in range (len(self.change_point) - 1, -1, -1):
+            min_element = min (min_element, self.change_point[i])
+            self.change_point[i] = min_element
 
     def __len__(self):
         return len(self._observations)
