@@ -12,6 +12,7 @@ import rlbench.backend.task as task
 
 import os
 import pickle
+import random
 from PIL import Image
 from rlbench.backend import utils
 from rlbench.backend.const import *
@@ -19,26 +20,30 @@ import numpy as np
 
 from absl import app
 from absl import flags
+from rlbench.sim2real.domain_randomization import RandomizeEvery, \
+    VisualRandomizationConfig
 
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string('save_path',
-                    '/tmp/rlbench_data/',
+                    '/home/local/ASUAD/draj5/data/',
                     'Where to save the demos.')
-flags.DEFINE_list('tasks', ['hit_ball_with_queue'],
+flags.DEFINE_list('tasks', ['s_setup_chess'],
                   'The tasks to collect. If empty, all tasks are collected.')
-flags.DEFINE_list('image_size', [256, 256],
+flags.DEFINE_list('image_size', [512, 512],
                   'The size of the images tp save.')
 flags.DEFINE_enum('renderer',  'opengl3', ['opengl', 'opengl3'],
                   'The renderer to use. opengl does not include shadows, '
                   'but is faster.')
 flags.DEFINE_integer('processes', 1,
                      'The number of parallel processes during collection.')
-flags.DEFINE_integer('episodes_per_task', 2,
+flags.DEFINE_integer('episodes_per_task', 1,
                      'The number of episodes to collect per task.')
-flags.DEFINE_integer('variations', -1,
+flags.DEFINE_integer('variations', 2,
                      'Number of variations to collect per task. -1 for all.')
-
+flags.DEFINE_string(
+    'textures_path', '/home/local/ASUAD/draj5/thesis/TrajectorySegmentation/tests/unit/assets/textures/',
+    'Where to locate textures if using domain randomization.')
 
 def check_and_make(dir):
     if not os.path.exists(dir):
@@ -210,10 +215,15 @@ def run(i, lock, task_index, variation_count, results, file_lock, tasks):
         obs_config.overhead_camera.render_mode = RenderMode.OPENGL3
         obs_config.wrist_camera.render_mode = RenderMode.OPENGL3
         obs_config.front_camera.render_mode = RenderMode.OPENGL3
+    
+    vrc = VisualRandomizationConfig(FLAGS.textures_path)
+    rand_every = RandomizeEvery.TRANSITION
+    frequency = random.randint (10, 20)
 
     rlbench_env = Environment(
         action_mode=MoveArmThenGripper(JointVelocity(), Discrete()),
         obs_config=obs_config,
+        randomize_every=rand_every, frequency=frequency, visual_randomization_config=vrc, 
         headless=True)
     rlbench_env.launch()
 

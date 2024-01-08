@@ -14,6 +14,7 @@ class Demo(object):
         for i in range (len(self.change_point) - 1, -1, -1):
             min_element = min (min_element, self.change_point[i])
             self.change_point[i] = min_element
+        self.change_point = [x - min_element for x in self.change_point]
 
     def __len__(self):
         return len(self._observations)
