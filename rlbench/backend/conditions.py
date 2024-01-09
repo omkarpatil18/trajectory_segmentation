@@ -53,6 +53,20 @@ class DetectedCondition(Condition):
             met = not met
         return met, False
 
+class CustomDetectedCondition(Condition):
+    def __init__(self, obj: Object, detector: ProximitySensor,
+                 negated: bool = False):
+        self._obj = obj
+        self._detector = detector
+        self._negated = negated
+        self._met = False
+
+    def condition_met(self):
+        met = self._detector.is_detected(self._obj)
+        if self._negated:
+            met = not met
+        self._met = self._met or met
+        return self._met, False
 
 class NothingGrasped(Condition):
     def __init__(self, gripper: Gripper):
