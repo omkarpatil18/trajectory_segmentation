@@ -63,6 +63,7 @@ put_knife_in_knife_block
 put_plate_in_colored_dish_rack
 put_rubbish_in_bin
 screw_nail
+put_bottle_in_fridge
 
 1. s_block_pyramid
 2. s_shape_sorter
@@ -77,12 +78,12 @@ screw_nail
 10. s_put_all_groceries_in_cupboard (no randomization)
 11. s_put_tray_in_oven
 12. s_empty_dishwasher (no randomization)
+13. s_put_shoes_in_box (no randomization)
+14. s_set_table (no randomization)
+15. s_ball_in_hoop
 
-1. put_bottle_in_fridge
-2. put_item_in_drawer
-3. set_the_table
-4. put_shoes_in_box
-5. stack_chairs
-6. insert_usb_in_computer
-7. light_bulb_in
-8. basketball_in_hoop
+1. put_item_in_drawer
+2. stack_chairs
+3. insert_usb_in_computer
+4. light_bulb_in
+5. 
