@@ -1,0 +1,88 @@
+List A (Able to replicate on real robot hand)
+1. block_pyramid (entended)
+2. shape_sorter (extended)
+3. empty_container (can be extended)
+4. insert_onto_square_peg (can be extended)
+5. setup_chess (can be extended)
+6. stack_blocks (can be extended)
+7. stack_cups (can be slightly extended)
+
+List B (Good for segmentation)
+
+1. change_channel
+2. empty_dishwasher
+3. hit_ball_with_queue
+4. hockey (can be extended)
+5. put_all_groceries_in_cupboard (can be extended)
+6. put_bottle_in_fridge
+7. put_item_in_drawer (can be extended)
+8. put_tray_in_oven
+9. set_the_table
+10. put_shoes_in_box (can be slightly extended)
+11. stack_chairs (can be slightly extended)
+12. insert_usb_in_computer
+13. light_bulb_in (can be slightly extended)
+14. basketball_in_hoop (can be extended)
+
+List C (Maybes)
+
+lift_numbered_block (can be extended)
+pick_and_lift (can be extended)
+slide_block_to_target (can be extended)
+
+close_drawer (can be extended)
+open_drawer (can be extended)
+close_jar (can be slightly extended)
+open_jar (can be slightly extended)
+light_bulb_out (can be slightly extended)
+place_cups (can be slightly extended)
+put_money_in_safe (can be slightly extebded)
+put_toilet_roll_on_stand (can be slightly extended)
+reach_and_drag (can be slightly extended)
+remove_cups (can be extended)
+setup_checkers
+sweep_to_dustpan
+take_shoes_out_of_box
+take_tray_out_of_oven
+tv_on
+weighing scales
+
+close_box
+close_door
+close_grill
+meat_off_grill
+meat_on_grill
+move_hanger
+open_oven
+open_washing_machine
+open_window
+play_jenga
+plug_charger_in_power_socket
+put_books_on_bookshelf
+put_knife_in_knife_block
+put_plate_in_colored_dish_rack
+put_rubbish_in_bin
+screw_nail
+
+1. s_block_pyramid
+2. s_shape_sorter
+3. s_stack_blocks
+4. s_setup_chess
+5. s_stack_cups
+6. s_square_peg
+
+7. s_change_channel
+8. s_hit_ball_with_cue
+9. s_hockey
+10. s_put_all_groceries_in_cupboard (no randomization)
+11. s_put_tray_in_oven
+12. s_empty_dishwasher (no randomization)
+
+1. put_bottle_in_fridge
+2. put_item_in_drawer
+3. set_the_table
+4. put_shoes_in_box
+5. stack_chairs
+6. insert_usb_in_computer
+7. light_bulb_in
+8. basketball_in_hoop

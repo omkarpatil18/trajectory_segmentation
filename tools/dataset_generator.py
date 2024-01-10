@@ -28,7 +28,7 @@ FLAGS = flags.FLAGS
 flags.DEFINE_string('save_path',
                     '/home/local/ASUAD/draj5/data/',
                     'Where to save the demos.')
-flags.DEFINE_list('tasks', ['s_setup_chess'],
+flags.DEFINE_list('tasks', ['s_empty_dishwasher'],
                   'The tasks to collect. If empty, all tasks are collected.')
 flags.DEFINE_list('image_size', [512, 512],
                   'The size of the images tp save.')
@@ -39,7 +39,7 @@ flags.DEFINE_integer('processes', 1,
                      'The number of parallel processes during collection.')
 flags.DEFINE_integer('episodes_per_task', 1,
                      'The number of episodes to collect per task.')
-flags.DEFINE_integer('variations', 2,
+flags.DEFINE_integer('variations', 1,
                      'Number of variations to collect per task. -1 for all.')
 flags.DEFINE_string(
     'textures_path', '/home/local/ASUAD/draj5/thesis/TrajectorySegmentation/tests/unit/assets/textures/',
