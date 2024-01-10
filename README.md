@@ -1,3 +1,60 @@
+# Dataset Generation for Trajectory Segmentation
+**Contents:**
+- [Code Changes](#code-changes)
+- [Tasks Modified](#tasks-modified)
+- [Generate Dataset](#generate-dataset)
+
+## Code Changes
+
+### [Conditions](https://github.com/divraz/TrajectorySegmentation/blob/master/rlbench/backend/conditions.py)
+
+Additional conditions added to mark an condition to be always true once it is done.
+
+### [Task](https://github.com/divraz/TrajectorySegmentation/blob/master/rlbench/backend/task.py)
+
+Added 2 functions:
+- `register_change_point_conditions`: To maintain a sequence of conditions to be true, each marking achievement of a change point in trajectory.
+- `register_instructions`: A list of instruction indicating the language instruction for each change point.
+
+### [Demo](https://github.com/divraz/TrajectorySegmentation/blob/master/rlbench/demo.py)
+
+Code changes to map change points and instructions to trajectory.
+
+### [Observation](https://github.com/divraz/TrajectorySegmentation/blob/master/rlbench/backend/observation.py)
+
+Added 2 new variable to observation object, `success_state`, and `instruction`.
+
+### [Domain Randomization Scene](https://github.com/divraz/TrajectorySegmentation/blob/master/rlbench/sim2real/domain_randomization_scene.py)
+
+Code changes to added randomization to just the background and the hand. This will not add random textures to the actual objects.
+
+## Tasks Modified
+
+20 new tasks have been added, that are modified versions of exixting tasks. These tasks have change point along with change point instructions.
+
+- s_block_pyramid
+- s_shape_sorter
+- s_stack_blocks
+- s_setup_chess
+- s_stack_cups
+- s_square_peg
+- s_change_channel
+- s_hit_ball_with_cue
+- s_hockey
+- s_put_all_groceries_in_cupboard
+- s_put_tray_in_oven
+- s_empty_dishwasher
+- s_put_shoes_in_box
+- s_set_table
+- s_ball_in_hoop
+- s_put_item_in_drawer
+- s_light_bulb_in
+- s_insert_usb_in_computer
+
+## Generate Dataset
+
+[Dataset Generator](https://github.com/divraz/TrajectorySegmentation/blob/master/tools/dataset_generator.py) Code can be used to generate dataset. It will have domain randomization enabled for all the tasks.
+
 # RLBench: Robot Learning Benchmark [![Unit Tests](https://github.com/stepjam/RLBench/workflows/Unit%20Tests/badge.svg)](https://github.com/stepjam/RLBench/actions) [![Task Tests](https://github.com/stepjam/RLBench/workflows/Task%20Tests/badge.svg)](https://github.com/stepjam/RLBench/actions) [![Discord](https://img.shields.io/discord/694945190867370155.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/DXPCjmd)
 
 ![task grid image missing](readme_files/task_grid.png)
