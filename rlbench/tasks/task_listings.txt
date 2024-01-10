@@ -81,9 +81,6 @@ put_bottle_in_fridge
 13. s_put_shoes_in_box (no randomization)
 14. s_set_table (no randomization)
 15. s_ball_in_hoop
-
-1. put_item_in_drawer
-2. stack_chairs
-3. insert_usb_in_computer
-4. light_bulb_in
-5. 
+16. s_put_item_in_drawer
+17. s_light_bulb_in
+18. s_insert_usb_in_computer
