@@ -64,7 +64,8 @@ class DomainRandomizationScene(Scene):
     def _randomize(self):
         tree = self.task.get_base().get_objects_in_tree(
             ObjectType.SHAPE)
-        tree = [Shape(obj.get_handle()) for obj in tree + self._scene_objects]
+        #tree = [Shape(obj.get_handle()) for obj in tree + self._scene_objects]
+        tree = [Shape(obj.get_handle()) for obj in self._scene_objects]
         if self._visual_rand_config is not None:
             files = self._visual_rand_config.sample(len(tree))
             for file, obj in zip(files, tree):
