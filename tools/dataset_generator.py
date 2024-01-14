@@ -28,9 +28,9 @@ FLAGS = flags.FLAGS
 flags.DEFINE_string('save_path',
                     '/home/local/ASUAD/draj5/data/',
                     'Where to save the demos.')
-flags.DEFINE_list('tasks', ['s_insert_usb_in_computer'],
+flags.DEFINE_list('tasks', ['s_slide_objects'],
                   'The tasks to collect. If empty, all tasks are collected.')
-flags.DEFINE_list('image_size', [512, 512],
+flags.DEFINE_list('image_size', [230, 230],
                   'The size of the images tp save.')
 flags.DEFINE_enum('renderer',  'opengl3', ['opengl', 'opengl3'],
                   'The renderer to use. opengl does not include shadows, '
