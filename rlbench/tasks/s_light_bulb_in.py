@@ -54,9 +54,29 @@ class SLightBulbIn(Task):
 
         self.register_instructions([
             [
-                'Pick up the bulb from %s holder' % target_color_name,
-                'Place it above the lamp',
-                'Screw it in'
+                'Retrieve the bulb from the %s holder.' % target_color_name,
+                'Position it above the lamp.',
+                'Screw it in securely.'
+            ],
+            [
+                'Take the bulb from the %s holder.' % target_color_name,
+                'Place it above the lamp.',
+                'Carefully screw it into place.'
+            ],
+            [
+                'Gather the bulb from the %s holder.' % target_color_name,
+                'Position it above the lamp.',
+                'Screw it in firmly.'
+            ],
+            [
+                'Remove the bulb from the %s holder.' % target_color_name,
+                'Set it above the lamp.',
+                'Securely screw it into position.'
+            ],
+            [
+                'Pick up the bulb from the %s holder.' % target_color_name,
+                'Place it above the lamp.',
+                'Tighten it by screwing it in.'
             ]
         ])
 

@@ -24,8 +24,24 @@ class SInsertUsbInComputer(Task):
         ])
         self.register_instructions([
             [
-                'Pick up the usb from cuboid',
-                'Insert usb into computer'
+                'Retrieve the USB from the cuboid.',
+                'Insert the USB into the computer.'
+            ],
+            [
+                'Pick up the USB from the cuboid.',
+                'Connect the USB to the computer.'
+            ],
+            [
+                'Take the USB out of the cuboid.',
+                'Plug the USB into the computer.'
+            ],
+            [
+                'Gather the USB from the cuboid.',
+                'Insert the USB securely into the computer.'
+            ],
+            [
+                'Remove the USB from the cuboid.',
+                'Place the USB into the computer\'s port.'
             ]
         ])
 

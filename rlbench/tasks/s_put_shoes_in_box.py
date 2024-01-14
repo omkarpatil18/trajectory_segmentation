@@ -36,11 +36,39 @@ class SPutShoesInBox(Task):
 
         self.register_instructions([
             [
-                'Open the lid of the box',
-                'Pick up a shoe',
-                'Put the shoe in the box',
-                'Pick up the second shoe',
-                'Put the second shoe in the box'
+                'Lift the lid of the box.',
+                'Pick up a shoe.',
+                'Place the shoe inside the box.',
+                'Pick up a shoe.',
+                'Insert the second shoe into the box.'
+            ],
+            [
+                'Open the box lid.',
+                'Grab a shoe.',
+                'Drop the shoe into the box.',
+                'Retrieve the second shoe.',
+                'Insert the second shoe into the box.'
+            ],
+            [
+                'Uncover the box lid.',
+                'Select a shoe.',
+                'Position the shoe inside the box.',
+                'Collect the second shoe.',
+                'Place the second shoe into the box.'
+            ],
+            [
+                'Raise the box lid.',
+                'Pick up a shoe.',
+                'Place the shoe inside the box.',
+                'Pick up the second shoe.',
+                'Put the second shoe into the box.'
+            ],
+            [
+                'Open the lid of the box.',
+                'Get a shoe.',
+                'Insert the shoe into the box.',
+                'Take the second shoe.',
+                'Place the second shoe inside the box.'
             ]
         ])
 

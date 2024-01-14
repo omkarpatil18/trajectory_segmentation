@@ -102,7 +102,7 @@ class SBlockPyramid(Task):
                 'use the %s blocks to build a pyramid' % color_name_1]
 
     def variation_count(self) -> int:
-        return len(colors)
+        return 1
 
     def base_rotation_bounds(self) -> Tuple[List[float], List[float]]:
         return [0, 0, - np.pi / 8], [0, 0, np.pi / 8]

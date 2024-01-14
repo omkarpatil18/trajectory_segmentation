@@ -5,7 +5,7 @@ from pyrep.objects.dummy import Dummy
 from pyrep.objects.joint import Joint
 from pyrep.objects.proximity_sensor import ProximitySensor
 from pyrep.objects.shape import Shape
-from rlbench.backend.conditions import JointCondition, DetectedCondition, ConditionSet, WayPointCondition
+from rlbench.backend.conditions import JointCondition, DetectedCondition, ConditionSet
 from rlbench.backend.spawn_boundary import SpawnBoundary
 from rlbench.backend.task import Task
 
@@ -41,8 +41,24 @@ class SChangeChannel(Task):
 
         self.register_instructions([
             [
-                "Change the remote orientation to face the TV",
-                "Press remote button to change the channel"
+                "Adjust the orientation of the remote to face the TV.",
+                "Press a button on the remote to change the channel."
+            ],
+            [
+                "Turn the remote to face the TV screen.",
+                "Use the remote button to switch the channel."
+            ],
+            [
+                "Ensure the remote is pointing towards the TV.",
+                "Press the remote button to alter the channel."
+            ],
+            [
+                "Position the remote towards the TV display.",
+                "Utilize the remote button to switch the channel."
+            ],
+            [
+                "Align the remote with the TV.",
+                "Depress the remote button to change the channel."
             ]
         ])
 

@@ -63,12 +63,44 @@ class SPlaceCups(Task):
 
         self.register_instructions([
             [
-                "Pick up a cup",
-                "Place the cup on %s spoke on cup holder" % color_names[0],
-                "Pick up a cup",
-                "Place the cup on %s spoke on cup holder" % color_names[1],
-                "Pick up a cup",
-                "Place the cup on %s spoke on cup holder" % color_names[2]
+                "Retrieve a cup from the table.",
+                "Position the cup on the %s spoke of the cup holder." % color_names[0],
+                "Take another cup from the table.",
+                "Place this cup on the %s spoke of the cup holder." % color_names[1],
+                "Collect one more cup from the table.",
+                "Set this cup on the %s spoke of the cup holder." % color_names[2]
+            ],
+            [
+                "Pick up a cup from the table.",
+                "Put the cup on the %s spoke of the cup holder." % color_names[0],
+                "Take a cup from the table.",
+                "Position it on the %s spoke of the cup holder." % color_names[1],
+                "Gather another cup from the table.",
+                "Place it on the %s spoke of the cup holder." % color_names[2]
+            ],
+            [
+                "Get a cup from the table.",
+                "Set the cup on the %s spoke of the cup holder." % color_names[0],
+                "Pick up one more cup from the table.",
+                "Position it on the %s spoke of the cup holder." % color_names[1],
+                "Take an additional cup from the table.",
+                "Place it on the %s spoke of the cup holder." % color_names[2]
+            ],
+            [
+                "Collect a cup from the table.",
+                "Arrange the cup on the %s spoke of the cup holder." % color_names[0],
+                "Grab another cup from the table.",
+                "Position it on the %s spoke of the cup holder." % color_names[1],
+                "Take one more cup from the table.",
+                "Place it on the %s spoke of the cup holder." % color_names[2]
+            ],
+            [
+                "Pick up a cup from the table.",
+                "Place the cup on the %s spoke of the cup holder." % color_names[0],
+                "Retrieve another cup from the table.",
+                "Position it on the %s spoke of the cup holder." % color_names[1],
+                "Take one more cup from the table.",
+                "Set it on the %s spoke of the cup holder." % color_names[2]
             ]
         ])
         

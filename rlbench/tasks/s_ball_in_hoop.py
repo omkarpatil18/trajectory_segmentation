@@ -25,8 +25,24 @@ class SBallInHoop(Task):
 
         self.register_instructions([
             [
-                'Pick up the basketball',
-                'Put the basketball in the hoop'
+                'Pick up the basketball.',
+                'Place the basketball in the hoop.'
+            ],
+            [
+                'Take hold of the basketball.',
+                'Insert the basketball into the hoop.'
+            ],
+            [
+                'Retrieve the basketball.',
+                'Gently put the basketball in the hoop.'
+            ],
+            [
+                'Grab the basketball securely.',
+                'Carefully place the basketball into the hoop.'
+            ],
+            [
+                'Lift the basketball off the ground.',
+                'Drop the basketball into the hoop with precision.'
             ]
         ])
 

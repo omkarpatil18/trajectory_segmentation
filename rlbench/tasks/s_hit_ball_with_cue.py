@@ -26,8 +26,28 @@ class SHitBallWithCue(Task):
         ])
 
         self.register_instructions([
-            ['pick up the queue', 'use the queue to put the ball into the goal']
+            [
+                'Pick up the cue.',
+                'Use the cue to guide the ball into the goal.'
+            ],
+            [
+                'Retrieve the cue from its place.',
+                'Employ the cue to direct the ball into the goal.'
+            ],
+            [
+                'Gently lift the cue.',
+                'Skillfully utilize the cue to place the ball into the goal.'
+            ],
+            [
+                'Grasp the cue firmly.',
+                'Employ the cue as a guide to insert the ball into the goal.'
+            ],
+            [
+                'Lift the cue with care.',
+                'Guide the ball into the goal using the cue.'
+            ]
         ])
+
 
     def init_episode(self, index: int) -> List[str]:
         return ['hit ball with queue in to the goal',

@@ -51,9 +51,29 @@ class SSlideObjects(Task):
         
         self.register_instructions([
             [
-                'Push %s block to %s target' % (color_names[0], color_names[3]),
-                'Push %s block to %s target' % (color_names[1], color_names[4]),
-                'Push %s block to %s target' % (color_names[2], color_names[5])
+                'Move the %s block towards the %s target.' % (color_names[0], color_names[3]),
+                'Gently push the %s block to the %s target.' % (color_names[1], color_names[4]),
+                'Slide the %s block to reach the %s target.' % (color_names[2], color_names[5])
+            ],
+            [
+                'Push the %s block towards the %s target.' % (color_names[0], color_names[3]),
+                'Guide the %s block to the %s target.' % (color_names[1], color_names[4]),
+                'Navigate the %s block to the %s target.' % (color_names[2], color_names[5])
+            ],
+            [
+                'Slide the %s block towards the %s target.' % (color_names[0], color_names[3]),
+                'Apply pressure to push the %s block to the %s target.' % (color_names[1], color_names[4]),
+                'Move the %s block steadily towards the %s target.' % (color_names[2], color_names[5])
+            ],
+            [
+                'Gently push the %s block to the %s target.' % (color_names[0], color_names[3]),
+                'Guide the %s block towards the %s target.' % (color_names[1], color_names[4]),
+                'Push the %s block to the %s target carefully.' % (color_names[2], color_names[5])
+            ],
+            [
+                'Push the %s block towards the %s target.' % (color_names[0], color_names[3]),
+                'Direct the %s block to the %s target.' % (color_names[1], color_names[4]),
+                'Slide the %s block to the %s target smoothly.' % (color_names[2], color_names[5])
             ]
         ])
 

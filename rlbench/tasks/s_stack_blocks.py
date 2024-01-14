@@ -68,6 +68,12 @@ class SStackBlocks(Task):
             'Stack the %s block on top of %s block' % (color_names[1], color_names[0]),
             'Stack the %s block on top of %s block' % (color_names[2], color_names[1]),
             'Stack the %s block on top of %s block' % (color_names[3], color_names[2])
+            ],
+            [
+                'Position the %s block at the center.' % color_names[0],
+                'Stack the %s block on top of the center block.' % color_names[1],
+                'Add the %s block on top of the stack.' % color_names[2],
+                'Place the %s block on top of the stack.' % color_names[3]
             ]
         ])
 
@@ -95,7 +101,7 @@ class SStackBlocks(Task):
                 % (self.blocks_to_stack, color_name)]
 
     def variation_count(self) -> int:
-        return len(colors) * MAX_STACKED_BLOCKS
+        return MAX_STACKED_BLOCKS
 
     def _move_above_next_target(self, _):
         if self.blocks_stacked >= self.blocks_to_stack:

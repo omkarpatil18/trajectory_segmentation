@@ -52,9 +52,29 @@ class SPutItemInDrawer(Task):
 
         self.register_instructions([
             [
-                'Pull out the %s drawer' % option,
-                'Pick up the %s block from top of the drawer' % color_name,
-                'Put the %s block on the %s drawer' % (color_name, option)
+                'Extend the %s drawer.' % option,
+                'Retrieve the %s block from the top of the drawer.' % color_name,
+                'Place the %s block on the %s drawer.' % (color_name, option)
+            ],
+            [
+                'Pull out the %s drawer.' % option,
+                'Take the %s block from the top of the drawer.' % color_name,
+                'Position the %s block on the %s drawer.' % (color_name, option)
+            ],
+            [
+                'Open the %s drawer.' % option,
+                'Pick up the %s block resting on top of the drawer.' % color_name,
+                'Set the %s block on the %s drawer.' % (color_name, option)
+            ],
+            [
+                'Extend the %s drawer outward.' % option,
+                'Retrieve the %s block from the top of the drawer.' % color_name,
+                'Place the %s block onto the %s drawer.' % (color_name, option)
+            ],
+            [
+                'Pull out the %s drawer gently.' % option,
+                'Collect the %s block from the top of the drawer.' % color_name,
+                'Put the %s block on the %s drawer.' % (color_name, option)
             ]
         ])
 

@@ -15,6 +15,7 @@ class SShapeSorter(Task):
 
     def init_task(self) -> None:
         self.shape_sorter = Shape('shape_sorter')
+        self.negate = ProximitySensor('negate')
         self.success_sensor = ProximitySensor('success')
         self.indexes = np.random.choice (list(range(len(SHAPE_NAMES))), 
             len(SHAPE_NAMES), replace = False)
@@ -66,23 +67,87 @@ class SShapeSorter(Task):
             DetectedCondition(self.shapes[self.indexes[2]], self.success_sensor),
             DetectedCondition(self.shapes[self.indexes[3]], self.success_sensor),
             DetectedCondition(self.shapes[self.indexes[4]], self.success_sensor),
+            DetectedCondition(self.shapes[self.indexes[0]], self.negate, negated = True),
+            DetectedCondition(self.shapes[self.indexes[1]], self.negate, negated = True),
+            DetectedCondition(self.shapes[self.indexes[2]], self.negate, negated = True),
+            DetectedCondition(self.shapes[self.indexes[3]], self.negate, negated = True),
+            DetectedCondition(self.shapes[self.indexes[4]], self.negate, negated = True),
         ])
         self.register_success_conditions([cond_set])
 
         self.register_change_point_conditions([
+            DetectedCondition(self.shapes[self.indexes[0]], self.negate, negated = True),
             DetectedCondition(self.shapes[self.indexes[0]], self.success_sensor),
+            DetectedCondition(self.shapes[self.indexes[1]], self.negate, negated = True),
             DetectedCondition(self.shapes[self.indexes[1]], self.success_sensor),
+            DetectedCondition(self.shapes[self.indexes[2]], self.negate, negated = True),
             DetectedCondition(self.shapes[self.indexes[2]], self.success_sensor),
+            DetectedCondition(self.shapes[self.indexes[3]], self.negate, negated = True),
             DetectedCondition(self.shapes[self.indexes[3]], self.success_sensor),
+            DetectedCondition(self.shapes[self.indexes[4]], self.negate, negated = True),
             DetectedCondition(self.shapes[self.indexes[4]], self.success_sensor),
         ])
 
         self.register_instructions([
-            ['Put the %s %s block in the shape sorter' % (color_names[0], SHAPE_NAMES[self.indexes[0]]),
-            'Put the %s %s block in the shape sorter' % (color_names[1], SHAPE_NAMES[self.indexes[1]]),
-            'Put the %s %s block in the shape sorter' % (color_names[2], SHAPE_NAMES[self.indexes[2]]),
-            'Put the %s %s block in the shape sorter' % (color_names[3], SHAPE_NAMES[self.indexes[3]]),
-            'Put the %s %s block in the shape sorter' % (color_names[4], SHAPE_NAMES[self.indexes[4]])
+            [
+                'Take the %s %s block.' % (color_names[0], SHAPE_NAMES[self.indexes[0]]),
+                'Insert the %s %s block into the shape sorter.' % (color_names[0], SHAPE_NAMES[self.indexes[0]]),
+                'Pick up the %s %s block.' % (color_names[1], SHAPE_NAMES[self.indexes[1]]),
+                'Place the %s %s block into the shape sorter.' % (color_names[1], SHAPE_NAMES[self.indexes[1]]),
+                'Retrieve the %s %s block.' % (color_names[2], SHAPE_NAMES[self.indexes[2]]),
+                'Drop the %s %s block into the shape sorter.' % (color_names[2], SHAPE_NAMES[self.indexes[2]]),
+                'Pick up the %s %s block.' % (color_names[3], SHAPE_NAMES[self.indexes[3]]),
+                'Insert the %s %s block into the shape sorter.' % (color_names[3], SHAPE_NAMES[self.indexes[3]]),
+                'Take the %s %s block.' % (color_names[4], SHAPE_NAMES[self.indexes[4]]),
+                'Put the %s %s block into the shape sorter.' % (color_names[4], SHAPE_NAMES[self.indexes[4]])
+            ],
+            [
+                'Pick up the %s %s block.' % (color_names[0], SHAPE_NAMES[self.indexes[0]]),
+                'Place the %s %s block into the shape sorter.' % (color_names[0], SHAPE_NAMES[self.indexes[0]]),
+                'Take the %s %s block.' % (color_names[1], SHAPE_NAMES[self.indexes[1]]),
+                'Insert the %s %s block into the shape sorter.' % (color_names[1], SHAPE_NAMES[self.indexes[1]]),
+                'Pick up the %s %s block.' % (color_names[2], SHAPE_NAMES[self.indexes[2]]),
+                'Drop the %s %s block into the shape sorter.' % (color_names[2], SHAPE_NAMES[self.indexes[2]]),
+                'Retrieve the %s %s block.' % (color_names[3], SHAPE_NAMES[self.indexes[3]]),
+                'Insert the %s %s block into the shape sorter.' % (color_names[3], SHAPE_NAMES[self.indexes[3]]),
+                'Pick up the %s %s block.' % (color_names[4], SHAPE_NAMES[self.indexes[4]]),
+                'Place the %s %s block into the shape sorter.' % (color_names[4], SHAPE_NAMES[self.indexes[4]])
+            ],
+            [
+                'Retrieve the %s %s block.' % (color_names[0], SHAPE_NAMES[self.indexes[0]]),
+                'Drop the %s %s block into the shape sorter.' % (color_names[0], SHAPE_NAMES[self.indexes[0]]),
+                'Take the %s %s block.' % (color_names[1], SHAPE_NAMES[self.indexes[1]]),
+                'Insert the %s %s block into the shape sorter.' % (color_names[1], SHAPE_NAMES[self.indexes[1]]),
+                'Pick up the %s %s block.' % (color_names[2], SHAPE_NAMES[self.indexes[2]]),
+                'Place the %s %s block into the shape sorter.' % (color_names[2], SHAPE_NAMES[self.indexes[2]]),
+                'Pick up the %s %s block.' % (color_names[3], SHAPE_NAMES[self.indexes[3]]),
+                'Insert the %s %s block into the shape sorter.' % (color_names[3], SHAPE_NAMES[self.indexes[3]]),
+                'Retrieve the %s %s block.' % (color_names[4], SHAPE_NAMES[self.indexes[4]]),
+                'Drop the %s %s block into the shape sorter.' % (color_names[4], SHAPE_NAMES[self.indexes[4]])
+            ],
+            [
+                'Take the %s %s block.' % (color_names[0], SHAPE_NAMES[self.indexes[0]]),
+                'Insert the %s %s block into the shape sorter.' % (color_names[0], SHAPE_NAMES[self.indexes[0]]),
+                'Retrieve the %s %s block.' % (color_names[1], SHAPE_NAMES[self.indexes[1]]),
+                'Place the %s %s block into the shape sorter.' % (color_names[1], SHAPE_NAMES[self.indexes[1]]),
+                'Pick up the %s %s block.' % (color_names[2], SHAPE_NAMES[self.indexes[2]]),
+                'Drop the %s %s block into the shape sorter.' % (color_names[2], SHAPE_NAMES[self.indexes[2]]),
+                'Take the %s %s block.' % (color_names[3], SHAPE_NAMES[self.indexes[3]]),
+                'Insert the %s %s block into the shape sorter.' % (color_names[3], SHAPE_NAMES[self.indexes[3]]),
+                'Pick up the %s %s block.' % (color_names[4], SHAPE_NAMES[self.indexes[4]]),
+                'Place the %s %s block into the shape sorter.' % (color_names[4], SHAPE_NAMES[self.indexes[4]])
+            ],
+            [
+                'Insert the %s %s block into the shape sorter.' % (color_names[0], SHAPE_NAMES[self.indexes[0]]),
+                'Place the %s %s block into the shape sorter.' % (color_names[0], SHAPE_NAMES[self.indexes[0]]),
+                'Retrieve the %s %s block.' % (color_names[1], SHAPE_NAMES[self.indexes[1]]),
+                'Insert the %s %s block into the shape sorter.' % (color_names[1], SHAPE_NAMES[self.indexes[1]]),
+                'Pick up the %s %s block.' % (color_names[2], SHAPE_NAMES[self.indexes[2]]),
+                'Drop the %s %s block into the shape sorter.' % (color_names[2], SHAPE_NAMES[self.indexes[2]]),
+                'Take the %s %s block.' % (color_names[3], SHAPE_NAMES[self.indexes[3]]),
+                'Insert the %s %s block into the shape sorter.' % (color_names[3], SHAPE_NAMES[self.indexes[3]]),
+                'Pick up the %s %s block.' % (color_names[4], SHAPE_NAMES[self.indexes[4]]),
+                'Place the %s %s block into the shape sorter.' % (color_names[4], SHAPE_NAMES[self.indexes[4]])
             ]
         ])
 
@@ -95,7 +160,7 @@ class SShapeSorter(Task):
                 'slot the %s into the shape sorter' % shape]
 
     def variation_count(self) -> int:
-        return len(SHAPE_NAMES)
+        return 1
 
     def _set_grasp(self, _):
         gp = self.grasp_points[self.indexes[0]]

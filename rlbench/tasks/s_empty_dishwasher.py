@@ -34,12 +34,37 @@ class SEmptyDishwasher(Task):
 
         self.register_instructions([
             [
-                'Open the dishwasher door',
-                'Pull out the dishwasher tray',
-                'Pick up the plate',
-                'Put the plate on top of dishwasher'
+                'Open the dishwasher door.',
+                'Pull out the dishwasher tray.',
+                'Lift the plate.',
+                'Place the plate on top of the dishwasher.'
+            ],
+            [
+                'Begin by opening the dishwasher door.',
+                'Extend the dishwasher tray outward.',
+                'Take the plate in your hands.',
+                'Position the plate on the top of the dishwasher.'
+            ],
+            [
+                'First, open the door of the dishwasher.',
+                'Gently pull out the tray from the dishwasher.',
+                'Grasp the plate.',
+                'Carefully place the plate on the dishwasher top.'
+            ],
+            [
+                'Initiate by opening the dishwasher door.',
+                'Extend the dishwasher tray outwards.',
+                'Pick up the plate with your hands.',
+                'Put the plate on the top surface of the dishwasher.'
+            ],
+            [
+                'Commence by opening the dishwasher door.',
+                'Pull out the tray from the dishwasher.',
+                'Take hold of the plate.',
+                'Position the plate on the top of the dishwasher.'
             ]
         ])
+
 
     def init_episode(self, index: int) -> List[str]:
         return ['empty the dishwasher', 'take dishes out of dishwasher',

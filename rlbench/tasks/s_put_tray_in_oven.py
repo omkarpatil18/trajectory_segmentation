@@ -30,9 +30,29 @@ class SPutTrayInOven(Task):
 
         self.register_instructions([
             [
-                'Open the oven door',
-                'Pick up the tray from top of oven',
-                'Place the tray inside of oven'
+                'Swing open the oven door.',
+                'Retrieve the tray from the top of the oven.',
+                'Position the tray inside the oven.'
+            ],
+            [
+                'Open the door of the oven.',
+                'Take the tray from the top of the oven.',
+                'Place the tray inside the oven.'
+            ],
+            [
+                'Unlock the oven door.',
+                'Pick up the tray from the top of the oven.',
+                'Slide the tray into the oven.'
+            ],
+            [
+                'Gently open the oven door.',
+                'Collect the tray from the top of the oven.',
+                'Carefully place the tray inside the oven.'
+            ],
+            [
+                'Open the door of the oven.',
+                'Lift the tray from the top of the oven.',
+                'Insert the tray inside the oven.'
             ]
         ])
 

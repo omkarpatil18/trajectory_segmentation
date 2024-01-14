@@ -91,9 +91,29 @@ class SSquarePeg(Task):
 
         self.register_instructions([
             [
-                'Put the %s square ring on %s spoke' % (color_names[3], color_names[0]),
-                'Put the %s square ring on %s spoke' % (color_names[4], color_names[1]),
-                'Put the %s square ring on %s spoke' % (color_names[5], color_names[2])
+                'Place the %s square ring onto the %s spoke.' % (color_names[3], color_names[0]),
+                'Put the %s square ring on the %s spoke.' % (color_names[4], color_names[1]),
+                'Position the %s square ring on the %s spoke.' % (color_names[5], color_names[2])
+            ],
+            [
+                'Put the %s square ring on the %s spoke.' % (color_names[3], color_names[0]),
+                'Position the %s square ring onto the %s spoke.' % (color_names[4], color_names[1]),
+                'Place the %s square ring onto the %s spoke.' % (color_names[5], color_names[2])
+            ],
+            [
+                'Place the %s square ring on the %s spoke.' % (color_names[3], color_names[0]),
+                'Position the %s square ring on the %s spoke.' % (color_names[4], color_names[1]),
+                'Put the %s square ring onto the %s spoke.' % (color_names[5], color_names[2])
+            ],
+            [
+                'Put the %s square ring onto the %s spoke.' % (color_names[3], color_names[0]),
+                'Position the %s square ring on the %s spoke.' % (color_names[4], color_names[1]),
+                'Place the %s square ring on the %s spoke.' % (color_names[5], color_names[2])
+            ],
+            [
+                'Position the %s square ring on the %s spoke.' % (color_names[3], color_names[0]),
+                'Put the %s square ring onto the %s spoke.' % (color_names[4], color_names[1]),
+                'Place the %s square ring on the %s spoke.' % (color_names[5], color_names[2])
             ]
         ])
 
@@ -102,4 +122,4 @@ class SSquarePeg(Task):
                 'place the ring onto the %s spoke' % color_names[0]]
 
     def variation_count(self) -> int:
-        return len(colors)
+        return 1

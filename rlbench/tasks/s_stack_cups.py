@@ -60,8 +60,24 @@ class SStackCups(Task):
         
         self.register_instructions([
             [
-                'Place the %s cup on %s cup' % (other1_name, target_color_name),
-                'Place the %s cup on %s cup' % (other2_name, other1_name)
+                'Position the %s cup on top of the %s cup.' % (other1_name, target_color_name),
+                'Place the %s cup on the %s cup.' % (other2_name, other1_name)
+            ],
+            [
+                'Put the %s cup on the %s cup.' % (other1_name, target_color_name),
+                'Stack the %s cup on top of the %s cup.' % (other2_name, other1_name)
+            ],
+            [
+                'Put the %s cup onto the %s cup.' % (other1_name, target_color_name),
+                'Position the %s cup on the %s cup.' % (other2_name, other1_name)
+            ],
+            [
+                'Place the %s cup on the %s cup.' % (other1_name, target_color_name),
+                'Stack the %s cup on top of the %s cup.' % (other2_name, other1_name)
+            ],
+            [
+                'Stack the %s cup on top of the %s cup.' % (other1_name, target_color_name),
+                'Place the %s cup on the %s cup.' % (other2_name, other1_name)
             ]
         ])
 

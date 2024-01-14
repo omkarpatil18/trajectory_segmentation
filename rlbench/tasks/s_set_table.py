@@ -44,16 +44,64 @@ class SSetTable(Task):
 
         self.register_instructions([
             [
-                'Pick up the plate from utensils holder',
-                'Place the plate on the table',
-                'Pick up the fork from utensils holder',
-                'Place the fork on left side of the plate',
-                'Pick up the knife from utensils holder',
-                'Place the knife on right side of the plate',
-                'Pick up the spoon from utensils holder',
-                'Place the spoon on right side of the plate',
-                'Pick up the glass',
-                'Place the glass on top right side of the plate'
+                'Retrieve the plate from the utensils holder.',
+                'Position the plate on the table.',
+                'Take the fork from the utensils holder.',
+                'Place the fork on the left side of the plate.',
+                'Pick up the knife from the utensils holder.',
+                'Position the knife on the right side of the plate.',
+                'Collect the spoon from the utensils holder.',
+                'Set the spoon on the right side of the plate.',
+                'Pick up the glass.',
+                'Put the glass on the top right side of the plate.'
+            ],
+            [
+                'Pick up the plate from the utensils holder.',
+                'Place the plate on the table.',
+                'Get the fork from the utensils holder.',
+                'Position the fork on the left side of the plate.',
+                'Take the knife from the utensils holder.',
+                'Set the knife on the right side of the plate.',
+                'Retrieve the spoon from the utensils holder.',
+                'Put the spoon on the right side of the plate.',
+                'Take the glass.',
+                'Position the glass on the top right side of the plate.'
+            ],
+            [
+                'Get the plate from the utensils holder.',
+                'Put the plate on the table.',
+                'Retrieve the fork from the utensils holder.',
+                'Place the fork on the left side of the plate.',
+                'Pick up the knife from the utensils holder.',
+                'Set the knife on the right side of the plate.',
+                'Take the spoon from the utensils holder.',
+                'Position the spoon on the right side of the plate.',
+                'Pick up the glass.',
+                'Position the glass on the top right side of the plate.'
+            ],
+            [
+                'Take the plate from the utensils holder.',
+                'Position the plate on the table.',
+                'Collect the fork from the utensils holder.',
+                'Put the fork on the left side of the plate.',
+                'Retrieve the knife from the utensils holder.',
+                'Place the knife on the right side of the plate.',
+                'Pick up the spoon from the utensils holder.',
+                'Put the spoon on the right side of the plate.',
+                'Take the glass.',
+                'Place the glass on the top right side of the plate.'
+            ],
+            [
+                'Retrieve the plate from the utensils holder.',
+                'Position the plate on the table.',
+                'Get the fork from the utensils holder.',
+                'Put the fork on the left side of the plate.',
+                'Take the knife from the utensils holder.',
+                'Set the knife on the right side of the plate.',
+                'Pick up the spoon from the utensils holder.',
+                'Place the spoon on the right side of the plate.',
+                'Pick up the glass.',
+                'Place the glass on the top right side of the plate.'
             ]
         ])
 

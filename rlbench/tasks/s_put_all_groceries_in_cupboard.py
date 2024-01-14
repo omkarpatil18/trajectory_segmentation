@@ -54,10 +54,14 @@ class SPutAllGroceriesInCupboard(Task):
         cond = [DetectedCondition(obj, success_detector) for obj in self.groceries]
         self.register_change_point_conditions(cond)
 
-        ins = ['Put %s in cupboard' % name for name in GROCERY_NAMES]
-        self.register_instructions([
-            ins
-        ])
+        ins = []
+        ins.append(['Put %s in cupboard' % name for name in GROCERY_NAMES])
+        ins.append(['Place %s inside the cupboard.' % name for name in GROCERY_NAMES])
+        ins.append(['Arrange %s in the cupboard.' % name for name in GROCERY_NAMES])
+        ins.append(['Place %s in the designated cupboard space.' % name for name in GROCERY_NAMES])
+        ins.append(['Organize %s inside the cupboard.' % name for name in GROCERY_NAMES])
+        ins.append(['Put %s neatly into the cupboard.' % name for name in GROCERY_NAMES])
+        self.register_instructions(ins)
 
         return ['put all of the groceries in the cupboard',
                 'pick up all of the groceries and place them in the cupboard',
