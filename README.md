@@ -50,6 +50,8 @@ Code changes to added randomization to just the background and the hand. This wi
 - s_put_item_in_drawer
 - s_light_bulb_in
 - s_insert_usb_in_computer
+- s_place_cups
+- s_slide_objects
 
 ## Generate Dataset
 
