@@ -40,6 +40,21 @@ class JointCondition(Condition):
         return met, False
 
 
+class CustomJointCondition(Condition):
+    def __init__(self, joint: Joint, position: float):
+        """in radians if revoloute, or meters if prismatic"""
+        self._joint = joint
+        self._original_pos = joint.get_joint_position()
+        self._pos = position
+        self._met = False
+
+    def condition_met(self):
+        met = math.fabs(
+            self._joint.get_joint_position() - self._original_pos) > self._pos
+        self._met = self._met or met
+        return self._met, False
+
+
 class DetectedCondition(Condition):
     def __init__(self, obj: Object, detector: ProximitySensor,
                  negated: bool = False):
