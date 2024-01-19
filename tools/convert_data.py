@@ -9,7 +9,8 @@ import numpy as np
 from tqdm import tqdm
 
 data_path = '/home/local/ASUAD/draj5/data'
-json_path = '/home/local/ASUAD/draj5/dataset'
+dataset_path = '/home/local/ASUAD/draj5/dataset'
+json_path = '/home/local/ASUAD/draj5/dataset/json'
 video_path = '/home/local/ASUAD/draj5/dataset/videos'
 action_path = '/home/local/ASUAD/draj5/dataset/actions'
 
@@ -52,8 +53,8 @@ def save_action(hash_id, action):
 def map_to_csv (data):
     os.makedirs(os.path.dirname(json_path + '/'), exist_ok=True)
 
-    writer_map = jsonlines.open (f"{json_path}/{data}_map.jsonl", mode = "w")
-    writer = jsonlines.open (f"{json_path}/{data}.jsonl", mode = "w")
+    writer_map = jsonlines.open (f"{dataset_path}/{data}_map.jsonl", mode = "w")
+    #writer = jsonlines.open (f"{json_path}/{data}.jsonl", mode = "w")
 
     tasks = [name for name in os.listdir (f"{data_path}")]
     for task in tqdm(tasks, desc = "Converting tasks"):
@@ -66,6 +67,7 @@ def map_to_csv (data):
                 # maintain a map for reference
                 temp = {'data_path' : temp_path, "auto_id": hashlib.md5 (temp_path.encode ()).hexdigest ()}
                 writer_map.write (temp)
+                writer = jsonlines.open (f"{json_path}/{temp['auto_id']}.jsonl", mode = "w")
                 #print (temp)
             
                 # copy images to centralized video folder with md5 after converting to video
@@ -115,7 +117,7 @@ def map_to_csv (data):
                         query['qid'] = hashlib.md5 (query['query'].encode ()).hexdigest ()
                         query['saliency_scores'] = [[4, 4, 4] for i in range (len (query['relevant_clip_ids']))]
                         writer.write (query)
-    writer.close ()
+                writer.close ()
     writer_map.close ()
 
 if __name__ == '__main__':
