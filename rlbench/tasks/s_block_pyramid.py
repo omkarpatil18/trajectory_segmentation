@@ -4,7 +4,8 @@ import numpy as np
 from pyrep.objects.proximity_sensor import ProximitySensor
 from pyrep.objects.shape import Shape
 from rlbench.backend.conditions import (DetectedSeveralCondition,
-                                        NothingGrasped, ConditionSet)
+                                        NothingGrasped, ConditionSet, 
+                                        DetectedCondition, CustomConditionSet)
 from rlbench.backend.spawn_boundary import SpawnBoundary
 from rlbench.backend.task import Task
 from rlbench.const import colors
@@ -18,8 +19,17 @@ class SBlockPyramid(Task):
             'block_pyramid_distractor_block%d' % i) for i in range(6)]
         success_detectors = [ProximitySensor(
             'block_pyramid_success_block%d' % i) for i in range(3)]
+        self.negate = [ProximitySensor('negate' + str(i)) 
+                        for i in range (4)]
 
-        cond_set = ConditionSet([
+        cond_negate = [
+            ConditionSet([
+                DetectedCondition(self.blocks[i], self.negate[j], negated = True)
+                for j in range (len(self.negate))
+            ]) for i in range (6)
+        ]
+        
+        cond_set = ConditionSet(cond_negate + [
             DetectedSeveralCondition(self.blocks, success_detectors[0], 3),
             DetectedSeveralCondition(self.blocks, success_detectors[1], 2),
             DetectedSeveralCondition(self.blocks, success_detectors[2], 1),
@@ -28,9 +38,41 @@ class SBlockPyramid(Task):
         self.register_success_conditions([cond_set])
         
         self.register_change_point_conditions([
-            DetectedSeveralCondition(self.blocks, success_detectors[0], 3),
-            DetectedSeveralCondition(self.blocks, success_detectors[1], 2),
-            DetectedSeveralCondition(self.blocks, success_detectors[2], 1)
+            cond_negate[0],
+            CustomConditionSet([
+                DetectedSeveralCondition(self.blocks, success_detectors[0], 1),
+                NothingGrasped(self.robot.gripper)
+            ]),
+
+            cond_negate[1],
+            CustomConditionSet([
+                DetectedSeveralCondition(self.blocks, success_detectors[0], 2),
+                NothingGrasped(self.robot.gripper)
+            ]),
+
+            cond_negate[2],
+            CustomConditionSet([
+                DetectedSeveralCondition(self.blocks, success_detectors[0], 3),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            
+            cond_negate[3],
+            CustomConditionSet([
+                DetectedSeveralCondition(self.blocks, success_detectors[1], 1),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            
+            cond_negate[4],
+            CustomConditionSet([
+                DetectedSeveralCondition(self.blocks, success_detectors[1], 2),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            
+            cond_negate[5],
+            CustomConditionSet([
+                DetectedSeveralCondition(self.blocks, success_detectors[2], 1),
+                NothingGrasped(self.robot.gripper)
+            ])
         ])
 
         self.register_graspable_objects(self.blocks + self.distractors)
@@ -39,22 +81,15 @@ class SBlockPyramid(Task):
 
     def init_episode(self, index: int) -> List[str]:
 
-        color_name_1, color_rgb_1 = colors[index]
-        for obj in self.blocks[:3]:
-            obj.set_color(color_rgb_1)
-
         color_choice = np.random.choice(
-            list(range(index)) + list(range(index + 1, len(colors))),
-            size=2, replace=False)
+            list(range(len(colors))), size=6, replace=False)
 
-        color_name_2, color_rgb_2 = colors[ color_choice[0] ]
-        for obj in self.blocks[3:5]:
-            obj.set_color(color_rgb_2)
-    
-        color_name_3, color_rgb_3 = colors[ color_choice[1] ]
-        for obj in self.blocks[5:]:
-            obj.set_color(color_rgb_3)
-    
+        color_names = []
+        for i, obj in enumerate (self.blocks):
+            name, rgb = colors[ color_choice[i] ]
+            obj.set_color (rgb)
+            color_names.append (name)
+        
         color_choice = np.random.choice(
             list(range(len(colors))),
             size=6, replace=False)
@@ -70,31 +105,23 @@ class SBlockPyramid(Task):
                 max_rotation=(0.0, 0.0, np.pi / 4))
 
         self.register_instructions([
-            ['Create base of the pyramid with 3 %s blocks' % color_name_1, 
-            'Create the next layer of pyramid with 2 %s blocks' % color_name_2,
-            'Create the top of pyramid with a %s block' % color_name_3],
-
-            ['Build the pyramid base using 3 %s blocks.' % color_name_1, 
-            'Construct the next layer with 2 %s blocks.' % color_name_2, 
-            'Cap the pyramid with a single %s block.' % color_name_3],
-
-            ['Place 3 %s blocks to form the pyramid base.' % color_name_1, 
-            'Assemble the second layer using 2 %s blocks.' % color_name_2, 
-            'Complete the pyramid top with a single %s block.' % color_name_3],
-
-            ['Start the pyramid with 3 %s blocks for the base.' % color_name_1, 
-            'Continue with the second layer using 2 %s blocks.' % color_name_2, 
-            'Finish the pyramid top using a %s block.' % color_name_3],
-
-            ['Use 3 %s blocks to create the pyramid base.' % color_name_1, 
-            'Add the second layer with 2 %s blocks.' % color_name_2, 
-            'Top off the pyramid with a single %s block.' % color_name_3],
-
-            ['Begin the pyramid base with 3 %s blocks.' % color_name_1, 
-            'Extend to the next layer with 2 %s blocks.' % color_name_2, 
-            'Complete the pyramid top with a %s block.' % color_name_3]
+            [
+                'Pick up a %s block' % color_names[0],
+                'Place the %s block in the center of green strip' % color_names[0],
+                'Pick up a %s block' % color_names[1],
+                'Place the %s block to the right side of green strip' % color_names[1],
+                'Pick up a %s block' % color_names[2],
+                'Place the %s block to the left side of green strip' % color_names[2],
+                'Pick up a %s block' % color_names[3],
+                'Place the %s block on as second layer on the right side' % color_names[3],
+                'Pick up a %s block' % color_names[4],
+                'Place the %s block on as second layer on the left side' % color_names[4],
+                'Pick up a %s block' % color_names[5],
+                'Place the %s block on as third layer on the top of pyramid' % color_names[5]
+            ]
         ])
-        
+
+        color_name_1 = color_names[0]
         return ['stack %s blocks in a pyramid' % color_name_1,
                 'create a pyramid with the %s objects' % color_name_1,
                 'make a pyramid out of %s cubes' % color_name_1,

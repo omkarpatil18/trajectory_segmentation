@@ -49,6 +49,9 @@ class SShapeSorter(Task):
         
         color_choice = np.random.choice(list(range(len(colors))),
             size=5, replace=False)
+        
+        self.indexes = np.random.choice (list(range(len(SHAPE_NAMES))), 
+            len(SHAPE_NAMES), replace = False)
 
         color_names = []
         for i in range(5):

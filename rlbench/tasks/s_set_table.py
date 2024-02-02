@@ -2,7 +2,7 @@ from typing import List, Tuple
 from pyrep.objects.shape import Shape
 from pyrep.objects.proximity_sensor import ProximitySensor
 from rlbench.backend.task import Task
-from rlbench.backend.conditions import DetectedCondition, NothingGrasped
+from rlbench.backend.conditions import DetectedCondition, NothingGrasped, CustomConditionSet
 
 
 class SSetTable(Task):
@@ -31,15 +31,30 @@ class SSetTable(Task):
 
         self.register_change_point_conditions([
             DetectedCondition(plate, negate, negated = True),
-            DetectedCondition(plate, ProximitySensor('plate_detector')),
+            CustomConditionSet([
+                DetectedCondition(plate, ProximitySensor('plate_detector')),
+                NothingGrasped(self.robot.gripper)
+            ]),
             DetectedCondition(fork, negate, negated = True),
-            DetectedCondition(fork, ProximitySensor('fork_detector')),
+            CustomConditionSet([
+                DetectedCondition(fork, ProximitySensor('fork_detector')),
+                NothingGrasped(self.robot.gripper)
+            ]),
             DetectedCondition(knife, negate, negated = True),
-            DetectedCondition(knife, ProximitySensor('knife_detector')),
+            CustomConditionSet([
+                DetectedCondition(knife, ProximitySensor('knife_detector')),
+                NothingGrasped(self.robot.gripper)
+            ]),
             DetectedCondition(spoon, negate, negated = True),
-            DetectedCondition(spoon, ProximitySensor('spoon_detector')),
+            CustomConditionSet([
+                DetectedCondition(spoon, ProximitySensor('spoon_detector')),
+                NothingGrasped(self.robot.gripper)
+            ]),
             DetectedCondition(glass, negate, negated = True),
-            DetectedCondition(glass, ProximitySensor('glass_detector')),
+            CustomConditionSet([
+                DetectedCondition(glass, ProximitySensor('glass_detector')),
+                NothingGrasped(self.robot.gripper)
+            ])            
         ])
 
         self.register_instructions([

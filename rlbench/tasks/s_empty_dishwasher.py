@@ -3,7 +3,7 @@ from pyrep.objects.proximity_sensor import ProximitySensor
 from pyrep.objects.shape import Shape
 from pyrep.objects.object import Object
 from rlbench.backend.task import Task
-from rlbench.backend.conditions import DetectedCondition
+from rlbench.backend.conditions import DetectedCondition, NothingGrasped, CustomConditionSet
 
 
 class SEmptyDishwasher(Task):
@@ -27,7 +27,10 @@ class SEmptyDishwasher(Task):
         
         self.register_change_point_conditions([
             DetectedCondition(door, success_door),
-            DetectedCondition(tray, success_door),
+            CustomConditionSet([
+                DetectedCondition(tray, success_door),
+                NothingGrasped(self.robot.gripper)
+            ]),
             DetectedCondition(plate, success_detector, negated=True),
             DetectedCondition(plate, success_plate)
         ])

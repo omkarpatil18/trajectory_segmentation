@@ -204,6 +204,41 @@ class ConditionSet(Condition):
     def reset(self):
         self._current_condition_index = 0
 
+class CustomConditionSet(Condition):
+    def __init__(self, conditions: List[Condition], order_matters: bool = False,
+                 simultaneously_met: bool = True):
+        """alternative would be sequentially met"""
+        self._conditions = conditions
+        self._order_matters = order_matters
+        self._simultaneously_met = simultaneously_met  # Probably wont use
+        self._current_condition_index = 0
+        self._met = False
+
+    def condition_met(self):
+        met = True
+        # term = False
+        if self._order_matters:
+            if self._current_condition_index < len(self._conditions):
+                for cond in self._conditions[self._current_condition_index:]:
+                    ismet, term = cond.condition_met()
+                    if not ismet:
+                        break
+                    self._current_condition_index += 1
+                # Check again to see if we have now completed the order
+                met = self._current_condition_index >= len(self._conditions)
+        else:
+            for cond in self._conditions:
+                ismet, term = cond.condition_met()
+                met &= ismet
+                # if term:
+                #     break
+        self._met = self._met or met
+        return self._met, False
+        #return met, False
+
+    def reset(self):
+        self._current_condition_index = 0
+
 
 class OrConditions(Condition):
     def __init__(self, conditions: List[Condition]):
