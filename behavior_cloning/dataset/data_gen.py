@@ -59,7 +59,7 @@ class TrajGen:
             gripper_pose=[],
             gripper_open=[],
         )
-        demo_dict[task_name] = task_name
+        demo_dict["task_name"] = task_name
         for obs in demo._observations:
             demo_dict["front_rgb"].append(obs.front_rgb)
             demo_dict["front_mask"].append(obs.front_mask)
@@ -106,7 +106,7 @@ class TrajGen:
 
 traj_gen = TrajGen(headless=True)
 traj_gen.generate_data(
-    task_name="sim_open_drawer",
+    task_name="sim_open_box",
     dataset_path="/home/local/ASUAD/opatil3/datasets/rlbench",
     num_demos_per_task=100,
 )

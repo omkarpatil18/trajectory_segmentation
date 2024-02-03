@@ -249,6 +249,7 @@ def get_args_parser():
         help="total episodes in folder",
         required=False,
     )
+    parser.add_argument("--ckpt_names", action="store", nargs="*", help="ckpt_names")
 
     # add this for multi-task embedding condition
     parser.add_argument("--multi_task", action="store_true")

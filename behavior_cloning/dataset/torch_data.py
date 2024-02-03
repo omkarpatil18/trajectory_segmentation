@@ -10,6 +10,7 @@ from functools import partial
 from dataset.task_constants import DATA_DIR
 from constants import CAMERA_NAMES, TEXT_EMBEDDINGS
 from dataset.task_constants import SIM_TASK_CONFIG
+from utils import get_embedding
 
 CONFIG_DIM = 7  # joint space
 
@@ -131,53 +132,8 @@ class RLBenchTrajDataset(Dataset):
             data_batch["is_pad"] = torch.from_numpy(is_pad).bool()
 
             # for 20 tasks hardcoded, modify as needed
-            task_name = data_batch.get("task_name", "")
-            if "open_drawer" in task_name:
-                task_emb = TEXT_EMBEDDINGS[0]
-            elif "close_drawer" in task_name:
-                task_emb = TEXT_EMBEDDINGS[1]
-            elif "pick_butter" in task_name:
-                task_emb = TEXT_EMBEDDINGS[2]
-            elif "place_butter" in task_name:
-                task_emb = TEXT_EMBEDDINGS[3]
-            elif "pick_toast" in task_name:
-                task_emb = TEXT_EMBEDDINGS[4]
-            elif "place_toast" in task_name:
-                task_emb = TEXT_EMBEDDINGS[5]
-            elif "cap_lid" in task_name:
-                task_emb = TEXT_EMBEDDINGS[6]
-            elif "pick_lid" in task_name:
-                task_emb = TEXT_EMBEDDINGS[7]
-            elif "pick_tea" in task_name:
-                task_emb = TEXT_EMBEDDINGS[8]
-            elif "place_lid" in task_name:
-                task_emb = TEXT_EMBEDDINGS[9]
-            elif "place_tea" in task_name:
-                task_emb = TEXT_EMBEDDINGS[10]
-            elif "uncap_lid" in task_name:
-                task_emb = TEXT_EMBEDDINGS[11]
-            elif "close_oven" in task_name:
-                task_emb = TEXT_EMBEDDINGS[12]
-            elif "open_oven" in task_name:
-                task_emb = TEXT_EMBEDDINGS[13]
-            elif "place_bowl" in task_name:
-                task_emb = TEXT_EMBEDDINGS[14]
-            elif "slide_out" in task_name:
-                task_emb = TEXT_EMBEDDINGS[15]
-            elif "cap_mug" in task_name:
-                task_emb = TEXT_EMBEDDINGS[16]
-            elif "pick_mug" in task_name:
-                task_emb = TEXT_EMBEDDINGS[17]
-            elif "pick_towel" in task_name:
-                task_emb = TEXT_EMBEDDINGS[18]
-            elif "wipe_towel" in task_name:
-                task_emb = TEXT_EMBEDDINGS[19]
-            elif "pick_cup" in task_name:
-                task_emb = TEXT_EMBEDDINGS[20]
-            elif "place_cup" in task_name:
-                task_emb = TEXT_EMBEDDINGS[21]
-            else:
-                task_emb = TEXT_EMBEDDINGS[0]
+            task_name = data_batch["task_name"]
+            task_emb = get_embedding(task_name)
         data_batch["task_emb"] = torch.as_tensor(task_emb, dtype=torch.float)
 
         assert data_batch["images"].shape == torch.Size([4, 3, 128, 128])
