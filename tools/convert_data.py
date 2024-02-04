@@ -90,11 +90,11 @@ def map_to_csv (data):
                     change_point[x][1] = max (change_point[x][1], i)
                 
                 for i, value in change_point.items ():
-                    value[0] = int(value[0] / fps)
-                    value[1] = int(value[1] / fps)
+                    value[0] = value[0] / fps
+                    value[1] = value[1] / fps
 
-                    if value[1] < duration:
-                        value[1] += 2
+                    #if value[1] < duration:
+                    #    value[1] += 2
 
                 actions = []
                 gripper = []

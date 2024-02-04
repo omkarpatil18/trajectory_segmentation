@@ -74,13 +74,13 @@ class SPutAllGroceriesInCupboard(Task):
         temp = [['Lift up %s' % name, 'Place %s inside the cupboard.' % name] for name in GROCERY_NAMES]
         ins.append([x for xs in temp for x in xs] + ['Move away from cupboard'])
         
-        temp = [['Pick up %s' % name, 'Arrange %s in the cupboard.' % name] for name in GROCERY_NAMES]
+        temp = [['Grab %s' % name, 'Arrange %s in the cupboard.' % name] for name in GROCERY_NAMES]
         ins.append([x for xs in temp for x in xs] + ['Move away from cupboard'])
         
-        temp = [['Lift up %s' % name, 'Place %s in the designated cupboard space.' % name] for name in GROCERY_NAMES]
+        temp = [['Retrieve %s' % name, 'Place %s in the designated cupboard space.' % name] for name in GROCERY_NAMES]
         ins.append([x for xs in temp for x in xs] + ['Move away from cupboard'])
         
-        temp = [['Pick %s' % name, 'Organize %s inside the cupboard.' % name] for name in GROCERY_NAMES]
+        temp = [['Take %s' % name, 'Organize %s inside the cupboard.' % name] for name in GROCERY_NAMES]
         ins.append([x for xs in temp for x in xs] + ['Move away from cupboard'])
         
         self.register_instructions(ins)

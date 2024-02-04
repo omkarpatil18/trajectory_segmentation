@@ -43,37 +43,38 @@ class SSlideObjects(Task):
             name, rgb = colors[color_choice[i]]
             color_names.append (name)
             self._block[i].set_color (rgb)
-        
-        for i in range (3):
-            name, rgb = colors[color_choice[i + 3]]
-            color_names.append (name)
             self._target_obj[i].set_color(rgb)
+
+        #for i in range (3):
+        #    name, rgb = colors[color_choice[i + 3]]
+        #    color_names.append (name)
+        #    self._target_obj[i].set_color(rgb)
         
         self.register_instructions([
             [
-                'Move the %s block towards the %s target.' % (color_names[0], color_names[3]),
-                'Gently push the %s block to the %s target.' % (color_names[1], color_names[4]),
-                'Slide the %s block to reach the %s target.' % (color_names[2], color_names[5])
+                'Move the %s block towards the %s target.' % (color_names[0], color_names[0]),
+                'Gently push the %s block to the %s target.' % (color_names[1], color_names[1]),
+                'Slide the %s block to reach the %s target.' % (color_names[2], color_names[2])
             ],
             [
-                'Push the %s block towards the %s target.' % (color_names[0], color_names[3]),
-                'Guide the %s block to the %s target.' % (color_names[1], color_names[4]),
-                'Navigate the %s block to the %s target.' % (color_names[2], color_names[5])
+                'Push the %s block towards the %s target.' % (color_names[0], color_names[0]),
+                'Guide the %s block to the %s target.' % (color_names[1], color_names[1]),
+                'Navigate the %s block to the %s target.' % (color_names[2], color_names[2])
             ],
             [
-                'Slide the %s block towards the %s target.' % (color_names[0], color_names[3]),
-                'Apply pressure to push the %s block to the %s target.' % (color_names[1], color_names[4]),
-                'Move the %s block steadily towards the %s target.' % (color_names[2], color_names[5])
+                'Slide the %s block towards the %s target.' % (color_names[0], color_names[0]),
+                'Apply pressure to push the %s block to the %s target.' % (color_names[1], color_names[1]),
+                'Move the %s block steadily towards the %s target.' % (color_names[2], color_names[2])
             ],
             [
-                'Gently push the %s block to the %s target.' % (color_names[0], color_names[3]),
-                'Guide the %s block towards the %s target.' % (color_names[1], color_names[4]),
-                'Push the %s block to the %s target carefully.' % (color_names[2], color_names[5])
+                'Gently push the %s block to the %s target.' % (color_names[0], color_names[0]),
+                'Guide the %s block towards the %s target.' % (color_names[1], color_names[1]),
+                'Push the %s block to the %s target carefully.' % (color_names[2], color_names[2])
             ],
             [
-                'Push the %s block towards the %s target.' % (color_names[0], color_names[3]),
-                'Direct the %s block to the %s target.' % (color_names[1], color_names[4]),
-                'Slide the %s block to the %s target smoothly.' % (color_names[2], color_names[5])
+                'Push the %s block towards the %s target.' % (color_names[0], color_names[0]),
+                'Direct the %s block to the %s target.' % (color_names[1], color_names[1]),
+                'Slide the %s block to the %s target smoothly.' % (color_names[2], color_names[2])
             ]
         ])
 
