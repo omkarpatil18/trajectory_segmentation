@@ -14,7 +14,7 @@ json_path = '/home/local/ASUAD/draj5/dataset/json'
 video_path = '/home/local/ASUAD/draj5/dataset/videos'
 action_path = '/home/local/ASUAD/draj5/dataset/actions'
 
-fps = 25
+fps = 10
 res = (230, 230)
 
 def with_opencv(filename):
@@ -107,13 +107,15 @@ def map_to_csv (data):
                 save_action (temp['auto_id'], actions)
                 for instruction_set in instructions:
                     for i, instruction in enumerate(instruction_set):
+                        if 'SKILL_' in instruction:
+                            continue
                         try:
                             query = {
                                     "query": instruction,
                                     "duration": duration + 2,
                                     "vid": temp['auto_id'],
                                     "relevant_windows": [change_point[i]],
-                                    "relevant_clip_ids": [int(i/2) for i in range ((change_point[i][0]//2)*2, change_point[i][1], 2)]
+                                    "relevant_clip_ids": [int(i/2) for i in range ((int(change_point[i][0])//2)*2, int(change_point[i][1]), 2)]
                             }
                             query['qid'] = hashlib.md5 (query['query'].encode ()).hexdigest ()
                             query['saliency_scores'] = [[4, 4, 4] for i in range (len (query['relevant_clip_ids']))]

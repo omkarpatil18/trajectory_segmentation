@@ -135,6 +135,16 @@ class SStackBlocks(Task):
                 'Stack the %s block on top of the %s block.' % (color_names[2], color_names[1]),
                 'Retrieve the %s block.' % color_names[3],
                 'Stack the %s block on top of the %s block.' % (color_names[3], color_names[2])
+            ],
+            [
+                'SKILL_PICK_%s' % color_names[0],
+                'SKILL_PLACE_ON_green',
+                'SKILL_PICK_%s' % color_names[1],
+                'SKILL_PLACE_ON_%s' % color_names[0],
+                'SKILL_PICK_%s' % color_names[2],
+                'SKILL_PLACE_ON_%s' % color_names[1],
+                'SKILL_PICK_%s' % color_names[3],
+                'SKILL_PLACE_ON_%s' % color_names[2]
             ]
         ])
 

@@ -45,6 +45,7 @@ class SStackCups(Task):
 
     def init_episode(self, index: int) -> List[str]:
         self.variation_index = index
+        index = np.random.choice(len(colors))
         target_color_name, target_rgb = colors[index]
 
         random_idx = np.random.choice(len(colors))
@@ -114,4 +115,4 @@ class SStackCups(Task):
                 % target_color_name]
 
     def variation_count(self) -> int:
-        return len(colors)
+        return 1
