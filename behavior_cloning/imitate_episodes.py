@@ -129,6 +129,7 @@ def main(args):
         "left_shoulder_rgb",
         "right_shoulder_rgb",
         "wrist_rgb",
+        "front_rgb",
         "joint_positions",
         "gripper_open",
     ]

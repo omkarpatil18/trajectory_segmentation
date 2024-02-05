@@ -13,13 +13,8 @@ SIM_TASK_CONFIG = {
         ],
     },
     "sim_open_box": {
+        "train_subtasks": ["sim_open_box"],
         "rlbench_env": OpenBox,
-        "episode_len": 250,
-        "skill_sequence": [],
-    },
-    "sim_open_drawer": {
-        "train_subtasks": ["sim_open_drawer"],
-        "rlbench_env": OpenDrawer,
         "episode_len": 250,
         "skill_sequence": [],
     },

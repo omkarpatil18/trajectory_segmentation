@@ -3,7 +3,8 @@ CAMERA_NAMES = [
     "overhead_rgb",
     "left_shoulder_rgb",
     "right_shoulder_rgb",
-    "wrist_rgb"
+    "wrist_rgb", 
+    "front_rgb"
     ]
 ## change this to train with less cameras
 

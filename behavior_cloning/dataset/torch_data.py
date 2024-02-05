@@ -132,11 +132,11 @@ class RLBenchTrajDataset(Dataset):
             data_batch["is_pad"] = torch.from_numpy(is_pad).bool()
 
             # for 20 tasks hardcoded, modify as needed
-            task_name = data_batch["task_name"]
+            task_name = data_batch.get("task_name", "open_box")
             task_emb = get_embedding(task_name)
         data_batch["task_emb"] = torch.as_tensor(task_emb, dtype=torch.float)
 
-        assert data_batch["images"].shape == torch.Size([4, 3, 128, 128])
+        # assert data_batch["images"].shape == torch.Size([4, 3, 128, 128])
         assert data_batch["is_pad"].shape == torch.Size([self.chunk_size])
         assert data_batch["joint_action"].shape == torch.Size([self.chunk_size, 7])
         assert data_batch["gripper_action"].shape == torch.Size([self.chunk_size])
@@ -151,6 +151,7 @@ def load_data(
         "left_shoulder_rgb",
         "right_shoulder_rgb",
         "wrist_rgb",
+        "front_rgb",
         "joint_positions",
         "gripper_open",
     ],
