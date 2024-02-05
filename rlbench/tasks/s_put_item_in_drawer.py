@@ -5,7 +5,7 @@ from pyrep.objects.dummy import Dummy
 from pyrep.objects.joint import Joint
 from pyrep.objects.proximity_sensor import ProximitySensor
 from pyrep.objects.shape import Shape
-from rlbench.backend.conditions import DetectedCondition
+from rlbench.backend.conditions import DetectedCondition, NothingGrasped, CustomConditionSet
 from rlbench.backend.task import Task
 from rlbench.const import colors
 
@@ -25,7 +25,7 @@ class SPutItemInDrawer(Task):
 
         self._waypoint1 = Dummy('waypoint1')
         self._item = Shape('item')
-        self.register_graspable_objects([self._item])
+        self.register_graspable_objects([self._item] + self._drawers)
 
     def init_episode(self, index) -> List[str]:
         option = self._options[index]
@@ -45,9 +45,15 @@ class SPutItemInDrawer(Task):
             DetectedCondition(self._item, success_sensor)])
         
         self.register_change_point_conditions([
-            DetectedCondition(drawer, self.success_drawer),
+            CustomConditionSet([
+                DetectedCondition(drawer, self.success_drawer),
+                NothingGrasped(self.robot.gripper)
+            ]),
             DetectedCondition(self._item, self.negate, negated = True),
-            DetectedCondition(self._item, success_sensor)  
+            CustomConditionSet([
+                DetectedCondition(self._item, success_sensor),
+                NothingGrasped(self.robot.gripper)
+            ])
         ])
 
         self.register_instructions([

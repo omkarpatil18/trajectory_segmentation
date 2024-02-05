@@ -4,7 +4,8 @@ from pyrep.objects.object import Object
 from pyrep.objects.proximity_sensor import ProximitySensor
 from rlbench.backend.task import Task
 from rlbench.backend.spawn_boundary import SpawnBoundary
-from rlbench.backend.conditions import DetectedCondition, NothingGrasped, GraspedCondition
+from rlbench.backend.conditions import (DetectedCondition, CustomDetectedCondition,
+                NothingGrasped, GraspedCondition, CustomConditionSet)
 
 
 class SPutTrayInOven(Task):
@@ -12,6 +13,7 @@ class SPutTrayInOven(Task):
     def init_task(self) -> None:
         success_detector = ProximitySensor('success')
         success_detector_door = ProximitySensor('door_success')
+        success_detector_tray = ProximitySensor('success_tray')
         
         self.tray = Shape('tray')
         self.oven_door = Shape('oven_door')
@@ -23,16 +25,18 @@ class SPutTrayInOven(Task):
         
         self.register_change_point_conditions([
             DetectedCondition(self.oven_door, success_detector_door),
-            GraspedCondition(self.robot.gripper, self.tray),
-            DetectedCondition(self.tray, success_detector),
-            DetectedCondition(self.tray, success_detector)
+            CustomDetectedCondition(self.tray, success_detector_tray),
+            CustomConditionSet([
+                DetectedCondition(self.tray, success_detector),
+                NothingGrasped(self.robot.gripper)    
+            ])
         ])
 
         self.register_instructions([
             [
                 'Swing open the oven door.',
                 'Retrieve the tray from the top of the oven.',
-                'Position the tray inside the oven.'
+                'Position the tray inside the oven.',
             ],
             [
                 'Open the door of the oven.',

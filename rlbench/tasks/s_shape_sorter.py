@@ -49,14 +49,19 @@ class SShapeSorter(Task):
         
         color_choice = np.random.choice(list(range(len(colors))),
             size=5, replace=False)
-
+            
         color_names = []
         for i in range(5):
             index = self.indexes[i]
             obj = self.shapes[index]
             name, rgb = colors[color_choice[i]]
+            if SHAPE_NAMES[self.indexes[i]] == 'star':
+                name = 'yellow'
+            if SHAPE_NAMES[self.indexes[i]] == 'moon':
+                name = 'green'
             color_names.append (name)
             obj.set_color(rgb)
+            print (color_names[i], SHAPE_NAMES[self.indexes[i]])
 
         self.variation_index = index
         shape = SHAPE_NAMES[index]

@@ -1,6 +1,7 @@
 from typing import List
 from rlbench.backend.task import Task
-from rlbench.backend.conditions import DetectedCondition, CustomDetectedCondition, GraspedCondition
+from rlbench.backend.conditions import (DetectedCondition, 
+        CustomDetectedCondition, GraspedCondition, ConditionSet)
 from pyrep.objects.shape import Shape
 from pyrep.objects.proximity_sensor import ProximitySensor
 from rlbench.const import colors
@@ -14,10 +15,15 @@ class SHockey(Task):
         self.ball1 = Shape('hockey_ball1')
         self.ball2 = Shape('hockey_ball2')
         self.success_detector = ProximitySensor('success')
+        self.hockey_detector = ProximitySensor('success1')
 
-        self.condition0 = GraspedCondition(self.robot.gripper, self.stick)
+        self.condition0 = ConditionSet([
+            GraspedCondition(self.robot.gripper, self.stick),
+            CustomDetectedCondition(self.stick, self.hockey_detector)
+        ])
         self.condition1 = CustomDetectedCondition(self.ball0, self.success_detector)
         self.condition2 = CustomDetectedCondition(self.ball1, self.success_detector)
+        self.condition3 = CustomDetectedCondition(self.ball2, self.success_detector)
 
         self.register_success_conditions([
             self.condition0, self.condition1, self.condition2
@@ -43,32 +49,38 @@ class SHockey(Task):
 
         name, rgb = colors[color_choice[2]]
         self.ball2.set_color(rgb)
+        color_names.append (name)
         
         self.register_instructions([
             [
                 'Lift the hockey stick.',
                 'Strike the %s ball into the net.' % color_names[0],
-                'Aim to hit the %s ball into the goal.' % color_names[1]
+                'Aim to hit the %s ball into the goal.' % color_names[1],
+                'Aim to hit the %s ball into the goal.' % color_names[2]
             ],
             [
                 'Retrieve the hockey stick.',
                 'Swing at the %s ball to make it into the net.' % color_names[0],
-                'Attempt to score by hitting the %s ball into the goal.' % color_names[1]
+                'Attempt to score by hitting the %s ball into the goal.' % color_names[1],
+                'Aim to hit the %s ball into the goal.' % color_names[2]
             ],
             [
                 'Pick up the hockey stick.',
                 'Skillfully hit the %s ball into the net.' % color_names[0],
-                'Try to send the %s ball into the goal using the stick.' % color_names[1]
+                'Try to send the %s ball into the goal using the stick.' % color_names[1],
+                'Aim to hit the %s ball into the goal.' % color_names[2]
             ],
             [
                 'Raise the hockey stick.',
                 'Drive the %s ball into the net.' % color_names[0],
-                'Strive to hit the %s ball into the goal.' % color_names[1]
+                'Strive to hit the %s ball into the goal.' % color_names[1],
+                'Aim to hit the %s ball into the goal.' % color_names[2]
             ],
             [
                 'Take the hockey stick.',
                 'Efficiently hit the %s ball into the net.' % color_names[0],
-                'Your goal is to hit the %s ball into the goal.' % color_names[1]
+                'Your goal is to hit the %s ball into the goal.' % color_names[1],
+                'Aim to hit the %s ball into the goal.' % color_names[2]
             ]
         ])
 

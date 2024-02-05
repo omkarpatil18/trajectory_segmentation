@@ -4,12 +4,14 @@ from pyrep.objects.shape import Shape
 from pyrep.objects.proximity_sensor import ProximitySensor
 from pyrep.objects.dummy import Dummy
 from rlbench.backend.task import Task
-from rlbench.backend.conditions import DetectedSeveralCondition, DetectedCondition
+from rlbench.backend.conditions import (DetectedSeveralCondition, 
+                    DetectedCondition, CustomDetectedCondition,
+                    CustomConditionSet)
 from rlbench.backend.conditions import NothingGrasped
 from rlbench.backend.spawn_boundary import SpawnBoundary
 from rlbench.const import colors
 
-MAX_STACKED_BLOCKS = 3
+MAX_STACKED_BLOCKS = 4
 DISTRACTORS = 4
 
 
@@ -36,7 +38,7 @@ class SStackBlocks(Task):
     def init_episode(self, index: int) -> List[str]:
         # For each color, we want to have 2, 3 or 4 blocks stacked
         color_index = int(index / MAX_STACKED_BLOCKS)
-        self.blocks_to_stack = 2 + index % MAX_STACKED_BLOCKS
+        self.blocks_to_stack = MAX_STACKED_BLOCKS #2 + index % MAX_STACKED_BLOCKS
 
         color_name = ' '
         color_choice = np.random.choice(list(range(len(colors))),
@@ -51,29 +53,98 @@ class SStackBlocks(Task):
 
         success_detector = ProximitySensor(
             'stack_blocks_success')
+        negate = ProximitySensor('negate')
         self.register_success_conditions([DetectedSeveralCondition(
             self.target_blocks, success_detector, self.blocks_to_stack),
             NothingGrasped(self.robot.gripper)
         ])
 
         self.register_change_point_conditions([
-            DetectedCondition(self.target_blocks[0], success_detector),
-            DetectedCondition(self.target_blocks[1], success_detector),
-            DetectedCondition(self.target_blocks[2], success_detector),
-            DetectedCondition(self.target_blocks[3], success_detector)
+            CustomDetectedCondition(self.target_blocks[0], negate, negated = True),
+            CustomConditionSet([
+                DetectedCondition(self.target_blocks[0], success_detector),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            
+            CustomDetectedCondition(self.target_blocks[1], negate, negated = True),
+            CustomConditionSet([
+                DetectedCondition(self.target_blocks[1], success_detector),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            
+            CustomDetectedCondition(self.target_blocks[2], negate, negated = True),
+            CustomConditionSet([
+                DetectedCondition(self.target_blocks[2], success_detector),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            
+            CustomDetectedCondition(self.target_blocks[3], negate, negated = True),
+            CustomConditionSet([
+                DetectedCondition(self.target_blocks[3], success_detector),
+                NothingGrasped(self.robot.gripper)
+            ]),
         ])
 
         self.register_instructions([
-            ['Put the %s block at the center' % color_names[0],
-            'Stack the %s block on top of %s block' % (color_names[1], color_names[0]),
-            'Stack the %s block on top of %s block' % (color_names[2], color_names[1]),
-            'Stack the %s block on top of %s block' % (color_names[3], color_names[2])
+            [
+                'Pick up the %s block.' % color_names[0],
+                'Place the %s block at the green center.' % color_names[0],
+                'Pick up the %s block.' % color_names[1],
+                'Stack the %s block on top of the %s block.' % (color_names[1], color_names[0]),
+                'Pick up the %s block.' % color_names[2],
+                'Stack the %s block on top of the %s block.' % (color_names[2], color_names[1]),
+                'Pick up the %s block.' % color_names[3],
+                'Stack the %s block on top of the %s block.' % (color_names[3], color_names[2])
             ],
             [
-                'Position the %s block at the center.' % color_names[0],
-                'Stack the %s block on top of the center block.' % color_names[1],
-                'Add the %s block on top of the stack.' % color_names[2],
-                'Place the %s block on top of the stack.' % color_names[3]
+                'Take the %s block.' % color_names[0],
+                'Put the %s block at the green center.' % color_names[0],
+                'Retrieve the %s block.' % color_names[1],
+                'Stack the %s block on top of the %s block.' % (color_names[1], color_names[0]),
+                'Grab the %s block.' % color_names[2],
+                'Stack the %s block on top of the %s block.' % (color_names[2], color_names[1]),
+                'Pick up the %s block.' % color_names[3],
+                'Stack the %s block on top of the %s block.' % (color_names[3], color_names[2])
+            ],
+            [
+                'Pick up the %s block.' % color_names[0],
+                'Position the %s block at the green center.' % color_names[0],
+                'Take the %s block.' % color_names[1],
+                'Stack the %s block on top of the %s block.' % (color_names[1], color_names[0]),
+                'Pick up the %s block.' % color_names[2],
+                'Stack the %s block on top of the %s block.' % (color_names[2], color_names[1]),
+                'Retrieve the %s block.' % color_names[3],
+                'Stack the %s block on top of the %s block.' % (color_names[3], color_names[2])
+            ],
+            [
+                'Retrieve the %s block.' % color_names[0],
+                'Place the %s block at the green center.' % color_names[0],
+                'Grab the %s block.' % color_names[1],
+                'Stack the %s block on top of the %s block.' % (color_names[1], color_names[0]),
+                'Pick up the %s block.' % color_names[2],
+                'Stack the %s block on top of the %s block.' % (color_names[2], color_names[1]),
+                'Take the %s block.' % color_names[3],
+                'Stack the %s block on top of the %s block.' % (color_names[3], color_names[2])
+            ],
+            [
+                'Pick up the %s block.' % color_names[0],
+                'Set the %s block at the green center.' % color_names[0],
+                'Grab the %s block.' % color_names[1],
+                'Stack the %s block on top of the %s block.' % (color_names[1], color_names[0]),
+                'Take the %s block.' % color_names[2],
+                'Stack the %s block on top of the %s block.' % (color_names[2], color_names[1]),
+                'Retrieve the %s block.' % color_names[3],
+                'Stack the %s block on top of the %s block.' % (color_names[3], color_names[2])
+            ],
+            [
+                'SKILL_PICK_%s' % color_names[0],
+                'SKILL_PLACE_ON_green',
+                'SKILL_PICK_%s' % color_names[1],
+                'SKILL_PLACE_ON_%s' % color_names[0],
+                'SKILL_PICK_%s' % color_names[2],
+                'SKILL_PLACE_ON_%s' % color_names[1],
+                'SKILL_PICK_%s' % color_names[3],
+                'SKILL_PLACE_ON_%s' % color_names[2]
             ]
         ])
 
@@ -101,7 +172,7 @@ class SStackBlocks(Task):
                 % (self.blocks_to_stack, color_name)]
 
     def variation_count(self) -> int:
-        return MAX_STACKED_BLOCKS
+        return 1
 
     def _move_above_next_target(self, _):
         if self.blocks_stacked >= self.blocks_to_stack:

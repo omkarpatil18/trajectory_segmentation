@@ -2,7 +2,7 @@ from pyrep.objects.proximity_sensor import ProximitySensor
 from pyrep.objects.shape import Shape
 from pyrep.objects.dummy import Dummy
 
-from rlbench.backend.conditions import DetectedCondition, NothingGrasped, ConditionSet
+from rlbench.backend.conditions import DetectedCondition, NothingGrasped, ConditionSet, CustomDetectedCondition
 from rlbench.backend.task import Task
 
 from typing import List
@@ -35,6 +35,8 @@ class SSetupChess(Task):
             z = detector.get_position(self.board)[2]
             detector.set_position((x, y, z), self.board)
             self.success_conditions.append(DetectedCondition(piece, detector))
+            self.change_point_conditions.append (CustomDetectedCondition(piece, 
+                                                ProximitySensor('negate'), negated = True))
             self.change_point_conditions.append (DetectedCondition(piece, detector))
 
         self.register_success_conditions(self.success_conditions)
@@ -81,7 +83,9 @@ class SSetupChess(Task):
         self.instructions = []
         for i in range(self.nsetup):
             piece = self.targets[i]
-            self.instructions.append (self._get_instructions(piece.get_name()))
+            a, b = self._get_instructions(piece.get_name())
+            self.instructions.append (a)
+            self.instructions.append (b)
         self.register_instructions([self.instructions])
 
         return cmds
@@ -145,4 +149,4 @@ class SSetupChess(Task):
             else:
                 position = 'on %s queen side' % color
         
-        return f"Place the {color} {piece} {position}"
+        return f"Pick up {color} {piece}", f"Place the {color} {piece} {position}"

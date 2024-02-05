@@ -5,7 +5,9 @@ from pyrep.objects.dummy import Dummy
 from pyrep.objects.joint import Joint
 from pyrep.objects.proximity_sensor import ProximitySensor
 from pyrep.objects.shape import Shape
-from rlbench.backend.conditions import JointCondition, DetectedCondition, ConditionSet
+from rlbench.backend.conditions import (JointCondition, DetectedCondition, 
+                                        ConditionSet, NothingGrasped,
+                                        CustomDetectedCondition)
 from rlbench.backend.spawn_boundary import SpawnBoundary
 from rlbench.backend.task import Task
 
@@ -19,11 +21,13 @@ class SChangeChannel(Task):
             JointCondition(Joint('target_button_joint1'), 0.003),
             JointCondition(Joint('target_button_joint2'), 0.003)
         ]
+        self.success2 = ProximitySensor('success2')
         self._remote_conditions = [
             DetectedCondition(Dummy('tv_remote_top'),
                               ProximitySensor('success0')),
             DetectedCondition(Dummy('tv_remote_bottom'),
-                              ProximitySensor('success1'))
+                              ProximitySensor('success1')),
+            NothingGrasped(self.robot.gripper)
         ]
         self._spawn_boundary = SpawnBoundary([Shape('spawn_boundary')])
         self._target_buttons = [
@@ -36,27 +40,33 @@ class SChangeChannel(Task):
         self.register_success_conditions(
             [self._joint_conditions[index]] + self._remote_conditions)
         self.register_change_point_conditions([
+            CustomDetectedCondition(self._remote, self.success2),
             ConditionSet(self._remote_conditions), self._joint_conditions[index]
         ])
 
         self.register_instructions([
             [
+                "Pick up the remote",
                 "Adjust the orientation of the remote to face the TV.",
                 "Press a button on the remote to change the channel."
             ],
             [
+                "Pick up the TV remote",
                 "Turn the remote to face the TV screen.",
                 "Use the remote button to switch the channel."
             ],
             [
+                "Lift up the remote",
                 "Ensure the remote is pointing towards the TV.",
                 "Press the remote button to alter the channel."
             ],
             [
+                "Lift up the TV remote",
                 "Position the remote towards the TV display.",
                 "Utilize the remote button to switch the channel."
             ],
             [
+                "Pick up the remote",
                 "Align the remote with the TV.",
                 "Depress the remote button to change the channel."
             ]

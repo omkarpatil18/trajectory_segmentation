@@ -4,7 +4,8 @@ from pyrep.objects.shape import Shape
 from pyrep.objects.proximity_sensor import ProximitySensor
 from rlbench.const import colors
 from rlbench.backend.task import Task
-from rlbench.backend.conditions import DetectedCondition, NothingGrasped
+from rlbench.backend.conditions import (DetectedCondition, NothingGrasped,
+                            CustomConditionSet, CustomDetectedCondition)
 from rlbench.backend.spawn_boundary import SpawnBoundary
 
 
@@ -12,6 +13,8 @@ class SStackCups(Task):
 
     def init_task(self) -> None:
         success_sensor = ProximitySensor('success')
+        negate = ProximitySensor('negate')
+
         self.cup1 = Shape('cup1')
         self.cup2 = Shape('cup2')
         self.cup3 = Shape('cup3')
@@ -28,12 +31,21 @@ class SStackCups(Task):
             NothingGrasped(self.robot.gripper)
         ])
         self.register_change_point_conditions([
-            DetectedCondition(self.cup1, success_sensor),
-            DetectedCondition(self.cup3, success_sensor),
+            CustomDetectedCondition(self.cup1, negate, negated = True),
+            CustomConditionSet([
+                DetectedCondition(self.cup1, success_sensor),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            CustomDetectedCondition(self.cup3, negate, negated = True),
+            CustomConditionSet([
+                DetectedCondition(self.cup3, success_sensor),
+                NothingGrasped(self.robot.gripper)
+            ])
         ])
 
     def init_episode(self, index: int) -> List[str]:
         self.variation_index = index
+        index = np.random.choice(len(colors))
         target_color_name, target_rgb = colors[index]
 
         random_idx = np.random.choice(len(colors))
@@ -60,24 +72,34 @@ class SStackCups(Task):
         
         self.register_instructions([
             [
+                'Pick up the %s cup.' % other1_name,
                 'Position the %s cup on top of the %s cup.' % (other1_name, target_color_name),
+                'Grab the %s cup.' % other2_name,
                 'Place the %s cup on the %s cup.' % (other2_name, other1_name)
             ],
             [
-                'Put the %s cup on the %s cup.' % (other1_name, target_color_name),
-                'Stack the %s cup on top of the %s cup.' % (other2_name, other1_name)
-            ],
-            [
-                'Put the %s cup onto the %s cup.' % (other1_name, target_color_name),
+                'Retrieve the %s cup.' % other1_name,
+                'Set the %s cup on top of the %s cup.' % (other1_name, target_color_name),
+                'Take the %s cup.' % other2_name,
                 'Position the %s cup on the %s cup.' % (other2_name, other1_name)
             ],
             [
-                'Place the %s cup on the %s cup.' % (other1_name, target_color_name),
-                'Stack the %s cup on top of the %s cup.' % (other2_name, other1_name)
+                'Pick up the %s cup.' % other1_name,
+                'Place the %s cup on top of the %s cup.' % (other1_name, target_color_name),
+                'Retrieve the %s cup.' % other2_name,
+                'Set the %s cup on the %s cup.' % (other2_name, other1_name)
             ],
             [
-                'Stack the %s cup on top of the %s cup.' % (other1_name, target_color_name),
+                'Grab the %s cup.' % other1_name,
+                'Position the %s cup on top of the %s cup.' % (other1_name, target_color_name),
+                'Take the %s cup.' % other2_name,
                 'Place the %s cup on the %s cup.' % (other2_name, other1_name)
+            ],
+            [
+                'Take the %s cup.' % other1_name,
+                'Set the %s cup on top of the %s cup.' % (other1_name, target_color_name),
+                'Retrieve the %s cup.' % other2_name,
+                'Position the %s cup on the %s cup.' % (other2_name, other1_name)
             ]
         ])
 
@@ -93,4 +115,4 @@ class SStackCups(Task):
                 % target_color_name]
 
     def variation_count(self) -> int:
-        return len(colors)
+        return 1

@@ -3,7 +3,7 @@ import numpy as np
 from pyrep.objects import Dummy
 from pyrep.objects.proximity_sensor import ProximitySensor
 from pyrep.objects.shape import Shape
-from rlbench.backend.conditions import DetectedCondition, ConditionSet
+from rlbench.backend.conditions import DetectedCondition, ConditionSet, CustomDetectedCondition
 from rlbench.backend.spawn_boundary import SpawnBoundary
 from rlbench.backend.task import Task
 from rlbench.const import colors
@@ -19,7 +19,6 @@ class SSquarePeg(Task):
         self._success_centre0 = Dummy('success_centre0')
         self._success_centre1 = Dummy('success_centre1')
         self._success_centre2 = Dummy('success_centre2')
-
         
         success_detectors0 = [ProximitySensor(
             'success_detector%d' % i) for i in range(4)]
@@ -27,6 +26,7 @@ class SSquarePeg(Task):
             'success_detector%d' % i) for i in range(4, 8)]
         success_detectors2 = [ProximitySensor(
             'success_detector%d' % i) for i in range(8, 12)]
+        success_pick = ProximitySensor('success_pick')
         
         self.register_graspable_objects([
             self._square_ring0, self._square_ring1, self._square_ring2])
@@ -41,7 +41,12 @@ class SSquarePeg(Task):
         self.register_success_conditions([success_condition0, 
             success_condition1, success_condition2])
         self.register_change_point_conditions([
-            success_condition0, success_condition1, success_condition2
+            CustomDetectedCondition(self._square_ring0, success_pick),
+            success_condition0, 
+            CustomDetectedCondition(self._square_ring1, success_pick),
+            success_condition1, 
+            CustomDetectedCondition(self._square_ring2, success_pick),
+            success_condition2
         ])
 
     def init_episode(self, index: int) -> List[str]:
@@ -50,7 +55,7 @@ class SSquarePeg(Task):
 
         spokes = [Shape('pillar0'), Shape('pillar1'), Shape('pillar2')]
         chosen_pillar = np.random.choice(
-            list(range(3)), size = 3, replace = True)
+            list(range(3)), size = 3, replace = False)
         color_names = []
 
         name, rgb = colors[0]
@@ -91,28 +96,43 @@ class SSquarePeg(Task):
 
         self.register_instructions([
             [
+                'Pick up the %s square ring.' % color_names[3],
                 'Place the %s square ring onto the %s spoke.' % (color_names[3], color_names[0]),
+                'Lift the %s square ring.' % color_names[4],
                 'Put the %s square ring on the %s spoke.' % (color_names[4], color_names[1]),
+                'Grab the %s square ring.' % color_names[5],
                 'Position the %s square ring on the %s spoke.' % (color_names[5], color_names[2])
             ],
             [
-                'Put the %s square ring on the %s spoke.' % (color_names[3], color_names[0]),
-                'Position the %s square ring onto the %s spoke.' % (color_names[4], color_names[1]),
-                'Place the %s square ring onto the %s spoke.' % (color_names[5], color_names[2])
+                'Take the %s square ring.' % color_names[3],
+                'Position the %s square ring onto the %s spoke.' % (color_names[3], color_names[0]),
+                'Retrieve the %s square ring.' % color_names[4],
+                'Place the %s square ring on the %s spoke.' % (color_names[4], color_names[1]),
+                'Pick up the %s square ring.' % color_names[5],
+                'Set the %s square ring on the %s spoke.' % (color_names[5], color_names[2])
             ],
             [
-                'Place the %s square ring on the %s spoke.' % (color_names[3], color_names[0]),
+                'Grab the %s square ring.' % color_names[3],
+                'Set the %s square ring onto the %s spoke.' % (color_names[3], color_names[0]),
+                'Take the %s square ring.' % color_names[4],
+                'Place the %s square ring on the %s spoke.' % (color_names[4], color_names[1]),
+                'Pick up the %s square ring.' % color_names[5],
+                'Position the %s square ring on the %s spoke.' % (color_names[5], color_names[2])
+            ],
+            [
+                'Lift the %s square ring.' % color_names[3],
+                'Place the %s square ring onto the %s spoke.' % (color_names[3], color_names[0]),
+                'Pick up the %s square ring.' % color_names[4],
+                'Put the %s square ring on the %s spoke.' % (color_names[4], color_names[1]),
+                'Retrieve the %s square ring.' % color_names[5],
+                'Set the %s square ring on the %s spoke.' % (color_names[5], color_names[2])
+            ],
+            [
+                'Retrieve the %s square ring.' % color_names[3],
+                'Set the %s square ring onto the %s spoke.' % (color_names[3], color_names[0]),
+                'Pick up the %s square ring.' % color_names[4],
                 'Position the %s square ring on the %s spoke.' % (color_names[4], color_names[1]),
-                'Put the %s square ring onto the %s spoke.' % (color_names[5], color_names[2])
-            ],
-            [
-                'Put the %s square ring onto the %s spoke.' % (color_names[3], color_names[0]),
-                'Position the %s square ring on the %s spoke.' % (color_names[4], color_names[1]),
-                'Place the %s square ring on the %s spoke.' % (color_names[5], color_names[2])
-            ],
-            [
-                'Position the %s square ring on the %s spoke.' % (color_names[3], color_names[0]),
-                'Put the %s square ring onto the %s spoke.' % (color_names[4], color_names[1]),
+                'Take the %s square ring.' % color_names[5],
                 'Place the %s square ring on the %s spoke.' % (color_names[5], color_names[2])
             ]
         ])

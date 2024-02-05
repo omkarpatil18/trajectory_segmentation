@@ -28,7 +28,7 @@ FLAGS = flags.FLAGS
 flags.DEFINE_string('save_path',
                     '/home/local/ASUAD/draj5/data/',
                     'Where to save the demos.')
-flags.DEFINE_list('tasks', ['s_push_buttons'],
+flags.DEFINE_list('tasks', ['s_stack_blocks'],
                   'The tasks to collect. If empty, all tasks are collected.')
 flags.DEFINE_list('image_size', [230, 230],
                   'The size of the images tp save.')
@@ -121,28 +121,28 @@ def save_demo(demo, example_path):
 
         left_shoulder_rgb.save(
             os.path.join(left_shoulder_rgb_path, IMAGE_FORMAT % i))
-        left_shoulder_depth.save(
-            os.path.join(left_shoulder_depth_path, IMAGE_FORMAT % i))
-        left_shoulder_mask.save(
-            os.path.join(left_shoulder_mask_path, IMAGE_FORMAT % i))
+        #left_shoulder_depth.save(
+        #    os.path.join(left_shoulder_depth_path, IMAGE_FORMAT % i))
+        #left_shoulder_mask.save(
+        #    os.path.join(left_shoulder_mask_path, IMAGE_FORMAT % i))
         right_shoulder_rgb.save(
             os.path.join(right_shoulder_rgb_path, IMAGE_FORMAT % i))
-        right_shoulder_depth.save(
-            os.path.join(right_shoulder_depth_path, IMAGE_FORMAT % i))
-        right_shoulder_mask.save(
-            os.path.join(right_shoulder_mask_path, IMAGE_FORMAT % i))
+        #right_shoulder_depth.save(
+        #    os.path.join(right_shoulder_depth_path, IMAGE_FORMAT % i))
+        #right_shoulder_mask.save(
+        #    os.path.join(right_shoulder_mask_path, IMAGE_FORMAT % i))
         overhead_rgb.save(
             os.path.join(overhead_rgb_path, IMAGE_FORMAT % i))
-        overhead_depth.save(
-            os.path.join(overhead_depth_path, IMAGE_FORMAT % i))
-        overhead_mask.save(
-            os.path.join(overhead_mask_path, IMAGE_FORMAT % i))
+        #overhead_depth.save(
+        #    os.path.join(overhead_depth_path, IMAGE_FORMAT % i))
+        #overhead_mask.save(
+        #    os.path.join(overhead_mask_path, IMAGE_FORMAT % i))
         wrist_rgb.save(os.path.join(wrist_rgb_path, IMAGE_FORMAT % i))
-        wrist_depth.save(os.path.join(wrist_depth_path, IMAGE_FORMAT % i))
-        wrist_mask.save(os.path.join(wrist_mask_path, IMAGE_FORMAT % i))
+        #wrist_depth.save(os.path.join(wrist_depth_path, IMAGE_FORMAT % i))
+        #wrist_mask.save(os.path.join(wrist_mask_path, IMAGE_FORMAT % i))
         front_rgb.save(os.path.join(front_rgb_path, IMAGE_FORMAT % i))
-        front_depth.save(os.path.join(front_depth_path, IMAGE_FORMAT % i))
-        front_mask.save(os.path.join(front_mask_path, IMAGE_FORMAT % i))
+        #front_depth.save(os.path.join(front_depth_path, IMAGE_FORMAT % i))
+        #front_mask.save(os.path.join(front_mask_path, IMAGE_FORMAT % i))
 
         # We save the images separately, so set these to None for pickling.
         obs.left_shoulder_rgb = None

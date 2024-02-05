@@ -3,7 +3,7 @@ from pyrep.objects.shape import Shape
 from pyrep.objects.proximity_sensor import ProximitySensor
 from rlbench.backend.task import Task
 from rlbench.backend.conditions import DetectedCondition, GraspedCondition, \
-    ConditionSet
+    ConditionSet, CustomDetectedCondition
 
 
 class SHitBallWithCue(Task):
@@ -21,7 +21,7 @@ class SHitBallWithCue(Task):
         self.register_success_conditions([cond_set])
 
         self.register_change_point_conditions([
-            GraspedCondition(self.robot.gripper, queue),
+            CustomDetectedCondition(queue, ProximitySensor('success1')),
             DetectedCondition(ball, success_sensor)
         ])
 
