@@ -28,20 +28,20 @@ FLAGS = flags.FLAGS
 flags.DEFINE_string('save_path',
                     '/home/local/ASUAD/draj5/data_random/',
                     'Where to save the demos.')
-flags.DEFINE_list('tasks', [#'s_block_pyramid', #1
+flags.DEFINE_list('tasks', ['s_block_pyramid', #1
                             's_shape_sorter', #2
                             's_stack_blocks', #3
-                            #'s_setup_chess', #4 check place
+                            's_setup_chess', #4 check place
                             's_stack_cups', #5
-                            #'s_square_peg', #6 synchronizarion issues
+                            's_square_peg', #6 synchronizarion issues
                             's_change_channel', #7
-                            #'s_hit_ball_with_cue', #8 issues in end part
-                            #'s_hockey', #9 timing issues
+                            's_hit_ball_with_cue', #8 issues in end part
+                            's_hockey', #9 timing issues
                             's_put_all_groceries_in_cupboard', #10 minor adjustment while placing
-                            #'s_put_tray_in_oven', #11 issue with plates
-                            #'s_empty_dishwasher', #12 issue with open and plate
+                            's_put_tray_in_oven', #11 issue with plates
+                            's_empty_dishwasher', #12 issue with open and plate
                             's_put_shoes_in_box', #13
-                            #'s_set_table', #14 issues -> position the plate
+                            's_set_table', #14 issues -> position the plate
                             's_ball_in_hoop', #15
                             's_put_item_in_drawer', #16
                             's_insert_usb_in_computer', #17 -> minor modification
