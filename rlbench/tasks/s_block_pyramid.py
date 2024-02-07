@@ -55,22 +55,19 @@ class SBlockPyramid(Task):
             
             cond_negate[3],
             CustomConditionSet([
-                #DetectedSeveralCondition(self.blocks, success_detectors[1], 1),
-                cond_negate[3],
+                DetectedSeveralCondition(self.blocks, success_detectors[1], 1),
                 NothingGrasped(self.robot.gripper)
             ]),
             
             cond_negate[4],
             CustomConditionSet([
-                #DetectedSeveralCondition(self.blocks, success_detectors[1], 2),
-                cond_negate[4],
+                DetectedSeveralCondition(self.blocks, success_detectors[1], 2),
                 NothingGrasped(self.robot.gripper)
             ]),
             
             cond_negate[5],
             CustomConditionSet([
-                #DetectedSeveralCondition(self.blocks, success_detectors[2], 1),
-                cond_negate[5],
+                DetectedSeveralCondition(self.blocks, success_detectors[2], 1),
                 NothingGrasped(self.robot.gripper)
             ])
         ])
