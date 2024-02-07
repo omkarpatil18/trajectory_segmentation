@@ -58,6 +58,8 @@ def map_to_csv (data):
 
     tasks = [name for name in os.listdir (f"{data_path}")]
     for task in tqdm(tasks, desc = "Converting tasks"):
+        if task == 's_square_peg':
+            continue
         variations = [name for name in os.listdir (f"{data_path}/{task}")]
         for variation in variations:
             episodes = [name for name in os.listdir (f"{data_path}/{task}/{variation}/episodes/")]
@@ -121,7 +123,7 @@ def map_to_csv (data):
                             query['saliency_scores'] = [[4, 4, 4] for i in range (len (query['relevant_clip_ids']))]
                             writer.write (query)
                         except Exception as e:
-                            print (temp_path, e)
+                            print ('exception', temp_path, e)
                 writer.close ()
     writer_map.close ()
 
