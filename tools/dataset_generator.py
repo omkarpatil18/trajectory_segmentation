@@ -28,7 +28,7 @@ FLAGS = flags.FLAGS
 flags.DEFINE_string('save_path',
                     '/home/local/ASUAD/draj5/data/',
                     'Where to save the demos.')
-flags.DEFINE_list('tasks', ['s_stack_blocks'],
+flags.DEFINE_list('tasks', ['s_block_pyramid'],
                   'The tasks to collect. If empty, all tasks are collected.')
 flags.DEFINE_list('image_size', [230, 230],
                   'The size of the images tp save.')

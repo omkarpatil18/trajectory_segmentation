@@ -58,7 +58,7 @@ def map_to_csv (data):
 
     tasks = [name for name in os.listdir (f"{data_path}")]
     for task in tqdm(tasks, desc = "Converting tasks"):
-        if task == 's_square_peg':
+        if task != 's_block_pyramid':
             continue
         variations = [name for name in os.listdir (f"{data_path}/{task}")]
         for variation in variations:

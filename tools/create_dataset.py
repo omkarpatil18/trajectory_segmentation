@@ -28,24 +28,24 @@ FLAGS = flags.FLAGS
 flags.DEFINE_string('save_path',
                     '/home/local/ASUAD/draj5/data_random/',
                     'Where to save the demos.')
-flags.DEFINE_list('tasks', ['s_block_pyramid', #1
+flags.DEFINE_list('tasks', [#'s_block_pyramid', #1
                             's_shape_sorter', #2
                             's_stack_blocks', #3
-                            's_setup_chess', #4
+                            #'s_setup_chess', #4 check place
                             's_stack_cups', #5
-                            's_square_peg', #6
+                            #'s_square_peg', #6 synchronizarion issues
                             's_change_channel', #7
-                            's_hit_ball_with_cue', #8
-                            's_hockey', #9
-                            's_put_all_groceries_in_cupboard', #10
-                            's_put_tray_in_oven', #11
-                            's_empty_dishwasher', #12
+                            #'s_hit_ball_with_cue', #8 issues in end part
+                            #'s_hockey', #9 timing issues
+                            's_put_all_groceries_in_cupboard', #10 minor adjustment while placing
+                            #'s_put_tray_in_oven', #11 issue with plates
+                            #'s_empty_dishwasher', #12 issue with open and plate
                             's_put_shoes_in_box', #13
-                            's_set_table', #14
+                            #'s_set_table', #14 issues -> position the plate
                             's_ball_in_hoop', #15
                             's_put_item_in_drawer', #16
-                            's_insert_usb_in_computer', #17
-                            's_place_cups', #18
+                            's_insert_usb_in_computer', #17 -> minor modification
+                            's_place_cups', #18 think about difference in cups
                             's_slide_objects', #19
                             's_push_buttons' #20
                             ],
@@ -139,14 +139,14 @@ def save_demo(demo, example_path):
             obs.front_depth, scale_factor=DEPTH_SCALE)
         front_mask = Image.fromarray((obs.front_mask * 255).astype(np.uint8))
 
-        #left_shoulder_rgb.save(
-        #    os.path.join(left_shoulder_rgb_path, IMAGE_FORMAT % i))
+        left_shoulder_rgb.save(
+            os.path.join(left_shoulder_rgb_path, IMAGE_FORMAT % i))
         #left_shoulder_depth.save(
         #    os.path.join(left_shoulder_depth_path, IMAGE_FORMAT % i))
         #left_shoulder_mask.save(
         #    os.path.join(left_shoulder_mask_path, IMAGE_FORMAT % i))
-        #right_shoulder_rgb.save(
-        #    os.path.join(right_shoulder_rgb_path, IMAGE_FORMAT % i))
+        right_shoulder_rgb.save(
+            os.path.join(right_shoulder_rgb_path, IMAGE_FORMAT % i))
         #right_shoulder_depth.save(
         #    os.path.join(right_shoulder_depth_path, IMAGE_FORMAT % i))
         #right_shoulder_mask.save(
