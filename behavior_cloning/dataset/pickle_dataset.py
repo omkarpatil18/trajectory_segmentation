@@ -8,7 +8,7 @@ import random
 import re
 from functools import partial
 from dataset.task_constants import DATA_DIR
-from constants import CAMERA_NAMES, TEXT_EMBEDDINGS
+from constants import CAMERA_NAMES
 from dataset.task_constants import SIM_TASK_CONFIG
 from utils import get_embedding
 

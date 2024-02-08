@@ -20,7 +20,8 @@ from utils import (
     save_videos,
 )  # helper functions
 from policy import ACTPolicy, CNNMLPPolicy
-from dataset.torch_data import load_data as load_rlbench_data
+from dataset.pickle_dataset import load_data as load_rlbench_data
+from dataset.temporal_dataset import load_temporal_data
 from utils import get_embedding
 
 from rlbench.action_modes.action_mode import MoveArmThenGripper
@@ -124,19 +125,26 @@ def main(args):
         print()
         exit()
 
-    required_data_keys = [
-        "overhead_rgb",
-        "left_shoulder_rgb",
-        "right_shoulder_rgb",
-        "wrist_rgb",
-        "front_rgb",
-        "joint_positions",
-        "gripper_open",
-    ]
-    train_dataloader, val_dataloader = load_rlbench_data(
-        task_name=args["task_name"],
-        required_data_keys=required_data_keys,
-        chunk_size=args["chunk_size"],
+    # required_data_keys = [
+    #     "overhead_rgb",
+    #     "left_shoulder_rgb",
+    #     "right_shoulder_rgb",
+    #     "wrist_rgb",
+    #     "front_rgb",
+    #     "joint_positions",
+    #     "gripper_open",
+    # ]
+    # train_dataloader, val_dataloader = load_rlbench_data(
+    #     task_name=args["task_name"],
+    #     required_data_keys=required_data_keys,
+    #     chunk_size=args["chunk_size"],
+    #     norm_bound=FRANKA_JOINT_LIMITS,
+    #     batch_size=batch_size,
+    # )
+    train_dataloader, val_dataloader = load_temporal_data(
+        skill_or_task="sim_stack_blocks",
+        data_dir="/home/local/ASUAD/opatil3/datasets/temporal/data",
+        chunk_size=100,
         norm_bound=FRANKA_JOINT_LIMITS,
         batch_size=batch_size,
     )

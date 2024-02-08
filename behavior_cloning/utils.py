@@ -1,8 +1,9 @@
 import numpy as np
 import torch
 import cv2
+import os
 import matplotlib.pyplot as plt
-from constants import TEXT_EMBEDDINGS
+from dataset.task_constants import SIM_TASK_CONFIG
 
 
 def save_videos(video, dt=0.02, video_path=None):
@@ -69,54 +70,27 @@ def set_seed(seed):
     np.random.seed(seed)
 
 
-def get_embedding(task_name):
-    """Returns embedding corresponding to the task_name"""
-    if "open_drawer" in task_name:
-        task_emb = TEXT_EMBEDDINGS[0]
-    elif "close_drawer" in task_name:
-        task_emb = TEXT_EMBEDDINGS[1]
-    elif "pick_butter" in task_name:
-        task_emb = TEXT_EMBEDDINGS[2]
-    elif "place_butter" in task_name:
-        task_emb = TEXT_EMBEDDINGS[3]
-    elif "pick_toast" in task_name:
-        task_emb = TEXT_EMBEDDINGS[4]
-    elif "place_toast" in task_name:
-        task_emb = TEXT_EMBEDDINGS[5]
-    elif "cap_lid" in task_name:
-        task_emb = TEXT_EMBEDDINGS[6]
-    elif "pick_lid" in task_name:
-        task_emb = TEXT_EMBEDDINGS[7]
-    elif "pick_tea" in task_name:
-        task_emb = TEXT_EMBEDDINGS[8]
-    elif "place_lid" in task_name:
-        task_emb = TEXT_EMBEDDINGS[9]
-    elif "place_tea" in task_name:
-        task_emb = TEXT_EMBEDDINGS[10]
-    elif "uncap_lid" in task_name:
-        task_emb = TEXT_EMBEDDINGS[11]
-    elif "close_oven" in task_name:
-        task_emb = TEXT_EMBEDDINGS[12]
-    elif "open_oven" in task_name:
-        task_emb = TEXT_EMBEDDINGS[13]
-    elif "place_bowl" in task_name:
-        task_emb = TEXT_EMBEDDINGS[14]
-    elif "slide_out" in task_name:
-        task_emb = TEXT_EMBEDDINGS[15]
-    elif "cap_mug" in task_name:
-        task_emb = TEXT_EMBEDDINGS[16]
-    elif "pick_mug" in task_name:
-        task_emb = TEXT_EMBEDDINGS[17]
-    elif "pick_towel" in task_name:
-        task_emb = TEXT_EMBEDDINGS[18]
-    elif "wipe_towel" in task_name:
-        task_emb = TEXT_EMBEDDINGS[19]
-    elif "pick_cup" in task_name:
-        task_emb = TEXT_EMBEDDINGS[20]
-    elif "place_cup" in task_name:
-        task_emb = TEXT_EMBEDDINGS[21]
-    elif "open_box" in task_name:
-        task_emb = TEXT_EMBEDDINGS[38]
-    else:
-        task_emb = TEXT_EMBEDDINGS[0]
-    return task_emb
+def load_images_from_folder(folder):
+    "Load all the images in a folder sorted by name"
+    images = []
+    for filename in sorted(os.listdir(folder)):
+        img = cv2.imread(os.path.join(folder, filename))
+        if img is not None:
+            images.append(img)
+    return images
+
+
+def load_image_from_folder(folder, ts):
+    "Load the image corresponding to a given timestep from a folder"
+    img = cv2.imread(os.path.join(folder, f"{ts}.png"))
+    if img is None:
+        raise Exception(f"Image corresponding to index {ts} not found in {folder}")
+    return img
+
+
+def get_embedding(task_name, task_desc):
+    """Returns embedding corresponding to the task_desc"""
+    skill_emb_map = SIM_TASK_CONFIG[task_name]["skill_emb"]
+    if skill_emb_map is None:
+        return [0] * 384  # return zeros if emb is not found
+    return skill_emb_map.get(task_desc, None)

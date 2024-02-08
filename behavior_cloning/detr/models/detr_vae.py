@@ -92,13 +92,18 @@ class DETRVAE(nn.Module):
         # encoder extra parameters
         self.latent_dim = 32  # final size of latent z # TODO tune
         self.cls_embed = nn.Embedding(1, hidden_dim)  # extra cls token embedding
-        self.encoder_proj = nn.Linear(8, hidden_dim)  # project state to embedding
+        self.encoder_action_proj = nn.Linear(
+            state_dim, hidden_dim
+        )  # project action to embedding
+        self.encoder_joint_proj = nn.Linear(
+            state_dim, hidden_dim
+        )  # project qpos to embedding
         self.latent_proj = nn.Linear(
             hidden_dim, self.latent_dim * 2
         )  # project hidden state to latent std, var
         self.register_buffer(
-            "pos_table", get_sinusoid_encoding_table(num_queries + 1, hidden_dim)
-        )
+            "pos_table", get_sinusoid_encoding_table(1 + 1 + num_queries, hidden_dim)
+        )  # [CLS], qpos, a_seq
 
         # decoder extra parameters
         self.latent_out_proj = nn.Linear(
@@ -132,25 +137,26 @@ class DETRVAE(nn.Module):
         ### Obtain latent z from action sequence
         if is_training:
             # project action sequence to embedding dim, and concat with a CLS token
-            action_embed = self.encoder_proj(actions)  # (bs, seq, hidden_dim)
-            # print('action_embed',action_embed.shape) ## [2,100,256]
+            action_embed = self.encoder_action_proj(actions)  # (bs, seq, hidden_dim)
+            qpos_embed = self.encoder_joint_proj(qpos)  # (bs, hidden_dim)
+            qpos_embed = torch.unsqueeze(qpos_embed, axis=1)  # (bs, 1, hidden_dim)
             cls_embed = self.cls_embed.weight  # (1, hidden_dim)
             cls_embed = torch.unsqueeze(cls_embed, axis=0).repeat(
                 bs, 1, 1
             )  # (bs, 1, hidden_dim)
             encoder_input = torch.cat(
-                [cls_embed, action_embed], axis=1
+                [cls_embed, qpos_embed, action_embed], axis=1
             )  # (bs, seq+1, hidden_dim)
-
             encoder_input = encoder_input.permute(1, 0, 2)  # (seq+1, bs, hidden_dim)
             # do not mask cls token
-            cls_is_pad = torch.full((bs, 1), False).to(
+            cls_joint_is_pad = torch.full((bs, 2), False).to(
                 qpos.device
             )  # False: not a padding
-            is_pad = torch.cat([cls_is_pad, is_pad], axis=1)  # (bs, seq+1)
+            is_pad = torch.cat([cls_joint_is_pad, is_pad], axis=1)  # (bs, seq+1)
             # obtain position embedding
             pos_embed = self.pos_table.clone().detach()
             pos_embed = pos_embed.permute(1, 0, 2)  # (seq+1, 1, hidden_dim)
+
             # query model
             encoder_output = self.encoder(
                 encoder_input, pos=pos_embed, src_key_padding_mask=is_pad
@@ -334,18 +340,21 @@ def build_encoder(args):
 
 def build(args):
     state_dim = args.state_dim  # 14 # TODO hardcode
+    multi_task = args.multi_task
 
     # From state
     # backbone = None # from state for now, no need for conv nets
     # From image
     backbones = []
-    use_film = True
+    use_film = False
+    if multi_task:  # Use film layer only if it is a multi task model
+        use_film = True
+
     if use_film:
         backbone = build_film_backbone(args)
     else:
         backbone = build_backbone(args)
     backbones.append(backbone)
-
     transformer = build_transformer(args)
 
     encoder = build_encoder(args)
