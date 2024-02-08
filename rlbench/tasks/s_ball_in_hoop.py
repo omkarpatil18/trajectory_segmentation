@@ -43,6 +43,10 @@ class SBallInHoop(Task):
             [
                 'Lift the basketball off the ground.',
                 'Drop the basketball into the hoop with precision.'
+            ],
+            [
+                'SKILL_PICK_BALL',
+                'SKILL_PLACE_BALL'
             ]
         ])
 

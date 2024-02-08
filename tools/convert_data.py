@@ -121,7 +121,7 @@ def map_to_csv (data):
                             query['saliency_scores'] = [[4, 4, 4] for i in range (len (query['relevant_clip_ids']))]
                             writer.write (query)
                         except Exception as e:
-                            print (temp_path, e)
+                            print ('exception', temp_path, e)
                 writer.close ()
     writer_map.close ()
 

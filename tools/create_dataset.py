@@ -26,20 +26,40 @@ from rlbench.sim2real.domain_randomization import RandomizeEvery, \
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string('save_path',
-                    '/home/local/ASUAD/draj5/data/',
+                    '/home/local/ASUAD/draj5/data_random/',
                     'Where to save the demos.')
-flags.DEFINE_list('tasks', ['s_hit_ball_with_cue'],
+flags.DEFINE_list('tasks', ['s_block_pyramid', #1
+                            's_shape_sorter', #2
+                            's_stack_blocks', #3
+                            's_setup_chess', #4 check place
+                            's_stack_cups', #5
+                            's_square_peg', #6 synchronizarion issues
+                            's_change_channel', #7
+                            's_hit_ball_with_cue', #8 issues in end part
+                            's_hockey', #9 timing issues
+                            's_put_all_groceries_in_cupboard', #10 minor adjustment while placing
+                            's_put_tray_in_oven', #11 issue with plates
+                            's_empty_dishwasher', #12 issue with open and plate
+                            's_put_shoes_in_box', #13
+                            's_set_table', #14 issues -> position the plate
+                            's_ball_in_hoop', #15
+                            's_put_item_in_drawer', #16
+                            's_insert_usb_in_computer', #17 -> minor modification
+                            's_place_cups', #18 think about difference in cups
+                            's_slide_objects', #19
+                            's_push_buttons' #20
+                            ],
                   'The tasks to collect. If empty, all tasks are collected.')
 flags.DEFINE_list('image_size', [230, 230],
                   'The size of the images tp save.')
 flags.DEFINE_enum('renderer',  'opengl3', ['opengl', 'opengl3'],
                   'The renderer to use. opengl does not include shadows, '
                   'but is faster.')
-flags.DEFINE_integer('processes', 1,
+flags.DEFINE_integer('processes', 4,
                      'The number of parallel processes during collection.')
-flags.DEFINE_integer('episodes_per_task', 1,
+flags.DEFINE_integer('episodes_per_task', 50,
                      'The number of episodes to collect per task.')
-flags.DEFINE_integer('variations', 1,
+flags.DEFINE_integer('variations', -1,
                      'Number of variations to collect per task. -1 for all.')
 flags.DEFINE_string(
     'textures_path', '/home/local/ASUAD/draj5/thesis/TrajectorySegmentation/tests/unit/assets/textures/',
