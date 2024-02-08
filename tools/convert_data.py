@@ -152,10 +152,9 @@ def map_to_csv(data):
                             ]
                             writer.write(query)
                         except Exception as e:
-                            print(temp_path, e)
-                writer.close()
-    writer_map.close()
+                            print ('exception', temp_path, e)
+                writer.close ()
+    writer_map.close ()
 
-
-if __name__ == "__main__":
-    map_to_csv("data")
+if __name__ == '__main__':
+    map_to_csv ('data')
