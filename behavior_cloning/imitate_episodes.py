@@ -142,8 +142,8 @@ def main(args):
     #     batch_size=batch_size,
     # )
     train_dataloader, val_dataloader = load_temporal_data(
-        skill_or_task="sim_stack_blocks",
-        data_dir="/home/local/ASUAD/opatil3/datasets/temporal/data",
+        skill_or_task=args["task_name"],
+        data_dir="/home/local/ASUAD/opatil3/datasets/temporal/task_data",
         chunk_size=100,
         norm_bound=FRANKA_JOINT_LIMITS,
         batch_size=batch_size,
@@ -248,7 +248,7 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
         action_mode=MoveArmThenGripper(
             arm_action_mode=JointPosition(), gripper_action_mode=Discrete()
         ),
-        obs_config=ObservationConfig(),
+        obs_config=obs_config,
         robot_setup="panda",
         headless=not onscreen_render,
     )
@@ -257,9 +257,6 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
     # Iterate over tasks
     task_performances = {}
     task = env.get_task(rlbench_env)
-    task_emb = torch.as_tensor(
-        [get_embedding(task_name)], dtype=torch.float
-    ).cuda()  # get text embedding for the task
     task_dir = os.path.join(
         ckpt_dir, rlbench_env.__name__, f"{datetime.datetime.now()}"
     )  # Store task specific information here
@@ -272,6 +269,10 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
     for rollout_id in range(num_rollouts):
         rollout_id += 0
         _, obs = task.reset()
+        task_desc = obs.instructions[0]
+        task_emb = torch.as_tensor(
+            [get_embedding(task_name, task_desc)], dtype=torch.float
+        ).cuda()  # get text embedding for the task
         if temporal_agg:
             all_time_actions = torch.zeros(
                 [max_timesteps, max_timesteps + num_queries, state_dim]

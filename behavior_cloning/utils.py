@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import cv2
 import os
+import re
 import matplotlib.pyplot as plt
 from dataset.task_constants import SIM_TASK_CONFIG
 
@@ -90,7 +91,14 @@ def load_image_from_folder(folder, ts):
 
 def get_embedding(task_name, task_desc):
     """Returns embedding corresponding to the task_desc"""
+    center_place_re = re.compile(r"(Place the )([\w ]*)(block at the green center.)")
+    block_place_re = re.compile(
+        r"(Stack the )([\w ]*)(block on top of the [\w]* block.)"
+    )
+    task_desc = re.sub(center_place_re, r"\1\3", task_desc)
+    task_desc = re.sub(block_place_re, r"\1\3", task_desc)
+
     skill_emb_map = SIM_TASK_CONFIG[task_name]["skill_emb"]
     if skill_emb_map is None:
         return [0] * 384  # return zeros if emb is not found
-    return skill_emb_map.get(task_desc, None)
+    return skill_emb_map[task_desc]

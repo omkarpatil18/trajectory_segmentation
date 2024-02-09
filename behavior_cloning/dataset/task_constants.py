@@ -2,7 +2,7 @@ import sys
 
 sys.path.append("/home/local/ASUAD/opatil3/src/trajectory_segmentation/rlbench")
 from tasks import PutItemInDrawer, OpenBox, OpenDrawer, SStackBlocks
-from constants import PICK_EMBEDDING_DICT
+from constants import PICK_EMBEDDING_DICT, PLACE_EMBEDDING_DICT
 
 ### Task parameters
 DATA_DIR = "/home/local/ASUAD/opatil3/datasets/rlbench"
@@ -17,14 +17,16 @@ SIM_TASK_CONFIG = {
         "skill_emb": None,
     },
     "sim_skill_pick": {
+        "rlbench_env": None,
         "episode_len": 250,
         "train_subtasks": ["SKILL_PICK_"],
         "skill_emb": PICK_EMBEDDING_DICT,
     },
     "sim_skill_place": {
+        "rlbench_env": None,
         "train_subtasks": ["SKILL_PLACE_"],
-        "skill_emb": None,
         "episode_len": 250,
+        "skill_emb": PLACE_EMBEDDING_DICT,
     },
     "sim_stack_blocks": {
         "rlbench_env": SStackBlocks,
