@@ -4,9 +4,11 @@ import copy
 import sys
 import os
 import shutil
+from rlbench.const import DATA_PATH
 
-data_map_path = "/home/local/ASUAD/draj5/dataset/data_map.jsonl"
-data_path = "/home/local/ASUAD/draj5/dataset/json/"
+data_map_path = f"{DATA_PATH}dataset/data_map.jsonl"
+
+data_path = f"{DATA_PATH}dataset/json/"
 
 fps = 10
 data_map = {}
@@ -21,9 +23,19 @@ for s in os.listdir(data_path):
         reader.append (obj)
 negate_map = {}
 
-def classify_task (source):
-    return source.split ('/')[6]
+def classify_task (source, query, inst):
+    index = -1
+    for instructions in inst:
+        for i, instruction in enumerate (instructions):
+            if instruction == query:
+                index = i
+                break
     
+    if index == -1:
+        return "test"
+    else:
+        return f"{source.split ('/')[6]}/{inst[-1][index]}"
+
 def copy_data (query, demo, start, end, source, destination):
     # Task names = "Go to", "Pick", "Place", "Open" etc.
     # variations = "different tasks"
@@ -48,7 +60,7 @@ def copy_data (query, demo, start, end, source, destination):
         return self
     new_demo = get_chunk (new_demo, query, start, end)
     
-    final_path = f"{destination}/{classify_task(source)}/{query.replace(' ', '_')}{source.split('/')[-4]}/episodes/"
+    final_path = f"{destination}/{classify_task(source, query, demo.instructions)}/{source.split('/')[-4]}/episodes/"
     try:
         episode = sorted ([int(name.replace('episode', '')) for name in os.listdir (final_path)])
         episode = 'episode' + str (episode[-1] + 1)
@@ -85,7 +97,7 @@ for obj in reader:
             else:
                 negate_map[(obj['vid'], start, end)] = 0
             negate_map[(obj['vid'], start, end)] += 1
-            copy_data (obj['query'], demo, int(start), int(end), data_map[ obj['vid'] ], "/home/local/ASUAD/draj5/task_data")
+            copy_data (obj['query'], demo, int(start), int(end), data_map[ obj['vid'] ], f"{DATA_PATH}task_data/")
     except Exception as e:
         print (e)
         cntr += 1

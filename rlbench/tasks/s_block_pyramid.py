@@ -17,60 +17,9 @@ class SBlockPyramid(Task):
         self.blocks = [Shape('block_pyramid_block%d' % i) for i in range(6)]
         self.distractors = [Shape(
             'block_pyramid_distractor_block%d' % i) for i in range(6)]
-        success_detectors = [ProximitySensor(
+        self.success_detectors = [ProximitySensor(
             'block_pyramid_success_block%d' % i) for i in range(3)]
         self.negate = ProximitySensor('negate0')
-
-        cond_negate = [
-            CustomDetectedCondition(self.blocks[i], self.negate, negated = True)
-            for i in range (6)
-        ]
-        
-        cond_set = ConditionSet(cond_negate + [
-            DetectedSeveralCondition(self.blocks, success_detectors[0], 3),
-            DetectedSeveralCondition(self.blocks, success_detectors[1], 2),
-            DetectedSeveralCondition(self.blocks, success_detectors[2], 1),
-            NothingGrasped(self.robot.gripper)
-        ])
-        self.register_success_conditions([cond_set])
-        
-        self.register_change_point_conditions([
-            cond_negate[0],
-            CustomConditionSet([
-                DetectedSeveralCondition(self.blocks, success_detectors[0], 1),
-                NothingGrasped(self.robot.gripper)
-            ]),
-
-            cond_negate[1],
-            CustomConditionSet([
-                DetectedSeveralCondition(self.blocks, success_detectors[0], 2),
-                NothingGrasped(self.robot.gripper)
-            ]),
-
-            cond_negate[2],
-            CustomConditionSet([
-                DetectedSeveralCondition(self.blocks, success_detectors[0], 3),
-                NothingGrasped(self.robot.gripper)
-            ]),
-            
-            cond_negate[3],
-            CustomConditionSet([
-                DetectedSeveralCondition(self.blocks, success_detectors[1], 1),
-                NothingGrasped(self.robot.gripper)
-            ]),
-            
-            cond_negate[4],
-            CustomConditionSet([
-                DetectedSeveralCondition(self.blocks, success_detectors[1], 2),
-                NothingGrasped(self.robot.gripper)
-            ]),
-            
-            cond_negate[5],
-            CustomConditionSet([
-                DetectedSeveralCondition(self.blocks, success_detectors[2], 1),
-                NothingGrasped(self.robot.gripper)
-            ])
-        ])
 
         self.register_graspable_objects(self.blocks + self.distractors)
         self.spawn_boundary = SpawnBoundary(
@@ -100,6 +49,58 @@ class SBlockPyramid(Task):
             self.spawn_boundary.sample(
                 ob, min_distance=0.08, min_rotation=(0.0, 0.0, -np.pi / 4),
                 max_rotation=(0.0, 0.0, np.pi / 4))
+        
+        cond_negate = [
+            CustomDetectedCondition(self.blocks[i], self.negate, negated = True)
+            for i in range (6)
+        ]
+        
+        cond_set = ConditionSet(cond_negate + [
+            DetectedSeveralCondition(self.blocks, self.success_detectors[0], 3),
+            DetectedSeveralCondition(self.blocks, self.success_detectors[1], 2),
+            DetectedSeveralCondition(self.blocks, self.success_detectors[1], 2),
+            DetectedSeveralCondition(self.blocks, self.success_detectors[2], 1),
+            NothingGrasped(self.robot.gripper)
+        ])
+        self.register_success_conditions([cond_set])
+        
+        self.register_change_point_conditions([
+            cond_negate[0],
+            CustomConditionSet([
+                DetectedSeveralCondition(self.blocks, self.success_detectors[0], 1),
+                NothingGrasped(self.robot.gripper)
+            ]),
+
+            cond_negate[1],
+            CustomConditionSet([
+                DetectedSeveralCondition(self.blocks, self.success_detectors[0], 2),
+                NothingGrasped(self.robot.gripper)
+            ]),
+
+            cond_negate[2],
+            CustomConditionSet([
+                DetectedSeveralCondition(self.blocks, self.success_detectors[0], 3),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            
+            cond_negate[3],
+            CustomConditionSet([
+                DetectedSeveralCondition(self.blocks, self.success_detectors[1], 1),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            
+            cond_negate[4],
+            CustomConditionSet([
+                DetectedSeveralCondition(self.blocks, self.success_detectors[1], 2),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            
+            cond_negate[5],
+            CustomConditionSet([
+                DetectedSeveralCondition(self.blocks, self.success_detectors[2], 1),
+                NothingGrasped(self.robot.gripper)
+            ])
+        ])
 
         self.register_instructions([
             [

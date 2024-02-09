@@ -75,6 +75,11 @@ class SSlideObjects(Task):
                 'Push the %s block towards the %s target.' % (color_names[0], color_names[0]),
                 'Direct the %s block to the %s target.' % (color_names[1], color_names[1]),
                 'Slide the %s block to the %s target smoothly.' % (color_names[2], color_names[2])
+            ],
+            [
+                'SKILL_SLIDE_%s' % color_names[0],
+                'SKILL_SLIDE_%s' % color_names[1],
+                'SKILL_SLIDE_%s' % color_names[2]
             ]
         ])
 

@@ -20,6 +20,10 @@ class SSquarePeg(Task):
         self._success_centre1 = Dummy('success_centre1')
         self._success_centre2 = Dummy('success_centre2')
         
+        self.register_graspable_objects([
+            self._square_ring0, self._square_ring1, self._square_ring2])
+
+    def init_episode(self, index: int) -> List[str]:
         success_detectors0 = [ProximitySensor(
             'success_detector%d' % i) for i in range(4)]
         success_detectors1 = [ProximitySensor(
@@ -28,9 +32,6 @@ class SSquarePeg(Task):
             'success_detector%d' % i) for i in range(8, 12)]
         success_pick = ProximitySensor('success_pick')
         
-        self.register_graspable_objects([
-            self._square_ring0, self._square_ring1, self._square_ring2])
-
         success_condition0 = ConditionSet([DetectedCondition(
             self._square_ring0, sd) for sd in success_detectors0])
         success_condition1 = ConditionSet([DetectedCondition(
@@ -49,7 +50,6 @@ class SSquarePeg(Task):
             success_condition2
         ])
 
-    def init_episode(self, index: int) -> List[str]:
         color_choice = np.random.choice(list(range(len(colors))),
             size=6, replace=False)
 
@@ -134,6 +134,14 @@ class SSquarePeg(Task):
                 'Position the %s square ring on the %s spoke.' % (color_names[4], color_names[1]),
                 'Take the %s square ring.' % color_names[5],
                 'Place the %s square ring on the %s spoke.' % (color_names[5], color_names[2])
+            ],
+            [
+                'SKILL_PICK_%s' % color_names[3],
+                'SKILL_PLACE_%s' % color_names[0],
+                'SKILL_PICK_%s' % color_names[4],
+                'SKILL_PLACE_%s' % color_names[1],
+                'SKILL_PICK_%s' % color_names[5],
+                'SKILL_PLACE_%s' % color_names[2],
             ]
         ])
 

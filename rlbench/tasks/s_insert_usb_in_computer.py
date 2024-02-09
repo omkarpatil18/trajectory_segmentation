@@ -42,6 +42,10 @@ class SInsertUsbInComputer(Task):
             [
                 'Remove the USB from the cuboid.',
                 'Place the USB into the computer\'s port.'
+            ],
+            [
+                'SKILL_PICK',
+                'SKILL_INSERT'
             ]
         ])
 

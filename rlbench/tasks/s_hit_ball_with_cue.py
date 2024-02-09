@@ -9,21 +9,16 @@ from rlbench.backend.conditions import DetectedCondition, GraspedCondition, \
 class SHitBallWithCue(Task):
 
     def init_task(self) -> None:
-        queue = Shape('queue')
-        success_sensor = ProximitySensor('success')
-        ball = Shape('ball')
-        self.register_graspable_objects([queue])
+        self.queue = Shape('queue')
+        self.success_sensor = ProximitySensor('success')
+        self.ball = Shape('ball')
+        self.register_graspable_objects([self.queue])
 
         cond_set = ConditionSet([
-            GraspedCondition(self.robot.gripper, queue),
-            DetectedCondition(ball, success_sensor)
+            GraspedCondition(self.robot.gripper, self.queue),
+            DetectedCondition(self.ball, self.success_sensor)
         ], order_matters=True)
         self.register_success_conditions([cond_set])
-
-        self.register_change_point_conditions([
-            CustomDetectedCondition(queue, ProximitySensor('success1')),
-            DetectedCondition(ball, success_sensor)
-        ])
 
         self.register_instructions([
             [
@@ -45,11 +40,19 @@ class SHitBallWithCue(Task):
             [
                 'Lift the cue with care.',
                 'Guide the ball into the goal using the cue.'
+            ],
+            [
+                'SKILL_PICK',
+                'SKILL_PUSH_BALL'
             ]
         ])
 
 
     def init_episode(self, index: int) -> List[str]:
+        self.register_change_point_conditions([
+            CustomDetectedCondition(self.queue, ProximitySensor('success1')),
+            DetectedCondition(self.ball, self.success_sensor)
+        ])
         return ['hit ball with queue in to the goal',
                 'pot the ball in the goal',
                 'pick up the que and use it to pot the ball into the goal']

@@ -81,6 +81,11 @@ class SPutItemInDrawer(Task):
                 'Pull out the %s drawer gently.' % option,
                 'Collect the %s block from the top of the drawer.' % color_name,
                 'Put the %s block on the %s drawer.' % (color_name, option)
+            ],
+            [
+                'SKILL_PULL_%s' % option,
+                'SKILL_PICK',
+                'SKILL_PLACE_%s' % option
             ]
         ])
 

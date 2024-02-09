@@ -22,13 +22,14 @@ from absl import app
 from absl import flags
 from rlbench.sim2real.domain_randomization import RandomizeEvery, \
     VisualRandomizationConfig
+from rlbench.const import DATA_PATH
 
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string('save_path',
-                    '/home/local/ASUAD/draj5/data/',
+                    f"{DATA_PATH}data",
                     'Where to save the demos.')
-flags.DEFINE_list('tasks', ['s_hit_ball_with_cue'],
+flags.DEFINE_list('tasks', ['s_setup_chess'],
                   'The tasks to collect. If empty, all tasks are collected.')
 flags.DEFINE_list('image_size', [230, 230],
                   'The size of the images tp save.')
@@ -37,9 +38,9 @@ flags.DEFINE_enum('renderer',  'opengl3', ['opengl', 'opengl3'],
                   'but is faster.')
 flags.DEFINE_integer('processes', 1,
                      'The number of parallel processes during collection.')
-flags.DEFINE_integer('episodes_per_task', 1,
+flags.DEFINE_integer('episodes_per_task', 200,
                      'The number of episodes to collect per task.')
-flags.DEFINE_integer('variations', 1,
+flags.DEFINE_integer('variations', -1,
                      'Number of variations to collect per task. -1 for all.')
 flags.DEFINE_string(
     'textures_path', '/home/local/ASUAD/draj5/thesis/TrajectorySegmentation/tests/unit/assets/textures/',
@@ -223,7 +224,7 @@ def run(i, lock, task_index, variation_count, results, file_lock, tasks):
     rlbench_env = Environment(
         action_mode=MoveArmThenGripper(JointVelocity(), Discrete()),
         obs_config=obs_config,
-        randomize_every=rand_every, frequency=frequency, visual_randomization_config=vrc, 
+        #randomize_every=rand_every, frequency=frequency, visual_randomization_config=vrc, 
         headless=True)
     rlbench_env.launch()
 

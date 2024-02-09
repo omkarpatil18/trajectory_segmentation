@@ -61,7 +61,7 @@ class SShapeSorter(Task):
                 name = 'green'
             color_names.append (name)
             obj.set_color(rgb)
-            print (color_names[i], SHAPE_NAMES[self.indexes[i]])
+            #print (color_names[i], SHAPE_NAMES[self.indexes[i]])
 
         self.variation_index = index
         shape = SHAPE_NAMES[index]
@@ -153,6 +153,18 @@ class SShapeSorter(Task):
                 'Insert the %s %s block into the shape sorter.' % (color_names[3], SHAPE_NAMES[self.indexes[3]]),
                 'Pick up the %s %s block.' % (color_names[4], SHAPE_NAMES[self.indexes[4]]),
                 'Place the %s %s block into the shape sorter.' % (color_names[4], SHAPE_NAMES[self.indexes[4]])
+            ],
+            [
+                'SKILL_PICK_%s_%s' % (color_names[0], SHAPE_NAMES[self.indexes[0]]),
+                'SKILL_PLACE_%s' % SHAPE_NAMES[self.indexes[0]],
+                'SKILL_PICK_%s_%s' % (color_names[1], SHAPE_NAMES[self.indexes[1]]),
+                'SKILL_PLACE_%s' % SHAPE_NAMES[self.indexes[1]],
+                'SKILL_PICK_%s_%s' % (color_names[2], SHAPE_NAMES[self.indexes[2]]),
+                'SKILL_PLACE_%s' % SHAPE_NAMES[self.indexes[2]],
+                'SKILL_PICK_%s_%s' % (color_names[3], SHAPE_NAMES[self.indexes[3]]),
+                'SKILL_PLACE_%s' % SHAPE_NAMES[self.indexes[3]],
+                'SKILL_PICK_%s_%s' % (color_names[4], SHAPE_NAMES[self.indexes[4]]),
+                'SKILL_PLACE_%s' % SHAPE_NAMES[self.indexes[4]]                
             ]
         ])
 

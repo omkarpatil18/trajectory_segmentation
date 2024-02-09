@@ -69,6 +69,11 @@ class SChangeChannel(Task):
                 "Pick up the remote",
                 "Align the remote with the TV.",
                 "Depress the remote button to change the channel."
+            ],
+            [
+                'SKILL_PICK',
+                'SKILL_PLACE_WITH_RELATION',
+                'SKILL_PUSH_BUTTON'
             ]
         ])
 

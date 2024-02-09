@@ -22,21 +22,22 @@ from absl import app
 from absl import flags
 from rlbench.sim2real.domain_randomization import RandomizeEvery, \
     VisualRandomizationConfig
+from rlbench.const import DATA_PATH
 
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string('save_path',
-                    '/home/local/ASUAD/draj5/data_random/',
+                    f"{DATA_PATH}data",
                     'Where to save the demos.')
 flags.DEFINE_list('tasks', ['s_block_pyramid', #1
                             's_shape_sorter', #2
                             's_stack_blocks', #3
-                            's_setup_chess', #4 check place
+                            #'s_setup_chess', #4
                             's_stack_cups', #5
-                            's_square_peg', #6 synchronizarion issues
+                            's_square_peg', #6
                             's_change_channel', #7
-                            's_hit_ball_with_cue', #8 issues in end part
-                            's_hockey', #9 timing issues
+                            's_hit_ball_with_cue',
+                            's_hockey', #9
                             's_put_all_groceries_in_cupboard', #10 minor adjustment while placing
                             's_put_tray_in_oven', #11 issue with plates
                             's_empty_dishwasher', #12 issue with open and plate
@@ -55,9 +56,9 @@ flags.DEFINE_list('image_size', [230, 230],
 flags.DEFINE_enum('renderer',  'opengl3', ['opengl', 'opengl3'],
                   'The renderer to use. opengl does not include shadows, '
                   'but is faster.')
-flags.DEFINE_integer('processes', 4,
+flags.DEFINE_integer('processes', 5,
                      'The number of parallel processes during collection.')
-flags.DEFINE_integer('episodes_per_task', 50,
+flags.DEFINE_integer('episodes_per_task', 1000,
                      'The number of episodes to collect per task.')
 flags.DEFINE_integer('variations', -1,
                      'Number of variations to collect per task. -1 for all.')
@@ -243,7 +244,7 @@ def run(i, lock, task_index, variation_count, results, file_lock, tasks):
     rlbench_env = Environment(
         action_mode=MoveArmThenGripper(JointVelocity(), Discrete()),
         obs_config=obs_config,
-        randomize_every=rand_every, frequency=frequency, visual_randomization_config=vrc, 
+        #randomize_every=rand_every, frequency=frequency, visual_randomization_config=vrc, 
         headless=True)
     rlbench_env.launch()
 

@@ -17,6 +17,8 @@ class SHockey(Task):
         self.success_detector = ProximitySensor('success')
         self.hockey_detector = ProximitySensor('success1')
 
+    def init_episode(self, index: int) -> List[str]:
+        
         self.condition0 = ConditionSet([
             GraspedCondition(self.robot.gripper, self.stick),
             CustomDetectedCondition(self.stick, self.hockey_detector)
@@ -32,8 +34,6 @@ class SHockey(Task):
         self.register_change_point_conditions([
             self.condition0, self.condition1, self.condition2
         ])
-
-    def init_episode(self, index: int) -> List[str]:
         
         color_choice = np.random.choice(list(range(len(colors))),
             size=3, replace=False)
@@ -81,6 +81,12 @@ class SHockey(Task):
                 'Efficiently hit the %s ball into the net.' % color_names[0],
                 'Your goal is to hit the %s ball into the goal.' % color_names[1],
                 'Aim to hit the %s ball into the goal.' % color_names[2]
+            ],
+            [
+                'SKILL_PICK_HOCKEY',
+                'SKILL_PUSH_%s_BALL' % color_names[0],
+                'SKILL_PUSH_%s_BALL' % color_names[1],
+                'SKILL_PUSH_%s_BALL' % color_names[2]
             ]
         ])
 

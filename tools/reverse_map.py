@@ -4,8 +4,9 @@ import copy
 import sys
 import os
 import shutil
+from rlbench.const import DATA_PATH
 
-data_map_path = "/home/local/ASUAD/draj5/dataset/data_map.jsonl"
+data_map_path = f"{DATA_PATH}dataset/data_map.jsonl"
 data_path = sys.argv[1]
 
 fps = 10
@@ -92,7 +93,7 @@ for obj in reader:
             else:
                 negate_map[(obj['vid'], start, end)] = 0
             negate_map[(obj['vid'], start, end)] += 1
-            copy_data (obj['query'], demo, int(start), int(end), data_map[ obj['vid'] ], "/home/local/ASUAD/draj5/task_data")
+            copy_data (obj['query'], demo, int(start), int(end), data_map[ obj['vid'] ], f"{DATA_PATH}task_data/")
     except Exception as e:
         print (e)
         cntr += 1

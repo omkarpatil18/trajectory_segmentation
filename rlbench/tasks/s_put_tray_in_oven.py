@@ -11,27 +11,18 @@ from rlbench.backend.conditions import (DetectedCondition, CustomDetectedConditi
 class SPutTrayInOven(Task):
 
     def init_task(self) -> None:
-        success_detector = ProximitySensor('success')
-        success_detector_door = ProximitySensor('door_success')
-        success_detector_tray = ProximitySensor('success_tray')
+        self.success_detector = ProximitySensor('success')
+        self.success_detector_door = ProximitySensor('door_success')
+        self.success_detector_tray = ProximitySensor('success_tray')
         
         self.tray = Shape('tray')
         self.oven_door = Shape('oven_door')
         self.register_graspable_objects([self.tray])
         self.register_success_conditions([
-            DetectedCondition(self.oven_door, success_detector_door),
-            DetectedCondition(self.tray, success_detector),
+            DetectedCondition(self.oven_door, self.success_detector_door),
+            DetectedCondition(self.tray, self.success_detector),
             NothingGrasped(self.robot.gripper)])
         
-        self.register_change_point_conditions([
-            DetectedCondition(self.oven_door, success_detector_door),
-            CustomDetectedCondition(self.tray, success_detector_tray),
-            CustomConditionSet([
-                DetectedCondition(self.tray, success_detector),
-                NothingGrasped(self.robot.gripper)    
-            ])
-        ])
-
         self.register_instructions([
             [
                 'Swing open the oven door.',
@@ -57,12 +48,26 @@ class SPutTrayInOven(Task):
                 'Open the door of the oven.',
                 'Lift the tray from the top of the oven.',
                 'Insert the tray inside the oven.'
+            ],
+            [
+                'SKILL_OPEN',
+                'SKILL_PICK_TRAY',
+                'SKILL_PLACE_TRAY'
             ]
         ])
 
         self.boundary = SpawnBoundary([Shape('oven_tray_boundary')])
 
     def init_episode(self, index: int) -> List[str]:
+        self.register_change_point_conditions([
+            DetectedCondition(self.oven_door, self.success_detector_door),
+            CustomDetectedCondition(self.tray, self.success_detector_tray),
+            CustomConditionSet([
+                DetectedCondition(self.tray, self.success_detector),
+                NothingGrasped(self.robot.gripper)    
+            ])
+        ])
+
         self.boundary.clear()
         self.boundary.sample(
             self.tray, min_rotation=(0, 0, 0), max_rotation=(0, 0, 0))

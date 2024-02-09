@@ -7,12 +7,13 @@ import hashlib
 import jsonlines
 import numpy as np
 from tqdm import tqdm
+from rlbench.const import DATA_PATH
 
-data_path = '/home/local/ASUAD/draj5/data'
-dataset_path = '/home/local/ASUAD/draj5/dataset'
-json_path = '/home/local/ASUAD/draj5/dataset/json'
-video_path = '/home/local/ASUAD/draj5/dataset/videos'
-action_path = '/home/local/ASUAD/draj5/dataset/actions'
+data_path = f"{DATA_PATH}data"
+dataset_path = f"{DATA_PATH}dataset"
+json_path = f"{DATA_PATH}dataset/json"
+video_path = f"{DATA_PATH}dataset/videos"
+action_path = f"{DATA_PATH}dataset/actions"
 
 fps = 10
 res = (230, 230)

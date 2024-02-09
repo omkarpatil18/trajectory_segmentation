@@ -86,6 +86,11 @@ class SPushButtons(Task):
                 'Activate the %s button' % self.color_names[0],
                 'Activate the %s button' % self.color_names[1],
                 'Activate the %s button' % self.color_names[2],
+            ],
+            [
+                'SKILL_PUSH_%s' % self.color_names[0],
+                'SKILL_PUSH_%s' % self.color_names[1],
+                'SKILL_PUSH_%s' % self.color_names[2],
             ]
         ])
 

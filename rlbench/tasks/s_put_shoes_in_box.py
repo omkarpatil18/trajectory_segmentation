@@ -69,6 +69,13 @@ class SPutShoesInBox(Task):
                 'Insert the shoe into the box.',
                 'Take the second shoe.',
                 'Place the second shoe inside the box.'
+            ],
+            [
+                'SKILL_OPEN',
+                'SKILL_PICK',
+                'SKILL_PLACE',
+                'SKILL_PICK',
+                'SKILL_PLACE'
             ]
         ])
 

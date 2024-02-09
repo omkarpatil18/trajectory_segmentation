@@ -42,3 +42,5 @@ SUPPORTED_ROBOTS = {
     'sawyer': (Sawyer, BaxterGripper, 7),
     'ur5': (UR5, Robotiq85Gripper, 6),
 }
+
+DATA_PATH = "/media/draj5/Extreme Pro/rlbench_data/"
