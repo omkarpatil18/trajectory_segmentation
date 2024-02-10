@@ -31,14 +31,14 @@ flags.DEFINE_string('save_path',
                     'Where to save the demos.')
 flags.DEFINE_list('tasks', ['s_setup_chess'],
                   'The tasks to collect. If empty, all tasks are collected.')
-flags.DEFINE_list('image_size', [230, 230],
+flags.DEFINE_list('image_size', [224, 224],
                   'The size of the images tp save.')
 flags.DEFINE_enum('renderer',  'opengl3', ['opengl', 'opengl3'],
                   'The renderer to use. opengl does not include shadows, '
                   'but is faster.')
 flags.DEFINE_integer('processes', 1,
                      'The number of parallel processes during collection.')
-flags.DEFINE_integer('episodes_per_task', 200,
+flags.DEFINE_integer('episodes_per_task', 50,
                      'The number of episodes to collect per task.')
 flags.DEFINE_integer('variations', -1,
                      'Number of variations to collect per task. -1 for all.')
@@ -120,14 +120,14 @@ def save_demo(demo, example_path):
             obs.front_depth, scale_factor=DEPTH_SCALE)
         front_mask = Image.fromarray((obs.front_mask * 255).astype(np.uint8))
 
-        left_shoulder_rgb.save(
-            os.path.join(left_shoulder_rgb_path, IMAGE_FORMAT % i))
+        #left_shoulder_rgb.save(
+        #    os.path.join(left_shoulder_rgb_path, IMAGE_FORMAT % i))
         #left_shoulder_depth.save(
         #    os.path.join(left_shoulder_depth_path, IMAGE_FORMAT % i))
         #left_shoulder_mask.save(
         #    os.path.join(left_shoulder_mask_path, IMAGE_FORMAT % i))
-        right_shoulder_rgb.save(
-            os.path.join(right_shoulder_rgb_path, IMAGE_FORMAT % i))
+        #right_shoulder_rgb.save(
+        #    os.path.join(right_shoulder_rgb_path, IMAGE_FORMAT % i))
         #right_shoulder_depth.save(
         #    os.path.join(right_shoulder_depth_path, IMAGE_FORMAT % i))
         #right_shoulder_mask.save(

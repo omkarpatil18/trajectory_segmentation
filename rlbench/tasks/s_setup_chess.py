@@ -16,7 +16,7 @@ PIECES = ['king', 'kingside_bishop', 'kingside_rook', 'kingside_knight', 'pawn_a
           'queen', 'queenside_bishop', 'queenside_knight', 'queenside_rook']
 
 class SSetupChess(Task):
-    MAX_DISPLACEMENTS = 6
+    MAX_DISPLACEMENTS = 4
 
     def init_task(self) -> None:
         self.board = Shape('chess_board_base')
@@ -50,7 +50,7 @@ class SSetupChess(Task):
             piece.set_position(position, self.board)
             piece.set_orientation(rotation, self.board)
 
-        self.nsetup = 1 + index % self.MAX_DISPLACEMENTS
+        self.nsetup = 2 + index % self.MAX_DISPLACEMENTS
         self.placed = -1
         self.places = random.sample([(dx, dy) for dx in range(8) for dy in range(1, 3)], self.nsetup)
 
