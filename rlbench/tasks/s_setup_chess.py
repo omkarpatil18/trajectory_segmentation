@@ -16,7 +16,7 @@ PIECES = ['king', 'kingside_bishop', 'kingside_rook', 'kingside_knight', 'pawn_a
           'queen', 'queenside_bishop', 'queenside_knight', 'queenside_rook']
 
 class SSetupChess(Task):
-    MAX_DISPLACEMENTS = 4
+    MAX_DISPLACEMENTS = 5
 
     def init_task(self) -> None:
         self.board = Shape('chess_board_base')
