@@ -1,6 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 import argparse
 import torch
+import json
 from .models import build_ACT_model, build_CNNMLP_model
 
 # import click
@@ -253,6 +254,9 @@ def get_args_parser():
 
     # add this for multi-task embedding condition
     parser.add_argument("--multi_task", action="store_true")
+    parser.add_argument("--seq_skills", action="store_true")
+    parser.add_argument("--data_dir", action="store")
+    parser.add_argument("--model_path_dict", action="store", type=json.loads)
 
     return parser
 

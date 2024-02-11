@@ -4,7 +4,53 @@ import cv2
 import os
 import re
 import matplotlib.pyplot as plt
+from einops import rearrange
+from policy import ACTPolicy, CNNMLPPolicy
 from dataset.task_constants import SIM_TASK_CONFIG
+
+
+### Functions used in training and testing
+
+FRANKA_JOINT_LIMITS = np.asarray(
+    [
+        [-2.8973, -1.7628, -2.8973, -3.0718, -2.8973, -0.0175, -2.8973],
+        [2.8973, 1.7628, 2.8973, -0.0698, 2.8973, 3.7525, 2.8973],
+    ],
+    dtype=np.float32,
+).T
+
+
+def make_policy(policy_class, policy_config):
+    if policy_class == "ACT":
+        policy = ACTPolicy(policy_config)
+    elif policy_class == "CNNMLP":
+        policy = CNNMLPPolicy(policy_config)
+    else:
+        raise NotImplementedError
+    return policy
+
+
+def make_optimizer(policy_class, policy):
+    if policy_class == "ACT":
+        optimizer = policy.configure_optimizers()
+    elif policy_class == "CNNMLP":
+        optimizer = policy.configure_optimizers()
+    else:
+        raise NotImplementedError
+    return optimizer
+
+
+def get_image(obs, camera_names):
+    curr_images = []
+    viz_out = {}
+    for cam_name in camera_names:
+        curr_image = getattr(obs, cam_name)
+        viz_out[cam_name] = curr_image
+        curr_image = rearrange(curr_image, "h w c -> c h w")
+        curr_images.append(curr_image)
+    curr_image = np.stack(curr_images, axis=0)
+    curr_image = torch.from_numpy(curr_image / 255.0).float().cuda().unsqueeze(0)
+    return curr_image, viz_out
 
 
 def save_videos(video, dt=0.02, video_path=None):
@@ -93,12 +139,12 @@ def get_embedding(task_name, task_desc):
     """Returns embedding corresponding to the task_desc"""
     center_place_re = re.compile(r"(Place the )([\w ]*)(block at the green center.)")
     block_place_re = re.compile(
-        r"(Stack the )([\w ]*)(block on top of the [\w]* block.)"
+        r"(Place the )([\w ]*)(block on top of the [\w]* block.)"
     )
     task_desc = re.sub(center_place_re, r"\1\3", task_desc)
     task_desc = re.sub(block_place_re, r"\1\3", task_desc)
 
     skill_emb_map = SIM_TASK_CONFIG[task_name]["skill_emb"]
-    if skill_emb_map is None:
+    if skill_emb_map is None or task_desc == "":
         return [0] * 384  # return zeros if emb is not found
     return skill_emb_map[task_desc]
