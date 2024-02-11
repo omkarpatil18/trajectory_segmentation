@@ -53,6 +53,21 @@ def get_image(obs, camera_names):
     return curr_image, viz_out
 
 
+def get_embedding(task_name, task_desc):
+    """Returns embedding corresponding to the task_desc"""
+    center_place_re = re.compile(r"(Place the )([\w ]*)(block at the green center.)")
+    block_place_re = re.compile(
+        r"(Place the )([\w ]*)(block on top of the [\w]* block.)"
+    )
+    task_desc = re.sub(center_place_re, r"\1\3", task_desc)
+    task_desc = re.sub(block_place_re, r"\1\3", task_desc)
+
+    skill_emb_map = SIM_TASK_CONFIG[task_name]["skill_emb"]
+    if skill_emb_map is None or task_desc == "":
+        return [0] * 384  # return zeros if emb is not found
+    return skill_emb_map[task_desc]
+
+
 def save_videos(video, dt=0.02, video_path=None):
     """
     Save videos of rollouts
@@ -133,18 +148,3 @@ def load_image_from_folder(folder, ts):
     if img is None:
         raise Exception(f"Image corresponding to index {ts} not found in {folder}")
     return img
-
-
-def get_embedding(task_name, task_desc):
-    """Returns embedding corresponding to the task_desc"""
-    center_place_re = re.compile(r"(Place the )([\w ]*)(block at the green center.)")
-    block_place_re = re.compile(
-        r"(Place the )([\w ]*)(block on top of the [\w]* block.)"
-    )
-    task_desc = re.sub(center_place_re, r"\1\3", task_desc)
-    task_desc = re.sub(block_place_re, r"\1\3", task_desc)
-
-    skill_emb_map = SIM_TASK_CONFIG[task_name]["skill_emb"]
-    if skill_emb_map is None or task_desc == "":
-        return [0] * 384  # return zeros if emb is not found
-    return skill_emb_map[task_desc]

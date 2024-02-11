@@ -13,7 +13,7 @@ from utils import (
     save_videos,
 )  # helper functions
 from utils import get_embedding, make_policy, FRANKA_JOINT_LIMITS, get_image
-from dataset.task_constants import SIM_TASK_CONFIG
+from dataset.task_constants import SIM_TASK_CONFIG, IMG_SIZE
 
 from rlbench.action_modes.action_mode import MoveArmThenGripper
 from rlbench.action_modes.arm_action_modes import JointPosition
@@ -76,6 +76,11 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
 
     # load simulation environment
     obs_config = ObservationConfig()
+    obs_config.right_shoulder_camera.image_size = IMG_SIZE
+    obs_config.left_shoulder_camera.image_size = IMG_SIZE
+    obs_config.overhead_camera.image_size = IMG_SIZE
+    obs_config.wrist_camera.image_size = IMG_SIZE
+    obs_config.front_camera.image_size = IMG_SIZE
     obs_config.set_all(True)
     env = Environment(
         action_mode=MoveArmThenGripper(
@@ -178,17 +183,17 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
                 image_list,
                 video_path=os.path.join(
                     task_dir,
-                    f"video{rollout_id}.mp4",
+                    f"video{rollout_id}-{task_status == [1]*len(task_status)}.mp4",
                 ),
             )
 
-    avg_task_status = np.mean(task_status, axis=1)
+    avg_task_status = np.mean(task_status, axis=0)
     # save success rate to txt
     result_file_name = "result_" + ckpt_name.split(".")[0] + f".txt"
     with open(os.path.join(task_dir, result_file_name), "w") as f:
         f.write(str(config))
         f.write("\n\n")
-        f.write(avg_task_status)
+        f.write(str(avg_task_status))
 
     task_performances[rlbench_env.__name__] = [avg_task_status]
     env.shutdown()

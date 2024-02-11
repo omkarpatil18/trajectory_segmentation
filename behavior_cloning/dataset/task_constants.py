@@ -7,7 +7,7 @@ from constants import PICK_EMBEDDING_DICT, PLACE_EMBEDDING_DICT
 
 ### Task parameters
 DATA_DIR = "/home/local/ASUAD/opatil3/datasets/rlbench"
-# DATA_DIR = "/home/local/ASUAD/opatil3/datasets/temporal/data/s_stack_blocks/variation0/episodes/"
+IMG_SIZE = [230, 230]
 
 SIM_TASK_CONFIG = {
     "sim_open_box": {

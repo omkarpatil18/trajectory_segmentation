@@ -13,7 +13,7 @@ import cv2
 sys.path.append("/home/local/ASUAD/opatil3/src/trajectory_segmentation/")
 from utils import get_embedding, load_image_from_folder
 from constants import CAMERA_NAMES
-from dataset.task_constants import SIM_TASK_CONFIG
+from dataset.task_constants import SIM_TASK_CONFIG, IMG_SIZE
 
 CONFIG_DIM = 7  # joint space
 
@@ -163,7 +163,7 @@ class RLBenchTemporalDataset(Dataset):
 
         # Verify dimensions
         assert data_batch["images"].shape == torch.Size(
-            [len(CAMERA_NAMES), 3, 230, 230]
+            [len(CAMERA_NAMES), 3, *IMG_SIZE]
         )
         assert data_batch["is_pad"].shape == torch.Size([self.chunk_size])
         assert data_batch["joint_action"].shape == torch.Size([self.chunk_size, 7])
