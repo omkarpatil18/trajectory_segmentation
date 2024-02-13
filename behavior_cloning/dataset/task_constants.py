@@ -2,12 +2,12 @@ import sys
 import re
 
 sys.path.append("/home/local/ASUAD/opatil3/src/trajectory_segmentation/rlbench")
-from tasks import PutItemInDrawer, OpenBox, OpenDrawer, SStackBlocks
+from tasks import OpenBox, SStackBlocks
 from constants import PICK_EMBEDDING_DICT, PLACE_EMBEDDING_DICT
 
 ### Task parameters
 DATA_DIR = "/home/local/ASUAD/opatil3/datasets/rlbench"
-IMG_SIZE = [230, 230]
+IMG_SIZE = [224, 224]
 
 SIM_TASK_CONFIG = {
     "sim_open_box": {
@@ -98,27 +98,27 @@ SIM_TASK_CONFIG = {
             re.compile(
                 r"(?=.*pick)(?=.*red)", flags=re.IGNORECASE
             ): "sim_skill_pick_red",
-            re.compile(
-                r"(?=.*pick)(?=.*blue)", flags=re.IGNORECASE
-            ): "sim_skill_pick_blue",
-            re.compile(
-                r"(?=.*pick)(?=.*green)", flags=re.IGNORECASE
-            ): "sim_skill_pick_green",
-            re.compile(
-                r"(?=.*pick)(?=.*yellow)", flags=re.IGNORECASE
-            ): "sim_skill_pick_yellow",
-            re.compile(
-                r"(?=.*place)(?=.*red)", flags=re.IGNORECASE
-            ): "sim_skill_place_red",
-            re.compile(
-                r"(?=.*place)(?=.*blue)", flags=re.IGNORECASE
-            ): "sim_skill_place_blue",
-            re.compile(
-                r"(?=.*place)(?=.*green)", flags=re.IGNORECASE
-            ): "sim_skill_place_green",
-            re.compile(
-                r"(?=.*place)(?=.*yellow)", flags=re.IGNORECASE
-            ): "sim_skill_place_yellow",
+            # re.compile(
+            #     r"(?=.*pick)(?=.*blue)", flags=re.IGNORECASE
+            # ): "sim_skill_pick_blue",
+            # re.compile(
+            #     r"(?=.*pick)(?=.*green)", flags=re.IGNORECASE
+            # ): "sim_skill_pick_green",
+            # re.compile(
+            #     r"(?=.*pick)(?=.*yellow)", flags=re.IGNORECASE
+            # ): "sim_skill_pick_yellow",
+            # re.compile(
+            #     r"(?=.*place)(?=.*red)", flags=re.IGNORECASE
+            # ): "sim_skill_place_red",
+            # re.compile(
+            #     r"(?=.*place)(?=.*blue)", flags=re.IGNORECASE
+            # ): "sim_skill_place_blue",
+            # re.compile(
+            #     r"(?=.*place)(?=.*green)", flags=re.IGNORECASE
+            # ): "sim_skill_place_green",
+            # re.compile(
+            #     r"(?=.*place)(?=.*yellow)", flags=re.IGNORECASE
+            # ): "sim_skill_place_yellow",
         },
         "skill_emb": None,
     },

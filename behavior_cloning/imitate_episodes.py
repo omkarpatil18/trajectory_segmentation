@@ -36,6 +36,7 @@ def main(args):
     ckpt_dir = args["ckpt_dir"]
     ckpt_names = args["ckpt_names"]
     data_dir = args["data_dir"]
+    transformer_only = args["transformer_only"]
 
     # get task parameters
     is_sim = task_name[:4] == "sim_"
@@ -65,6 +66,7 @@ def main(args):
             "nheads": nheads,
             "camera_names": CAMERA_NAMES,
             "state_dim": state_dim,
+            "transformer_only": transformer_only,
         }
     elif policy_class == "CNNMLP":
         policy_config = {
@@ -241,7 +243,7 @@ def train_bc(train_dataloader, val_dataloader, config):
             summary_string += f"{k}: {v.item():.3f} "
         print(summary_string)
 
-        if epoch % 100 == 0:
+        if epoch % 250 == 0:
             ckpt_path = os.path.join(ckpt_dir, f"policy_epoch_{epoch}_seed_{seed}.ckpt")
             torch.save(policy.state_dict(), ckpt_path)
             plot_history(train_history, validation_history, epoch, ckpt_dir, seed)
@@ -336,5 +338,6 @@ if __name__ == "__main__":
     parser.add_argument("--ckpt_names", action="store", nargs="*", help="ckpt_names")
     parser.add_argument("--seq_skills", action="store_true")
     parser.add_argument("--data_dir", action="store")
+    parser.add_argument("--transformer_only", action="store_true")
     parser.add_argument("--model_path_dict", type=json.loads)
     main(vars(parser.parse_args()))

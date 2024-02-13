@@ -50,6 +50,7 @@ class DETRVAE(nn.Module):
         camera_names,
         is_multi_task,
         use_film: bool = False,
+        transformer_only=False,
     ):
         """Initializes the model.
         Parameters:
@@ -73,6 +74,7 @@ class DETRVAE(nn.Module):
 
         self.multi_task = is_multi_task
         self.use_film = use_film
+        self.transformer_only = transformer_only
 
         if backbones is not None:
             self.input_proj = nn.Conv2d(
@@ -89,37 +91,35 @@ class DETRVAE(nn.Module):
             self.pos = torch.nn.Embedding(2, hidden_dim)
             self.backbones = None
 
-        # encoder extra parameters
-        self.latent_dim = 32  # final size of latent z # TODO tune
-        self.cls_embed = nn.Embedding(1, hidden_dim)  # extra cls token embedding
-        self.encoder_action_proj = nn.Linear(
-            state_dim, hidden_dim
-        )  # project action to embedding
-        self.encoder_joint_proj = nn.Linear(
-            state_dim, hidden_dim
-        )  # project qpos to embedding
-        self.latent_proj = nn.Linear(
-            hidden_dim, self.latent_dim * 2
-        )  # project hidden state to latent std, var
-        self.register_buffer(
-            "pos_table", get_sinusoid_encoding_table(1 + 1 + num_queries, hidden_dim)
-        )  # [CLS], qpos, a_seq
+        if not transformer_only:
+            # encoder extra parameters
+            self.latent_dim = 32  # final size of latent z # TODO tune
+            self.cls_embed = nn.Embedding(1, hidden_dim)  # extra cls token embedding
+            self.encoder_action_proj = nn.Linear(
+                state_dim, hidden_dim
+            )  # project action to embedding
+            self.encoder_joint_proj = nn.Linear(
+                state_dim, hidden_dim
+            )  # project qpos to embedding
+            self.latent_proj = nn.Linear(
+                hidden_dim, self.latent_dim * 2
+            )  # project hidden state to latent std, var
+            self.register_buffer(
+                "pos_table",
+                get_sinusoid_encoding_table(1 + 1 + num_queries, hidden_dim),
+            )  # [CLS], qpos, a_seq
 
-        # decoder extra parameters
-        self.latent_out_proj = nn.Linear(
-            self.latent_dim, hidden_dim
-        )  # project latent sample to embedding
+            # decoder extra parameters
+            self.latent_out_proj = nn.Linear(
+                self.latent_dim, hidden_dim
+            )  # project latent sample to embedding
 
-        if self.multi_task:
-            self.additional_pos_embed = nn.Embedding(
-                3, hidden_dim
-            )  # learned position embedding for proprio and latent and text embeddings
-        else:
-            self.additional_pos_embed = nn.Embedding(
-                2, hidden_dim
-            )  # learned position embedding for proprio and latent
+        self.additional_pos_embed = nn.Embedding(
+            1 + (1 if self.multi_task else 0) + (0 if transformer_only else 1),
+            hidden_dim,
+        )  # learned position embedding for proprio and latent (if not self.transformer_only) and text embeddings (if self.multi_task)
 
-        ## if we condition on task emebdding for multi-task
+        ## if we condition on task embedding for multi-task
         self.proj_text_emb = nn.Linear(
             384, hidden_dim
         )  # project text embedding to 512 dim
@@ -134,8 +134,10 @@ class DETRVAE(nn.Module):
         is_training = actions is not None  # train or val
         # print("actions",actions.shape) #actions torch.Size([2, 89, 8])
         bs, _ = qpos.shape
+        latent_input = None
+        mu = logvar = None
         ### Obtain latent z from action sequence
-        if is_training:
+        if is_training and not self.transformer_only:
             # project action sequence to embedding dim, and concat with a CLS token
             action_embed = self.encoder_action_proj(actions)  # (bs, seq, hidden_dim)
             qpos_embed = self.encoder_joint_proj(qpos)  # (bs, hidden_dim)
@@ -168,17 +170,16 @@ class DETRVAE(nn.Module):
             latent_sample = reparametrize(mu, logvar)
             latent_input = self.latent_out_proj(latent_sample)
 
-            ## for multi-task embedding
-            task_emb = self.proj_text_emb(task_emb)  ## project task emb to 512 dim
-        else:
-            mu = logvar = None
+        elif not is_training and not self.transformer_only:
             latent_sample = torch.zeros([bs, self.latent_dim], dtype=torch.float32).to(
                 qpos.device
             )
             latent_input = self.latent_out_proj(latent_sample)
 
-            ## for multi-task embedding
-            task_emb = self.proj_text_emb(task_emb)  ## project task emb to 512 dim
+        ## for multi-task embedding
+        task_emb = (
+            self.proj_text_emb(task_emb) if self.multi_task else None
+        )  ## project task emb to 512 dim
 
         if self.backbones is not None:
             # Image observation features and position embeddings
@@ -200,49 +201,28 @@ class DETRVAE(nn.Module):
             # fold camera dimension into width dimension
             src = torch.cat(all_cam_features, axis=3)
             pos = torch.cat(all_cam_pos, axis=3)
-            if self.multi_task:
-                hs = self.transformer(
-                    src,
-                    None,
-                    self.query_embed.weight,
-                    pos,
-                    latent_input,
-                    proprio_input,
-                    self.additional_pos_embed.weight,
-                    task_emb=task_emb,
-                )[0]
-            else:
-                hs = self.transformer(
-                    src,
-                    None,
-                    self.query_embed.weight,
-                    pos,
-                    latent_input,
-                    proprio_input,
-                    self.additional_pos_embed.weight,
-                    task_emb=None,
-                )[0]
+            hs = self.transformer(
+                src,
+                None,
+                self.query_embed.weight,
+                pos,
+                latent_input,
+                proprio_input,
+                self.additional_pos_embed.weight,
+                task_emb=task_emb,
+            )[0]
+
         else:
             qpos = self.input_proj_robot_state(qpos)
             env_state = self.input_proj_env_state(env_state)
             transformer_input = torch.cat([qpos, env_state], axis=1)  # seq length = 2
-
-            if self.multi_task:
-                hs = self.transformer(
-                    transformer_input,
-                    None,
-                    self.query_embed.weight,
-                    self.pos.weight,
-                    task_emb=task_emb,
-                )[0]
-            else:
-                hs = self.transformer(
-                    transformer_input,
-                    None,
-                    self.query_embed.weight,
-                    self.pos.weight,
-                    task_emb=None,
-                )[0]
+            hs = self.transformer(
+                transformer_input,
+                None,
+                self.query_embed.weight,
+                self.pos.weight,
+                task_emb=task_emb,
+            )[0]
 
         a_hat = self.action_head(hs)
         is_pad_hat = self.is_pad_head(hs)
@@ -341,6 +321,7 @@ def build_encoder(args):
 def build(args):
     state_dim = args.state_dim  # 14 # TODO hardcode
     multi_task = args.multi_task
+    transformer_only = args.transformer_only
 
     # From state
     # backbone = None # from state for now, no need for conv nets
@@ -368,6 +349,7 @@ def build(args):
         camera_names=args.camera_names,
         is_multi_task=args.multi_task,
         use_film=use_film,
+        transformer_only=transformer_only,
     )
 
     n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)

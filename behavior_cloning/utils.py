@@ -148,3 +148,17 @@ def load_image_from_folder(folder, ts):
     if img is None:
         raise Exception(f"Image corresponding to index {ts} not found in {folder}")
     return img
+
+
+##### Dataset management ######
+def merge_data():
+    import shutil
+
+    for i in range(250):
+        shutil.move(
+            f"/home/local/ASUAD/opatil3/datasets/shoes_in_box_temporal_3/s_put_shoes_in_box/variation0/episodes/episode{i}",
+            f"/home/local/ASUAD/opatil3/datasets/shoes_in_box_temporal_1/s_put_shoes_in_box/variation0/episodes/episode{i+500}",
+        )
+
+
+# merge_data()
