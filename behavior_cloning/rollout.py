@@ -1,4 +1,5 @@
 import torch
+import cv2
 import re
 import numpy as np
 import os, sys
@@ -23,7 +24,7 @@ from rlbench.observation_config import ObservationConfig
 
 
 def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
-    set_seed(1000)
+    set_seed(10234230)
     ckpt_dir = config["ckpt_dir"]
     state_dim = config["state_dim"]
     policy_class = config["policy_class"]
@@ -144,7 +145,11 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
 
                     ### query policy
                     if t % query_frequency == 0:
-                        all_actions = rollout_model(qpos, curr_image, task_emb=task_emb)
+                        all_actions = rollout_model(
+                            qpos,
+                            curr_image,
+                            task_emb=task_emb,
+                        )
                     if temporal_agg:
                         all_time_actions[[t], t : t + num_queries] = all_actions
                         actions_for_curr_step = all_time_actions[:, t]

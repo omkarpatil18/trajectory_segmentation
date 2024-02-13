@@ -134,7 +134,7 @@ def main(args):
     #     batch_size=batch_size,
     # )
     train_dataloader, val_dataloader = load_temporal_data(
-        skill_or_task=args["task_name"],
+        skill_or_task=task_name,
         data_dir=data_dir,
         chunk_size=100,
         norm_bound=FRANKA_JOINT_LIMITS,

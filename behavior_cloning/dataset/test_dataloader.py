@@ -1,13 +1,11 @@
 import argparse, sys, os
+import numpy as np
 
-sys.path.append(
-    "/home/local/ASUAD/opatil3/src/trajectory_segmentation/behavior_cloning/"
-)
+sys.path.append("/home/local/ASUAD/opatil3/src/trajectory_segmentation/")
 
 from behavior_cloning.dataset.pickle_dataset import load_data
 from behavior_cloning.dataset.temporal_dataset import load_temporal_data
-import numpy as np
-from task_constants import DATA_DIR
+from behavior_cloning.dataset.task_constants import DATA_DIR
 
 
 FRANKA_JOINT_LIMITS = np.asarray(
@@ -36,11 +34,11 @@ def main():
     #     train_split=0.8,
     # )
 
-    train_loader, val_loader = load_temporal_data(
-        skill_or_task="sim_skill_pick",
-        data_dir="/home/local/ASUAD/opatil3/datasets/temporal/task_data",
+    train_loader, _ = load_temporal_data(
+        skill_or_task="sim_skill_pick_red",
+        data_dir="/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal/task_data",
         chunk_size=100,
-        norm_bound=None,
+        norm_bound=FRANKA_JOINT_LIMITS,
         batch_size=8,
         train_split=0.8,
     )

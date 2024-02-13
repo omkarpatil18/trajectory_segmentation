@@ -6,7 +6,13 @@ import glob
 import os
 import random
 import re
+import sys
 from functools import partial
+
+sys.path.append(
+    "/home/local/ASUAD/opatil3/src/trajectory_segmentation/behavior_cloning/"
+)
+
 from dataset.task_constants import DATA_DIR
 from constants import CAMERA_NAMES
 from dataset.task_constants import SIM_TASK_CONFIG

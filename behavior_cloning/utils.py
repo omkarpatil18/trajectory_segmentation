@@ -41,13 +41,16 @@ def make_optimizer(policy_class, policy):
 
 
 def get_image(obs, camera_names):
+    """Returns image in BGR format."""
     curr_images = []
     viz_out = {}
     for cam_name in camera_names:
         curr_image = getattr(obs, cam_name)
         viz_out[cam_name] = curr_image
+        curr_image = cv2.cvtColor(curr_image, cv2.COLOR_RGB2BGR)
         curr_image = rearrange(curr_image, "h w c -> c h w")
         curr_images.append(curr_image)
+
     curr_image = np.stack(curr_images, axis=0)
     curr_image = torch.from_numpy(curr_image / 255.0).float().cuda().unsqueeze(0)
     return curr_image, viz_out
@@ -143,6 +146,7 @@ def load_images_from_folder(folder):
 
 
 def load_image_from_folder(folder, ts):
+    """Loads images in BGR mode"""
     "Load the image corresponding to a given timestep from a folder"
     img = cv2.imread(os.path.join(folder, f"{ts}.png"))
     if img is None:
