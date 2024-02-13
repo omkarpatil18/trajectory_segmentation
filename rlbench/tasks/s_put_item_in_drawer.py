@@ -28,6 +28,8 @@ class SPutItemInDrawer(Task):
         self.register_graspable_objects([self._item] + self._drawers)
 
     def init_episode(self, index) -> List[str]:
+        index = np.random.choice([0, 1, 2])
+        
         option = self._options[index]
         anchor = self._anchors[index]
         drawer = self._drawers[index]
@@ -81,6 +83,11 @@ class SPutItemInDrawer(Task):
                 'Pull out the %s drawer gently.' % option,
                 'Collect the %s block from the top of the drawer.' % color_name,
                 'Put the %s block on the %s drawer.' % (color_name, option)
+            ],
+            [
+                'SKILL_PULL_%s' % option,
+                'SKILL_PICK',
+                'SKILL_PLACE_%s' % option
             ]
         ])
 
@@ -90,7 +97,7 @@ class SPutItemInDrawer(Task):
                 'leave the block in the %s drawer' % option]
 
     def variation_count(self) -> int:
-        return 3
+        return 1
 
     def base_rotation_bounds(self) -> Tuple[List[float], List[float]]:
         return [0, 0, - np.pi / 8], [0, 0, np.pi / 8]

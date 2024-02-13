@@ -8,54 +8,26 @@ from rlbench.backend.conditions import DetectedCondition, NothingGrasped, Custom
 class SSetTable(Task):
 
     def init_task(self) -> None:
-        plate = Shape('plate')
-        fork = Shape('fork')
-        knife = Shape('knife')
-        spoon = Shape('spoon')
-        glass = Shape('glass')
-        negate = ProximitySensor('negate')
+        self.plate = Shape('plate')
+        self.fork = Shape('fork')
+        self.knife = Shape('knife')
+        self.spoon = Shape('spoon')
+        self.glass = Shape('glass')
+        self.negate = ProximitySensor('negate')
 
         self.register_success_conditions([
             #DetectedCondition(plate, negate, negated = True),
-            DetectedCondition(plate, ProximitySensor('plate_detector')),
+            DetectedCondition(self.plate, ProximitySensor('plate_detector')),
             #DetectedCondition(fork, negate, negated = True),
-            DetectedCondition(fork, ProximitySensor('fork_detector')),
+            DetectedCondition(self.fork, ProximitySensor('fork_detector')),
             #DetectedCondition(knife, negate, negated = True),
-            DetectedCondition(knife, ProximitySensor('knife_detector')),
+            DetectedCondition(self.knife, ProximitySensor('knife_detector')),
             #DetectedCondition(spoon, negate, negated = True),
-            DetectedCondition(spoon, ProximitySensor('spoon_detector')),
+            DetectedCondition(self.spoon, ProximitySensor('spoon_detector')),
             #DetectedCondition(glass, negate, negated = True),
-            DetectedCondition(glass, ProximitySensor('glass_detector')),
+            DetectedCondition(self.glass, ProximitySensor('glass_detector')),
             NothingGrasped(self.robot.gripper)])
-        self.register_graspable_objects([plate, fork, knife, spoon, glass])
-
-        self.register_change_point_conditions([
-            DetectedCondition(plate, negate, negated = True),
-            CustomConditionSet([
-                DetectedCondition(plate, ProximitySensor('plate_detector')),
-                NothingGrasped(self.robot.gripper)
-            ]),
-            DetectedCondition(fork, negate, negated = True),
-            CustomConditionSet([
-                DetectedCondition(fork, ProximitySensor('fork_detector')),
-                NothingGrasped(self.robot.gripper)
-            ]),
-            DetectedCondition(knife, negate, negated = True),
-            CustomConditionSet([
-                DetectedCondition(knife, ProximitySensor('knife_detector')),
-                NothingGrasped(self.robot.gripper)
-            ]),
-            DetectedCondition(spoon, negate, negated = True),
-            CustomConditionSet([
-                DetectedCondition(spoon, ProximitySensor('spoon_detector')),
-                NothingGrasped(self.robot.gripper)
-            ]),
-            DetectedCondition(glass, negate, negated = True),
-            CustomConditionSet([
-                DetectedCondition(glass, ProximitySensor('glass_detector')),
-                NothingGrasped(self.robot.gripper)
-            ])            
-        ])
+        self.register_graspable_objects([self.plate, self.fork, self.knife, self.spoon, self.glass])
 
         self.register_instructions([
             [
@@ -117,10 +89,49 @@ class SSetTable(Task):
                 'Place the spoon on the right side of the plate.',
                 'Pick up the glass.',
                 'Place the glass on the top right side of the plate.'
+            ],
+            [
+                'SKILL_PICK_plate',
+                'SKILL_PLACE_plate',
+                'SKILL_PICK_fork',
+                'SKILL_PLACE_fork',
+                'SKILL_PICK_knife',
+                'SKILL_PLACE_knife',
+                'SKILL_PICK_spoon',
+                'SKILL_PLACE_spoon',
+                'SKILL_PICK_glass',
+                'SKILL_PLACE_glass'
             ]
         ])
 
     def init_episode(self, index: int) -> List[str]:
+        self.register_change_point_conditions([
+            DetectedCondition(self.plate, self.negate, negated = True),
+            CustomConditionSet([
+                DetectedCondition(self.plate, ProximitySensor('plate_detector')),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            DetectedCondition(self.fork, self.negate, negated = True),
+            CustomConditionSet([
+                DetectedCondition(self.fork, ProximitySensor('fork_detector')),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            DetectedCondition(self.knife, self.negate, negated = True),
+            CustomConditionSet([
+                DetectedCondition(self.knife, ProximitySensor('knife_detector')),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            DetectedCondition(self.spoon, self.negate, negated = True),
+            CustomConditionSet([
+                DetectedCondition(self.spoon, ProximitySensor('spoon_detector')),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            DetectedCondition(self.glass, self.negate, negated = True),
+            CustomConditionSet([
+                DetectedCondition(self.glass, ProximitySensor('glass_detector')),
+                NothingGrasped(self.robot.gripper)
+            ])            
+        ])
         return ['set the table'
                 'place the dishes and cutlery on the table in preparation for '
                 'a meal',

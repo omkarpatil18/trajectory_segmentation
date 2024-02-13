@@ -69,6 +69,11 @@ class SChangeChannel(Task):
                 "Pick up the remote",
                 "Align the remote with the TV.",
                 "Depress the remote button to change the channel."
+            ],
+            [
+                'SKILL_PICK',
+                'SKILL_PLACE_WITH_RELATION',
+                'SKILL_PUSH_BUTTON'
             ]
         ])
 
@@ -92,7 +97,7 @@ class SChangeChannel(Task):
             'the channel %s' % (chnl[index - 1], btn[index - 1])]
 
     def variation_count(self) -> int:
-        return 2
+        return 1
 
     def base_rotation_bounds(self) -> Tuple[Tuple[float, float, float],
                                             Tuple[float, float, float]]:

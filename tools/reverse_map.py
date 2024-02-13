@@ -4,11 +4,12 @@ import copy
 import sys
 import os
 import shutil
+from rlbench.const import DATA_PATH
 
 data_map_path = (
-    "/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal/dataset/data_map.jsonl"
+    "/home/local/ASUAD/opatil3/datasets/shoes_in_box_temporal/dataset/data_map.jsonl"
 )
-data_path = "/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal/dataset/json/"
+data_path = "/home/local/ASUAD/opatil3/datasets/shoes_in_box_temporal/dataset/json/"
 
 fps = 10
 data_map = {}

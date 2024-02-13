@@ -12,9 +12,6 @@ from rlbench.backend.spawn_boundary import SpawnBoundary
 class SStackCups(Task):
 
     def init_task(self) -> None:
-        success_sensor = ProximitySensor('success')
-        negate = ProximitySensor('negate')
-
         self.cup1 = Shape('cup1')
         self.cup2 = Shape('cup2')
         self.cup3 = Shape('cup3')
@@ -25,6 +22,11 @@ class SStackCups(Task):
         self.boundary = SpawnBoundary([Shape('boundary')])
 
         self.register_graspable_objects([self.cup1, self.cup2, self.cup3])
+
+    def init_episode(self, index: int) -> List[str]:
+        success_sensor = ProximitySensor('success')
+        negate = ProximitySensor('negate')
+
         self.register_success_conditions([
             DetectedCondition(self.cup1, success_sensor),
             DetectedCondition(self.cup3, success_sensor),
@@ -43,7 +45,6 @@ class SStackCups(Task):
             ])
         ])
 
-    def init_episode(self, index: int) -> List[str]:
         self.variation_index = index
         index = np.random.choice(len(colors))
         target_color_name, target_rgb = colors[index]
@@ -100,6 +101,12 @@ class SStackCups(Task):
                 'Set the %s cup on top of the %s cup.' % (other1_name, target_color_name),
                 'Retrieve the %s cup.' % other2_name,
                 'Position the %s cup on the %s cup.' % (other2_name, other1_name)
+            ],
+            [
+                'SKILL_PICK_%s_cup' % other1_name,
+                'SKILL_PLACE_%s' % target_color_name,
+                'SKILL_PICK_%s_cup' % other2_name,
+                'SKILL_PLACE_%s' % other1_name
             ]
         ])
 

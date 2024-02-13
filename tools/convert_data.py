@@ -1,6 +1,7 @@
 import os
 import cv2
 import json
+import math
 import shutil
 import pickle
 import hashlib
@@ -8,7 +9,7 @@ import jsonlines
 import numpy as np
 from tqdm import tqdm
 
-DATA_DIR = "/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal"
+DATA_DIR = "/home/local/ASUAD/opatil3/datasets/shoes_in_box_temporal"
 data_path = os.path.join(DATA_DIR, "data")
 dataset_path = os.path.join(DATA_DIR, "dataset")
 json_path = os.path.join(DATA_DIR, "dataset/json")
@@ -53,11 +54,21 @@ def save_video(path, hash_id, name):
 
 
 def save_action(hash_id, action):
-    action += [[0.0] * 7] * (2 * fps)
+    action += [[0.0] * 21] * (2 * fps)
     os.makedirs(os.path.dirname(action_path + "/"), exist_ok=True)
     np.savez(
         f"{action_path}/{hash_id}", features=np.array(action, dtype="float32")[::fps]
     )
+
+
+# def save_gripper(hash_id, gripper):
+#     gripper += [[0.0] * 16] * (2*fps)
+#     os.makedirs(os.path.dirname(gripper_path + '/'), exist_ok=True)
+#     np.savez (f"{gripper_path}/{hash_id}", features = np.array(gripper, dtype='float32')[::fps])
+
+
+def map_to_csv(data):
+    os.makedirs(os.path.dirname(json_path + "/"), exist_ok=True)
 
 
 def map_to_csv(data):
@@ -109,6 +120,8 @@ def map_to_csv(data):
                     change_point[x][1] = max(change_point[x][1], i)
 
                 for i, value in change_point.items():
+                    # value[0] = math.floor(value[0] / fps)
+                    # value[1] = math.ceil(value[1] / fps)
                     value[0] = value[0] / fps
                     value[1] = value[1] / fps
 
@@ -119,11 +132,23 @@ def map_to_csv(data):
                 gripper = []
 
                 for i in range(len(demo)):
-                    actions.append(demo[i].joint_forces.tolist())
-                    gripper.append(demo[i].gripper_joint_positions.tolist())
-
-                # print (actions)
+                    actions.append(  # 21
+                        demo[i].joint_forces.tolist()  # 7
+                        + demo[i].joint_velocities.tolist()  # 7
+                        + demo[i].joint_positions.tolist()  # 7
+                    )
+                    gripper.append(  # 16
+                        demo[i].gripper_joint_positions.tolist()  # 2
+                        + [demo[i].gripper_open]  # 1
+                        + demo[i].gripper_pose.tolist()  # 7
+                        + demo[i].gripper_touch_forces.tolist()  # 7
+                    )
+                # print (len(gripper))
+                # for i, x in enumerate(gripper[-1]):
+                #    print (i, x, type(x))
+                # print (gripper)
                 save_action(temp["auto_id"], actions)
+                # save_gripper (temp['auto_id'], gripper)
                 for instruction_set in instructions:
                     for i, instruction in enumerate(instruction_set):
                         if "SKILL_" in instruction:

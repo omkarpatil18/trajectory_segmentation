@@ -101,6 +101,14 @@ class SPlaceCups(Task):
                 "Position it on the %s spoke of the cup holder." % color_names[1],
                 "Take one more cup from the table.",
                 "Set it on the %s spoke of the cup holder." % color_names[2]
+            ],
+            [
+                'SKILL_PICK_CUP',
+                'SKILL_PLACE_%s' % color_names[0],
+                'SKILL_PICK_CUP',
+                'SKILL_PLACE_%s' % color_names[1],
+                'SKILL_PICK_CUP',
+                'SKILL_PLACE_%s' % color_names[2]
             ]
         ])
         

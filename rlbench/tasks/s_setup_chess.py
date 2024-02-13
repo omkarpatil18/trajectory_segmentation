@@ -16,7 +16,7 @@ PIECES = ['king', 'kingside_bishop', 'kingside_rook', 'kingside_knight', 'pawn_a
           'queen', 'queenside_bishop', 'queenside_knight', 'queenside_rook']
 
 class SSetupChess(Task):
-    MAX_DISPLACEMENTS = 6
+    MAX_DISPLACEMENTS = 5
 
     def init_task(self) -> None:
         self.board = Shape('chess_board_base')
@@ -29,7 +29,11 @@ class SSetupChess(Task):
         self.success_conditions = [NothingGrasped(self.robot.gripper)]
         
         self.change_point_conditions = []
+        self.register_graspable_objects(self.pieces)
 
+    def init_episode(self, index: int) -> List[str]:
+
+        self.change_point_conditions = []
         for piece, detector in zip(self.pieces, self.success_detectors):
             x, y, z = piece.get_position(self.board)
             z = detector.get_position(self.board)[2]
@@ -40,16 +44,13 @@ class SSetupChess(Task):
             self.change_point_conditions.append (DetectedCondition(piece, detector))
 
         self.register_success_conditions(self.success_conditions)
-        self.register_graspable_objects(self.pieces)
         self.register_change_point_conditions(self.change_point_conditions)
 
-    def init_episode(self, index: int) -> List[str]:
-        
         for piece, position, rotation in zip(self.pieces, self.positions, self.rotations):
             piece.set_position(position, self.board)
             piece.set_orientation(rotation, self.board)
 
-        self.nsetup = 1 + index % self.MAX_DISPLACEMENTS
+        self.nsetup = 2 + index % self.MAX_DISPLACEMENTS
         self.placed = -1
         self.places = random.sample([(dx, dy) for dx in range(8) for dy in range(1, 3)], self.nsetup)
 
@@ -80,6 +81,7 @@ class SSetupChess(Task):
             'arrange the chess pieces ready for a game',
             'get chess pieces ready'
         ])
+
         self.instructions = []
         for i in range(self.nsetup):
             piece = self.targets[i]

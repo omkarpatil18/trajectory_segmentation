@@ -9,31 +9,21 @@ from rlbench.backend.conditions import DetectedCondition, NothingGrasped, Custom
 class SEmptyDishwasher(Task):
 
     def init_task(self) -> None:
-        success_detector = ProximitySensor('success')
-        success_plate = ProximitySensor('success_plate')
-        success_door = ProximitySensor('success_door')
+        self.success_detector = ProximitySensor('success')
+        self.success_plate = ProximitySensor('success_plate')
+        self.success_door = ProximitySensor('success_door')
 
-        door = Shape('dishwasher_door')
-        plate = Shape('dishwasher_plate')
-        tray = Shape('dishwasher_tray')
+        self.door = Shape('dishwasher_door')
+        self.plate = Shape('dishwasher_plate')
+        self.tray = Shape('dishwasher_tray')
 
-        self.register_graspable_objects([plate])
+        self.register_graspable_objects([self.plate])
         
         self.register_success_conditions(
-            [DetectedCondition(door, success_door),
-            DetectedCondition(tray, success_door),
-            DetectedCondition(plate, success_detector, negated=True),
-            DetectedCondition(plate, success_plate)])
-        
-        self.register_change_point_conditions([
-            DetectedCondition(door, success_door),
-            CustomConditionSet([
-                DetectedCondition(tray, success_door),
-                NothingGrasped(self.robot.gripper)
-            ]),
-            DetectedCondition(plate, success_detector, negated=True),
-            DetectedCondition(plate, success_plate)
-        ])
+            [DetectedCondition(self.door, self.success_door),
+            DetectedCondition(self.tray, self.success_door),
+            DetectedCondition(self.plate, self.success_detector, negated=True),
+            DetectedCondition(self.plate, self.success_plate)])
 
         self.register_instructions([
             [
@@ -65,11 +55,26 @@ class SEmptyDishwasher(Task):
                 'Pull out the tray from the dishwasher.',
                 'Take hold of the plate.',
                 'Position the plate on the top of the dishwasher.'
+            ],
+            [
+                'SKILL_OPEN',
+                'SKILL_SLIDE',
+                'SKILL_PICK',
+                'SKILL_PLACE'
             ]
         ])
 
 
     def init_episode(self, index: int) -> List[str]:
+        self.register_change_point_conditions([
+            DetectedCondition(self.door, self.success_door),
+            CustomConditionSet([
+                DetectedCondition(self.tray, self.success_door),
+                NothingGrasped(self.robot.gripper)
+            ]),
+            DetectedCondition(self.plate, self.success_detector, negated=True),
+            DetectedCondition(self.plate, self.success_plate)
+        ])
         return ['empty the dishwasher', 'take dishes out of dishwasher',
                 'open the  dishwasher door, slide the rack out and remove the '
                 'dishes']
