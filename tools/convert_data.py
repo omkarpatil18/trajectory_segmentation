@@ -8,7 +8,7 @@ import jsonlines
 import numpy as np
 from tqdm import tqdm
 
-DATA_DIR = "/home/local/ASUAD/opatil3/datasets"
+DATA_DIR = "/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal"
 data_path = os.path.join(DATA_DIR, "data")
 dataset_path = os.path.join(DATA_DIR, "dataset")
 json_path = os.path.join(DATA_DIR, "dataset/json")
@@ -16,7 +16,7 @@ video_path = os.path.join(DATA_DIR, "dataset/videos")
 action_path = os.path.join(DATA_DIR, "dataset/actions")
 
 fps = 10
-res = (230, 230)
+res = (224, 224)
 
 
 def with_opencv(filename):
@@ -152,9 +152,10 @@ def map_to_csv(data):
                             ]
                             writer.write(query)
                         except Exception as e:
-                            print ('exception', temp_path, e)
-                writer.close ()
-    writer_map.close ()
+                            print("exception", temp_path, e)
+                writer.close()
+    writer_map.close()
 
-if __name__ == '__main__':
-    map_to_csv ('data')
+
+if __name__ == "__main__":
+    map_to_csv("data")

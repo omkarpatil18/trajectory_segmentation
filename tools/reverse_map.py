@@ -5,8 +5,10 @@ import sys
 import os
 import shutil
 
-data_map_path = "/home/local/ASUAD/opatil3/datasets/dataset/data_map.jsonl"
-data_path = "/home/local/ASUAD/opatil3/datasets/dataset/json/"
+data_map_path = (
+    "/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal/dataset/data_map.jsonl"
+)
+data_path = "/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal/dataset/json/"
 
 fps = 10
 data_map = {}

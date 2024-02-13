@@ -26,32 +26,17 @@ from rlbench.sim2real.domain_randomization import (
 )
 
 FLAGS = flags.FLAGS
-
-flags.DEFINE_string('save_path',
-                    '/home/local/ASUAD/draj5/data/',
-                    'Where to save the demos.')
-flags.DEFINE_list('tasks', ['s_hit_ball_with_cue'],
-                  'The tasks to collect. If empty, all tasks are collected.')
-flags.DEFINE_list('image_size', [230, 230],
-                  'The size of the images tp save.')
-flags.DEFINE_enum('renderer',  'opengl3', ['opengl', 'opengl3'],
-                  'The renderer to use. opengl does not include shadows, '
-                  'but is faster.')
-flags.DEFINE_integer('processes', 1,
-                     'The number of parallel processes during collection.')
-flags.DEFINE_integer('episodes_per_task', 1,
-                     'The number of episodes to collect per task.')
-flags.DEFINE_integer('variations', 1,
-                     'Number of variations to collect per task. -1 for all.')
 flags.DEFINE_string(
-    "save_path", "/home/local/ASUAD/opatil3/datasets/", "Where to save the demos."
+    "save_path",
+    "/home/local/ASUAD/opatil3/datasets/shoes_in_box_temporal_3",
+    "Where to save the demos.",
 )
 flags.DEFINE_list(
     "tasks",
-    ["s_stack_blocks"],
+    ["s_put_shoes_in_box"],
     "The tasks to collect. If empty, all tasks are collected.",
 )
-flags.DEFINE_list("image_size", [230, 230], "The size of the images tp save.")
+flags.DEFINE_list("image_size", [224, 224], "The size of the images tp save.")
 flags.DEFINE_enum(
     "renderer",
     "opengl3",
@@ -59,10 +44,10 @@ flags.DEFINE_enum(
     "The renderer to use. opengl does not include shadows, " "but is faster.",
 )
 flags.DEFINE_integer(
-    "processes", 4, "The number of parallel processes during collection."
+    "processes", 1, "The number of parallel processes during collection."
 )
 flags.DEFINE_integer(
-    "episodes_per_task", 200, "The number of episodes to collect per task."
+    "episodes_per_task", 250, "The number of episodes to collect per task."
 )
 flags.DEFINE_integer(
     "variations", -1, "Number of variations to collect per task. -1 for all."
@@ -246,9 +231,9 @@ def run(i, lock, task_index, variation_count, results, file_lock, tasks):
     rlbench_env = Environment(
         action_mode=MoveArmThenGripper(JointVelocity(), Discrete()),
         obs_config=obs_config,
-        randomize_every=rand_every,
-        frequency=frequency,
-        visual_randomization_config=vrc,
+        # randomize_every=rand_every,
+        # frequency=frequency,
+        # visual_randomization_config=vrc,
         headless=True,
     )
     rlbench_env.launch()
