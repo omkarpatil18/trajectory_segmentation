@@ -4,7 +4,7 @@ import copy
 import sys
 import os
 import shutil
-from rlbench.const import DATA_PATH
+# from rlbench.const import DATA_PATH
 
 data_map_path = (
     "/home/local/ASUAD/opatil3/datasets/shoes_in_box_temporal/dataset/data_map.jsonl"
