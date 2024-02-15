@@ -112,8 +112,8 @@ def main(args):
             for key in task_perfs.keys():
                 results.append([key, task_perfs[key]])
 
-        for ckpt_name, [success_rate, avg_return] in results:
-            print(f"{ckpt_name}: {success_rate=} {avg_return=}")
+        for ckpt_name, res in zip(ckpt_names, results):
+            print(f"{ckpt_name}: {res}")
         print()
         exit()
 

@@ -158,10 +158,10 @@ def load_image_from_folder(folder, ts):
 def merge_data():
     import shutil
 
-    for i in range(250):
+    for i in range(139):
         shutil.move(
-            f"/home/local/ASUAD/opatil3/datasets/shoes_in_box_temporal_3/s_put_shoes_in_box/variation0/episodes/episode{i}",
-            f"/home/local/ASUAD/opatil3/datasets/shoes_in_box_temporal_1/s_put_shoes_in_box/variation0/episodes/episode{i+500}",
+            f"/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal_5/s_stack_blocks/variation0/episodes/episode{i}",
+            f"/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal_4/s_stack_blocks/variation0/episodes/episode{i+111}",
         )
 
 

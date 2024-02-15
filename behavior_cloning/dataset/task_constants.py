@@ -58,25 +58,25 @@ SIM_TASK_CONFIG = {
     "sim_skill_place_red": {
         "rlbench_env": None,
         "episode_len": 250,
-        "train_subtasks": ["SKILL_PLACE_red"],
+        "train_subtasks": ["SKILL_PLACE_ON_red"],
         "skill_emb": None,
     },
     "sim_skill_place_blue": {
         "rlbench_env": None,
         "episode_len": 250,
-        "train_subtasks": ["SKILL_PLACE_blue"],
+        "train_subtasks": ["SKILL_PLACE_ON_blue"],
         "skill_emb": None,
     },
     "sim_skill_place_green": {
         "rlbench_env": None,
         "episode_len": 250,
-        "train_subtasks": ["SKILL_PLACE_green"],
+        "train_subtasks": ["SKILL_PLACE_ON_green"],
         "skill_emb": None,
     },
-    "sim_skill_place_yellow": {
+    "sim_skill_place_green_center": {
         "rlbench_env": None,
         "episode_len": 250,
-        "train_subtasks": ["SKILL_PLACE_yellow"],
+        "train_subtasks": ["SKILL_PLACE_ON_green_center"],
         "skill_emb": None,
     },
     ### Combined tasks
@@ -98,27 +98,27 @@ SIM_TASK_CONFIG = {
             re.compile(
                 r"(?=.*pick)(?=.*red)", flags=re.IGNORECASE
             ): "sim_skill_pick_red",
-            # re.compile(
-            #     r"(?=.*pick)(?=.*blue)", flags=re.IGNORECASE
-            # ): "sim_skill_pick_blue",
-            # re.compile(
-            #     r"(?=.*pick)(?=.*green)", flags=re.IGNORECASE
-            # ): "sim_skill_pick_green",
-            # re.compile(
-            #     r"(?=.*pick)(?=.*yellow)", flags=re.IGNORECASE
-            # ): "sim_skill_pick_yellow",
-            # re.compile(
-            #     r"(?=.*place)(?=.*red)", flags=re.IGNORECASE
-            # ): "sim_skill_place_red",
-            # re.compile(
-            #     r"(?=.*place)(?=.*blue)", flags=re.IGNORECASE
-            # ): "sim_skill_place_blue",
-            # re.compile(
-            #     r"(?=.*place)(?=.*green)", flags=re.IGNORECASE
-            # ): "sim_skill_place_green",
-            # re.compile(
-            #     r"(?=.*place)(?=.*yellow)", flags=re.IGNORECASE
-            # ): "sim_skill_place_yellow",
+            re.compile(
+                r"(?=.*pick)(?=.*blue)", flags=re.IGNORECASE
+            ): "sim_skill_pick_blue",
+            re.compile(
+                r"(?=.*pick)(?=.*green)", flags=re.IGNORECASE
+            ): "sim_skill_pick_green",
+            re.compile(
+                r"(?=.*pick)(?=.*yellow)", flags=re.IGNORECASE
+            ): "sim_skill_pick_yellow",
+            re.compile(
+                r"(?=.*place)(?=.*red)", flags=re.IGNORECASE
+            ): "sim_skill_place_red",
+            re.compile(
+                r"(?=.*place)(?=.*blue)", flags=re.IGNORECASE
+            ): "sim_skill_place_blue",
+            re.compile(
+                r"(?=.*place)(?=.*green)", flags=re.IGNORECASE
+            ): "sim_skill_place_green",
+            re.compile(
+                r"(?=.*place)(?=.*green)(?=.*center)", flags=re.IGNORECASE
+            ): "sim_skill_place_green_center",
         },
         "skill_emb": None,
     },

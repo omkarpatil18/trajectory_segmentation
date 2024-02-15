@@ -24,7 +24,7 @@ from rlbench.observation_config import ObservationConfig
 
 
 def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
-    set_seed(10234230)
+    set_seed(976876)
     ckpt_dir = config["ckpt_dir"]
     state_dim = config["state_dim"]
     policy_class = config["policy_class"]
@@ -102,11 +102,11 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
     if not os.path.isdir(task_dir):
         os.makedirs(task_dir)
     task_status = []
-    image_list = []  # for visualization
 
     for rollout_id in range(num_rollouts):
         rollout_id += 0
         _, obs = task.reset()
+        image_list = []  # for visualization
 
         # Get text embeddding based on seq_skills
         if seq_skills:
@@ -198,7 +198,16 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
     with open(os.path.join(task_dir, result_file_name), "w") as f:
         f.write(str(config))
         f.write("\n\n")
-        f.write(str(avg_task_status))
+        f.write(f"Average task status: {str(avg_task_status)}")
+        f.write("\n\n")
+        f.write(
+            "\n".join(
+                [
+                    f"{epi_num} : {t_status}"
+                    for epi_num, t_status in enumerate(task_status)
+                ]
+            )
+        )
 
     task_performances[rlbench_env.__name__] = [avg_task_status]
     env.shutdown()
