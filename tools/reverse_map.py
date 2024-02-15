@@ -4,13 +4,15 @@ import copy
 import sys
 import os
 import shutil
-from rlbench.const import DATA_PATH
 
 data_map_path = (
-    "/home/local/ASUAD/opatil3/datasets/shoes_in_box_temporal/dataset/data_map.jsonl"
+    "/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal2/dataset/data_map.jsonl"
 )
-data_path = "/home/local/ASUAD/opatil3/datasets/shoes_in_box_temporal/dataset/json/"
-
+data_path = "/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal2/dataset/json/"
+# data_map_path = (
+#     "/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal/dataset/data_map.jsonl"
+# )
+# data_path = "/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal/dataset/json/"
 fps = 10
 data_map = {}
 reader = jsonlines.open(data_map_path)
@@ -38,6 +40,20 @@ def classify_task(query, inst):
         return "test"
     else:
         return inst[-1][index]
+
+
+def classify_task_1(query, inst):
+    index = -1
+    for instructions in inst:
+        for i, instruction in enumerate(instructions):
+            if instruction == query:
+                index = i
+                break
+    # print(query, index)
+    if index == 5:
+        return inst[-1][index]
+    else:
+        return None
 
 
 def copy_data(query, demo, start, end, source, destination):
@@ -68,7 +84,11 @@ def copy_data(query, demo, start, end, source, destination):
 
     new_demo = get_chunk(new_demo, query, start, end)
 
-    final_path = f"{destination}/{classify_task(query, new_demo.instructions)}/{source.split('/')[-4]}/episodes/"
+    xyz = classify_task(query, demo.instructions)
+    if xyz is None:
+        return
+
+    final_path = f"{destination}/{xyz}/{source.split('/')[-4]}/episodes/"
     try:
         episode = sorted(
             [int(name.replace("episode", "")) for name in os.listdir(final_path)]
@@ -102,6 +122,7 @@ for obj in reader:
         demo = pickle.load(open(f"{data_map[ obj['vid'] ]}low_dim_obs.pkl", "rb"))
         duration = obj["duration"] * fps
         for [start, end] in obj["relevant_windows"]:
+            # print(start, end)
             start *= fps
             end *= fps
             if (obj["vid"], start, end) in negate_map.keys():
@@ -119,7 +140,7 @@ for obj in reader:
                 "/home/local/ASUAD/opatil3/datasets/task_data",
             )
     except Exception as e:
-        print(e)
+        print("exception", e)
         cntr += 1
 print(cntr)
 print(negate_map)
