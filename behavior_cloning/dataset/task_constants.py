@@ -157,6 +157,17 @@ SIM_TASK_CONFIG = {
         "episode_len": 750,
         "train_subtasks": ["s_put_item_in_drawer"],
         "skill_emb": None,
+        "lang_to_skill_map": {
+            re.compile(
+                r"(?=.*pick)(?=.*block)", flags=re.IGNORECASE
+            ): "sim_skill_pick_item",
+            re.compile(
+                r"(?=.*place)(?=.*block)", flags=re.IGNORECASE
+            ): "sim_skill_place_item",
+            re.compile(
+                r"(?=.*open)(?=.*drawer)", flags=re.IGNORECASE
+            ): "sim_skill_open_drawer",
+        },
     },
 }
 

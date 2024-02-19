@@ -73,8 +73,9 @@ class SPutItemInDrawer(Task):
         self.register_instructions(
             [
                 [
-                    "Extend the %s drawer." % option,
-                    "Retrieve the %s block from the top of the drawer." % color_name,
+                    # Modified for BC
+                    "Open the %s drawer." % option,
+                    "Pick the %s block from the top of the drawer." % color_name,
                     "Place the %s block on the %s drawer." % (color_name, option),
                 ],
                 [

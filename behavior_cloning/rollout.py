@@ -44,7 +44,7 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
         skill_sequence = SIM_TASK_CONFIG[task_name]["lang_to_skill_map"].values()
         for skill in skill_sequence:
             policy_path = os.path.join(model_path_dict[skill], ckpt_name)
-            policy_path.replace("xxx", str(num_datapoints))
+            policy_path = policy_path.replace("xxx", str(num_datapoints))
             policy = make_policy(policy_class, policy_config)
             loading_status = policy.load_state_dict(torch.load(policy_path))
             print(loading_status)

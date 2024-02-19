@@ -38,7 +38,7 @@ def main(args):
     transformer_only = args["transformer_only"]
     num_datapoints = args["datapoints"]
     ckpt_dir = args["ckpt_dir"]
-    ckpt_dir.replace("xxx", str(num_datapoints))
+    ckpt_dir = ckpt_dir.replace("xxx", str(num_datapoints))
 
     # get task parameters
     is_sim = task_name[:4] == "sim_"
