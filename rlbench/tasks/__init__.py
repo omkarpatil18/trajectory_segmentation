@@ -108,6 +108,7 @@ from rlbench.tasks.weighing_scales import WeighingScales
 from rlbench.tasks.wipe_desk import WipeDesk
 from rlbench.tasks.s_stack_blocks import SStackBlocks
 from rlbench.tasks.s_put_shoes_in_box import SPutShoesInBox
+from rlbench.tasks.s_put_item_in_drawer import SPutItemInDrawer
 
 FS10_V1 = {
     "train": [
