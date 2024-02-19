@@ -25,6 +25,7 @@ def load_temporal_data(
     norm_bound=None,
     batch_size=8,
     train_split=0.8,
+    num_datapoints=750,
 ):
 
     file_list = []
@@ -37,6 +38,7 @@ def load_temporal_data(
                 file_list.append((skill_or_task, os.path.join(search_dir, dir)))
 
     random.shuffle(file_list)
+    file_list = file_list[:num_datapoints]
 
     split_idx = int(len(file_list) * train_split)
     train_dataset = RLBenchTemporalDataset(

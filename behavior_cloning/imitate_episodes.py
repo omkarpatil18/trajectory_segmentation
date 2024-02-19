@@ -37,6 +37,7 @@ def main(args):
     ckpt_names = args["ckpt_names"]
     data_dir = args["data_dir"]
     transformer_only = args["transformer_only"]
+    num_datapoints = args["datapoints"]
 
     # get task parameters
     is_sim = task_name[:4] == "sim_"
@@ -139,6 +140,7 @@ def main(args):
         chunk_size=100,
         norm_bound=FRANKA_JOINT_LIMITS,
         batch_size=batch_size,
+        num_datapoints=num_datapoints,
     )
 
     # Save configuration
@@ -340,4 +342,6 @@ if __name__ == "__main__":
     parser.add_argument("--data_dir", action="store")
     parser.add_argument("--transformer_only", action="store_true")
     parser.add_argument("--model_path_dict", type=json.loads)
+    parser.add_argument("--datapoints", action="store")
+
     main(vars(parser.parse_args()))

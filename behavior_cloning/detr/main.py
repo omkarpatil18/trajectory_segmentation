@@ -258,6 +258,7 @@ def get_args_parser():
     parser.add_argument("--data_dir", action="store")
     parser.add_argument("--model_path_dict", action="store", type=json.loads)
     parser.add_argument("--transformer_only", action="store_true")
+    parser.add_argument("--datapoints", action="store")
 
     return parser
 
