@@ -13,9 +13,9 @@
             "justMyCode": true,
             "args": [
                 "--task_name",
-                "sim_skill_place_red",
+                "sim_stack_blocks",
                 "--ckpt_dir",
-                "/home/local/ASUAD/opatil3/checkpoints/mt_act/place_red",
+                "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/v750/stack_blocks_750",
                 "--policy_class",
                 "ACT",
                 "--kl_weight",
@@ -35,9 +35,10 @@
                 "--seed",
                 "0",
                 "--data_dir",
-                "/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal/task_data",
+                "/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal/data",
                 // "--multi_task",
-                "--transformer_only"
+                "--transformer_only",
+                "--datapoints", "750"
             ]
         },
         {
@@ -51,7 +52,7 @@
                 "--task_name",
                 "sim_stack_blocks",
                 "--ckpt_dir",
-                "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks",
+                "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/v750/stack_blocks_750",
                 "--policy_class",
                 "ACT",
                 "--kl_weight",
@@ -77,9 +78,9 @@
                 // "--multi_task",
                 "--seq_skills",
                 "--model_path_dict",
-                "{\"sim_skill_pick\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/pick\", \"sim_skill_place\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/place/\", \"sim_skill_pick_red\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/pick_red\", \"sim_skill_pick_blue\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/pick_blue\", \"sim_skill_pick_yellow\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/pick_yellow\", \"sim_skill_pick_green\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/pick_green\", \"sim_skill_place_red\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/place_red\", \"sim_skill_place_blue\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/place_blue\", \"sim_skill_place_yellow\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/place_yellow\", \"sim_skill_place_green\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/place_green\"}",
+                "{\"sim_skill_pick_red\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/v750/pick_red_750\", \"sim_skill_pick_blue\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/v750/pick_blue_750\", \"sim_skill_pick_yellow\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/v750/pick_yellow_750\", \"sim_skill_pick_green\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/v750/pick_green_750\", \"sim_skill_place_red\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/v750/place_red_750\", \"sim_skill_place_blue\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/v750/place_blue_750\", \"sim_skill_place_yellow\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/v750/place_yellow_750\", \"sim_skill_place_green\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/v750/place_green_750\", \"sim_skill_place_green_center\":\"/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/v750/place_green_center_750\"}",
                 // "--temporal_agg",
-                "--onscreen_render",
+                // "--onscreen_render",
                 "--transformer_only"
             ]
         }
