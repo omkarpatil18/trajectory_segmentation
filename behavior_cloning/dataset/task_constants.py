@@ -126,7 +126,7 @@ SIM_TASK_CONFIG = {
         "skill_emb": None,
     },
     ### Combined tasks
-    "sim_put_shoe_in_box": {
+    "sim_put_shoes_in_box": {
         "rlbench_env": SPutShoesInBox,
         "episode_len": 750,
         "train_subtasks": ["s_put_shoes_in_box"],
