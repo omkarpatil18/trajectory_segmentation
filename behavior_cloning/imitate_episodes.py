@@ -33,11 +33,12 @@ def main(args):
     task_name = args["task_name"]
     batch_size = args["batch_size"]
     num_epochs = args["num_epochs"]
-    ckpt_dir = args["ckpt_dir"]
     ckpt_names = args["ckpt_names"]
     data_dir = args["data_dir"]
     transformer_only = args["transformer_only"]
     num_datapoints = args["datapoints"]
+    ckpt_dir = args["ckpt_dir"]
+    ckpt_dir.replace("xxx", str(num_datapoints))
 
     # get task parameters
     is_sim = task_name[:4] == "sim_"
@@ -99,9 +100,7 @@ def main(args):
         "seq_skills": args[
             "seq_skills"
         ],  # whether multiple models need to be sequenced during rollout
-        "model_path_dict": args[
-            "model_path_dict"
-        ],  # dict of model path to be sequenced together
+        "num_datapoints": num_datapoints,
     }
     if is_eval:
         if len(ckpt_names) == 0:
@@ -118,22 +117,6 @@ def main(args):
         print()
         exit()
 
-    # required_data_keys = [
-    #     "overhead_rgb",
-    #     "left_shoulder_rgb",
-    #     "right_shoulder_rgb",
-    #     "wrist_rgb",
-    #     "front_rgb",
-    #     "joint_positions",
-    #     "gripper_open",
-    # ]
-    # train_dataloader, val_dataloader = load_rlbench_data(
-    #     task_name=args["task_name"],
-    #     required_data_keys=required_data_keys,
-    #     chunk_size=args["chunk_size"],
-    #     norm_bound=FRANKA_JOINT_LIMITS,
-    #     batch_size=batch_size,
-    # )
     train_dataloader, val_dataloader = load_temporal_data(
         skill_or_task=task_name,
         data_dir=data_dir,
@@ -341,7 +324,6 @@ if __name__ == "__main__":
     parser.add_argument("--seq_skills", action="store_true")
     parser.add_argument("--data_dir", action="store")
     parser.add_argument("--transformer_only", action="store_true")
-    parser.add_argument("--model_path_dict", type=json.loads)
     parser.add_argument("--datapoints", action="store")
 
     main(vars(parser.parse_args()))

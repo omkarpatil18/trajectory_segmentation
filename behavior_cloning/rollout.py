@@ -14,7 +14,7 @@ from utils import (
     save_videos,
 )  # helper functions
 from utils import get_embedding, make_policy, FRANKA_JOINT_LIMITS, get_image
-from dataset.task_constants import SIM_TASK_CONFIG, IMG_SIZE
+from dataset.task_constants import SIM_TASK_CONFIG, IMG_SIZE, model_path_dict
 
 from rlbench.action_modes.action_mode import MoveArmThenGripper
 from rlbench.action_modes.arm_action_modes import JointPosition
@@ -24,7 +24,7 @@ from rlbench.observation_config import ObservationConfig
 
 
 def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
-    set_seed(976876)
+    set_seed(42)
     ckpt_dir = config["ckpt_dir"]
     state_dim = config["state_dim"]
     policy_class = config["policy_class"]
@@ -35,15 +35,16 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
     rlbench_env = config["rlbench_env"]
     task_name = config["task_name"]
     seq_skills = config["seq_skills"]
+    num_datapoints = config["num_datapoints"]
 
     # load policy and stats
     ckpt_path = os.path.join(ckpt_dir, ckpt_name)
     skill_or_task_models = {}
     if seq_skills:  # load all the skill models to sequence
-        model_path_dict = config["model_path_dict"]
         skill_sequence = SIM_TASK_CONFIG[task_name]["lang_to_skill_map"].values()
         for skill in skill_sequence:
             policy_path = os.path.join(model_path_dict[skill], ckpt_name)
+            policy_path.replace("xxx", str(num_datapoints))
             policy = make_policy(policy_class, policy_config)
             loading_status = policy.load_state_dict(torch.load(policy_path))
             print(loading_status)
