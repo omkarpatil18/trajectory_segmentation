@@ -2,7 +2,7 @@ import sys
 import re
 
 sys.path.append("/home/local/ASUAD/opatil3/src/trajectory_segmentation/rlbench")
-from tasks import OpenBox, SStackBlocks, SPutShoesInBox, SPutItemInDrawer
+from tasks import OpenBox, SStackBlocks, SPutShoesInBox, SPutItemInDrawer, SBallInHoop
 from constants import PICK_EMBEDDING_DICT, PLACE_EMBEDDING_DICT
 
 ### Task parameters
@@ -169,6 +169,34 @@ SIM_TASK_CONFIG = {
             ): "sim_skill_open_drawer",
         },
     },
+    ########## ball in hoop ##########
+    "sim_skill_pick_ball": {
+        "rlbench_env": None,
+        "episode_len": 200,
+        "train_subtasks": ["SKILL_PICK_ball"],
+        "skill_emb": None,
+    },
+    "sim_skill_place_ball": {
+        "rlbench_env": None,
+        "episode_len": 200,
+        "train_subtasks": ["SKILL_PLACE_BALL"],
+        "skill_emb": None,
+    },
+    ### Combined tasks
+    "sim_ball_in_hoop": {
+        "rlbench_env": SBallInHoop,
+        "episode_len": 750,
+        "train_subtasks": ["s_ball_in_hoop"],
+        "skill_emb": None,
+        "lang_to_skill_map": {
+            re.compile(
+                r"(?=.*pick)(?=.*basketball)", flags=re.IGNORECASE
+            ): "sim_skill_pick_ball",
+            re.compile(
+                r"(?=.*place)(?=.*basketball)", flags=re.IGNORECASE
+            ): "sim_skill_place_ball",
+        },
+    },
 }
 
 model_path_dict = {
@@ -183,4 +211,6 @@ model_path_dict = {
     "sim_skill_open_drawer": "/home/local/ASUAD/opatil3/checkpoints/mt_act/put_item_in_drawer/vxxx/open_drawer_xxx",
     "sim_skill_pick_item": "/home/local/ASUAD/opatil3/checkpoints/mt_act/put_item_in_drawer/vxxx/pick_item_xxx",
     "sim_skill_place_item": "/home/local/ASUAD/opatil3/checkpoints/mt_act/put_item_in_drawer/vxxx/place_item_xxx",
+    "sim_skill_pick_ball": "/home/local/ASUAD/opatil3/checkpoints/mt_act/ball_in_hoop/vxxx/pick_ball_xxx",
+    "sim_skill_place_ball": "/home/local/ASUAD/opatil3/checkpoints/mt_act/ball_in_hoop/vxxx/place_ball_xxx",
 }
