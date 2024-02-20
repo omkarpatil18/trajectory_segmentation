@@ -33,9 +33,9 @@ class SPutShoesInBox(Task):
             [
                 DetectedCondition(box_lid, success_box),
                 DetectedCondition(shoe2, success_shoe2, negated=True),
-                DetectedCondition(shoe1, success_sensor),
-                DetectedCondition(shoe1, success_shoe1, negated=True),
                 DetectedCondition(shoe2, success_sensor),
+                DetectedCondition(shoe1, success_shoe1, negated=True),
+                DetectedCondition(shoe1, success_sensor),
             ]
         )
 

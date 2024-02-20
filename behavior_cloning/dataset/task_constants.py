@@ -131,6 +131,23 @@ SIM_TASK_CONFIG = {
         "episode_len": 750,
         "train_subtasks": ["s_put_shoes_in_box"],
         "skill_emb": None,
+        "lang_to_skill_map": {
+            re.compile(
+                r"(?=.*pick)(?=.*right shoe)", flags=re.IGNORECASE
+            ): "sim_skill_pick_shoe1",
+            re.compile(
+                r"(?=.*pick)(?=.*left shoe)", flags=re.IGNORECASE
+            ): "sim_skill_pick_shoe2",
+            re.compile(
+                r"(?=.*place)(?=.*right shoe)", flags=re.IGNORECASE
+            ): "sim_skill_place_shoe1",
+            re.compile(
+                r"(?=.*place)(?=.*left shoe)", flags=re.IGNORECASE
+            ): "sim_skill_place_shoe2",
+            re.compile(
+                r"(?=.*open)(?=.*box)", flags=re.IGNORECASE
+            ): "sim_skill_open_box",
+        },
     },
     ########## item in drawer ##########
     "sim_skill_open_drawer": {
@@ -200,6 +217,7 @@ SIM_TASK_CONFIG = {
 }
 
 model_path_dict = {
+    # Stack blocks
     "sim_skill_pick_red": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/pick_red_xxx",
     "sim_skill_pick_blue": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/pick_blue_xxx",
     "sim_skill_pick_yellow": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/pick_yellow_xxx",
@@ -208,9 +226,17 @@ model_path_dict = {
     "sim_skill_place_blue": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/place_blue_xxx",
     "sim_skill_place_green": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/place_green_xxx",
     "sim_skill_place_green_center": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/place_green_center_xxx",
+    # Put item in drawer
     "sim_skill_open_drawer": "/home/local/ASUAD/opatil3/checkpoints/mt_act/put_item_in_drawer/vxxx/open_drawer_xxx",
     "sim_skill_pick_item": "/home/local/ASUAD/opatil3/checkpoints/mt_act/put_item_in_drawer/vxxx/pick_item_xxx",
     "sim_skill_place_item": "/home/local/ASUAD/opatil3/checkpoints/mt_act/put_item_in_drawer/vxxx/place_item_xxx",
+    # Ball in hoop
     "sim_skill_pick_ball": "/home/local/ASUAD/opatil3/checkpoints/mt_act/ball_in_hoop/vxxx/pick_ball_xxx",
     "sim_skill_place_ball": "/home/local/ASUAD/opatil3/checkpoints/mt_act/ball_in_hoop/vxxx/place_ball_xxx",
+    # Shoe in box
+    "sim_skill_pick_shoe1": "/home/local/ASUAD/opatil3/checkpoints/mt_act/put_shoes_in_box/vxxx/pick_shoe1_xxx",
+    "sim_skill_place_shoe1": "/home/local/ASUAD/opatil3/checkpoints/mt_act/put_shoes_in_box/vxxx/place_shoe1_xxx",
+    "sim_skill_pick_shoe2": "/home/local/ASUAD/opatil3/checkpoints/mt_act/put_shoes_in_box/vxxx/pick_shoe2_xxx",
+    "sim_skill_place_shoe2": "/home/local/ASUAD/opatil3/checkpoints/mt_act/put_shoes_in_box/vxxx/place_shoe2_xxx",
+    "sim_skill_open_box": "/home/local/ASUAD/opatil3/checkpoints/mt_act/put_shoes_in_box/vxxx/open_box_xxx",
 }
