@@ -179,7 +179,7 @@ SIM_TASK_CONFIG = {
     "sim_skill_place_ball": {
         "rlbench_env": None,
         "episode_len": 200,
-        "train_subtasks": ["SKILL_PLACE_BALL"],
+        "train_subtasks": ["SKILL_PLACE_ball"],
         "skill_emb": None,
     },
     ### Combined tasks

@@ -179,7 +179,7 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
                     obs, reward, terminate = task.step(target_qpos)
 
                     # check for success condition
-                    if obs.success_state[task_idx]:
+                    if obs.success_state[task_idx] and seq_skills:
                         break  # break out of the fixed timestep rollout loop
 
         task_status.append(obs.success_state)
