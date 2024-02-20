@@ -105,7 +105,6 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
     task_status = []
 
     for rollout_id in range(num_rollouts):
-        rollout_id += 0
         _, obs = task.reset()
         image_list = []  # for visualization
 
@@ -189,17 +188,20 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
                 image_list,
                 video_path=os.path.join(
                     task_dir,
-                    f"video{rollout_id}-{task_status == [1]*len(task_status)}.mp4",
+                    f"video{rollout_id}-{task_status[rollout_id] == [True]*len(task_status[rollout_id])}.mp4",
                 ),
             )
 
-    avg_task_status = np.mean(task_status, axis=0)
+    avg_per_task_status = np.mean(task_status, axis=0)
+    task_success_rate = np.mean([(1 if task_s == [True]*len(task_s) else 0) for task_s in task_status])
     # save success rate to txt
     result_file_name = "result_" + ckpt_name.split(".")[0] + f".txt"
     with open(os.path.join(task_dir, result_file_name), "w") as f:
         f.write(str(config))
         f.write("\n\n")
-        f.write(f"Average task status: {str(avg_task_status)}")
+        f.write(f"Average per-task status: {str(avg_per_task_status)}")
+        f.write("\n\n")
+        f.write(f"Task_success_rate: {str(task_success_rate)}")
         f.write("\n\n")
         f.write(
             "\n".join(
@@ -210,6 +212,6 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
             )
         )
 
-    task_performances[rlbench_env.__name__] = [avg_task_status]
+    task_performances[rlbench_env.__name__] = [avg_per_task_status]
     env.shutdown()
     return task_performances
