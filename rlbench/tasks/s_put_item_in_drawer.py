@@ -64,7 +64,7 @@ class SPutItemInDrawer(Task):
                 CustomConditionSet(
                     [
                         DetectedCondition(self._item, success_sensor),
-                        NothingGrasped(self.robot.gripper),
+                        # NothingGrasped(self.robot.gripper),
                     ]
                 ),
             ]

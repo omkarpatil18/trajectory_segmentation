@@ -202,7 +202,7 @@ SIM_TASK_CONFIG = {
     ### Combined tasks
     "sim_ball_in_hoop": {
         "rlbench_env": SBallInHoop,
-        "episode_len": 750,
+        "episode_len": 500,
         "train_subtasks": ["s_ball_in_hoop"],
         "skill_emb": None,
         "lang_to_skill_map": {

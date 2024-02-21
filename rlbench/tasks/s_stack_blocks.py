@@ -14,15 +14,15 @@ from rlbench.backend.conditions import NothingGrasped
 from rlbench.backend.spawn_boundary import SpawnBoundary
 from rlbench.const import colors
 
-MAX_STACKED_BLOCKS = 4
-DISTRACTORS = 4
+MAX_STACKED_BLOCKS = 2
+DISTRACTORS = 0
 
 
 class SStackBlocks(Task):
 
     def init_task(self) -> None:
         self.blocks_stacked = 0
-        self.target_blocks = [Shape("stack_blocks_target%d" % i) for i in range(4)]
+        self.target_blocks = [Shape("stack_blocks_target%d" % i) for i in range(2)]
         # self.distractors = [
         #    Shape("stack_blocks_distractor%d" % i) for i in range(DISTRACTORS)
         # ]
@@ -46,7 +46,7 @@ class SStackBlocks(Task):
         color_choice = [0, 3, 4, 6, 9, 11, 13, 15]
 
         color_names = []
-        for i in range(4):
+        for i in range(2):
             name, rgb = colors[color_choice[i]]
             color_names.append(name)
             obj = self.target_blocks[i]
@@ -79,20 +79,6 @@ class SStackBlocks(Task):
                         NothingGrasped(self.robot.gripper),
                     ]
                 ),
-                CustomDetectedCondition(self.target_blocks[2], negate, negated=True),
-                CustomConditionSet(
-                    [
-                        DetectedCondition(self.target_blocks[2], success_detector),
-                        NothingGrasped(self.robot.gripper),
-                    ]
-                ),
-                CustomDetectedCondition(self.target_blocks[3], negate, negated=True),
-                CustomConditionSet(
-                    [
-                        DetectedCondition(self.target_blocks[3], success_detector),
-                        NothingGrasped(self.robot.gripper),
-                    ]
-                ),
             ]
         )
 
@@ -104,12 +90,6 @@ class SStackBlocks(Task):
                     "Pick up the %s block." % color_names[1],
                     "Place the %s block on top of the %s block."
                     % (color_names[1], color_names[0]),
-                    "Pick up the %s block." % color_names[2],
-                    "Place the %s block on top of the %s block."
-                    % (color_names[2], color_names[1]),
-                    "Pick up the %s block." % color_names[3],
-                    "Place the %s block on top of the %s block."
-                    % (color_names[3], color_names[2]),
                 ],
                 [
                     "Take the %s block." % color_names[0],
@@ -117,12 +97,6 @@ class SStackBlocks(Task):
                     "Retrieve the %s block." % color_names[1],
                     "Stack the %s block on top of the %s block."
                     % (color_names[1], color_names[0]),
-                    "Grab the %s block." % color_names[2],
-                    "Stack the %s block on top of the %s block."
-                    % (color_names[2], color_names[1]),
-                    "Pick up the %s block." % color_names[3],
-                    "Stack the %s block on top of the %s block."
-                    % (color_names[3], color_names[2]),
                 ],
                 [
                     "Pick up the %s block." % color_names[0],
@@ -130,12 +104,6 @@ class SStackBlocks(Task):
                     "Take the %s block." % color_names[1],
                     "Stack the %s block on top of the %s block."
                     % (color_names[1], color_names[0]),
-                    "Pick up the %s block." % color_names[2],
-                    "Stack the %s block on top of the %s block."
-                    % (color_names[2], color_names[1]),
-                    "Retrieve the %s block." % color_names[3],
-                    "Stack the %s block on top of the %s block."
-                    % (color_names[3], color_names[2]),
                 ],
                 [
                     "Retrieve the %s block." % color_names[0],
@@ -143,12 +111,6 @@ class SStackBlocks(Task):
                     "Grab the %s block." % color_names[1],
                     "Stack the %s block on top of the %s block."
                     % (color_names[1], color_names[0]),
-                    "Pick up the %s block." % color_names[2],
-                    "Stack the %s block on top of the %s block."
-                    % (color_names[2], color_names[1]),
-                    "Take the %s block." % color_names[3],
-                    "Stack the %s block on top of the %s block."
-                    % (color_names[3], color_names[2]),
                 ],
                 [
                     "Pick up the %s block." % color_names[0],
@@ -156,22 +118,12 @@ class SStackBlocks(Task):
                     "Grab the %s block." % color_names[1],
                     "Stack the %s block on top of the %s block."
                     % (color_names[1], color_names[0]),
-                    "Take the %s block." % color_names[2],
-                    "Stack the %s block on top of the %s block."
-                    % (color_names[2], color_names[1]),
-                    "Retrieve the %s block." % color_names[3],
-                    "Stack the %s block on top of the %s block."
-                    % (color_names[3], color_names[2]),
                 ],
                 [
                     "SKILL_PICK_%s" % color_names[0],
                     "SKILL_PLACE_ON_green",
                     "SKILL_PICK_%s" % color_names[1],
                     "SKILL_PLACE_ON_%s" % color_names[0],
-                    "SKILL_PICK_%s" % color_names[2],
-                    "SKILL_PLACE_ON_%s" % color_names[1],
-                    "SKILL_PICK_%s" % color_names[3],
-                    "SKILL_PLACE_ON_%s" % color_names[2],
                 ],
             ]
         )
@@ -182,14 +134,14 @@ class SStackBlocks(Task):
         #    name, rgb = colors[color_choice[i + 4]]
         #    obj = self.distractors[i]
         #    obj.set_color(rgb)
-        z = np.random.choice(list(range(4)), size=4, replace=False)
+        z = np.random.choice(list(range(2)), size=2, replace=False)
 
         b1 = SpawnBoundary([self.boundaries[0]])
-        for block in [self.target_blocks[z[0]], self.target_blocks[z[1]]]:
+        for block in [self.target_blocks[z[0]]]:
             b1.sample(block, min_distance=0.1)
 
         b2 = SpawnBoundary([self.boundaries[1]])
-        for block in [self.target_blocks[z[2]], self.target_blocks[z[3]]]:
+        for block in [self.target_blocks[z[1]]]:
             b2.sample(block, min_distance=0.1)
 
         return [
