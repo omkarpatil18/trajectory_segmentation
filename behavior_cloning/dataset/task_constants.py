@@ -2,7 +2,14 @@ import sys
 import re
 
 sys.path.append("/home/local/ASUAD/opatil3/src/trajectory_segmentation/rlbench")
-from tasks import OpenBox, SStackBlocks, SPutShoesInBox, SPutItemInDrawer, SBallInHoop
+from tasks import (
+    OpenBox,
+    SStackBlocks,
+    SPutShoesInBox,
+    SPutItemInDrawer,
+    SBallInHoop,
+    SStackCups,
+)
 from constants import PICK_EMBEDDING_DICT, PLACE_EMBEDDING_DICT
 
 ### Task parameters
@@ -12,50 +19,26 @@ IMG_SIZE = [224, 224]
 SIM_TASK_CONFIG = {
     ########## stack blocks ##########
     # "sim_skill_pick": {
-    "sim_skill_pick_red": {
+    "sim_skill_pick_red_block": {
         "rlbench_env": None,
         "episode_len": 200,
         "train_subtasks": ["SKILL_PICK_red"],
         "skill_emb": None,
     },
-    "sim_skill_pick_blue": {
-        "rlbench_env": None,
-        "episode_len": 200,
-        "train_subtasks": ["SKILL_PICK_blue"],
-        "skill_emb": None,
-    },
-    "sim_skill_pick_green": {
+    "sim_skill_pick_green_block": {
         "rlbench_env": None,
         "episode_len": 200,
         "train_subtasks": ["SKILL_PICK_green"],
         "skill_emb": None,
     },
-    "sim_skill_pick_yellow": {
-        "rlbench_env": None,
-        "episode_len": 200,
-        "train_subtasks": ["SKILL_PICK_yellow"],
-        "skill_emb": None,
-    },
     ### Place skills
-    "sim_skill_place_red": {
+    "sim_skill_place_red_block": {
         "rlbench_env": None,
         "episode_len": 100,
         "train_subtasks": ["SKILL_PLACE_ON_red"],
         "skill_emb": None,
     },
-    "sim_skill_place_blue": {
-        "rlbench_env": None,
-        "episode_len": 100,
-        "train_subtasks": ["SKILL_PLACE_ON_blue"],
-        "skill_emb": None,
-    },
-    "sim_skill_place_green": {
-        "rlbench_env": None,
-        "episode_len": 100,
-        "train_subtasks": ["SKILL_PLACE_ON_green"],
-        "skill_emb": None,
-    },
-    "sim_skill_place_green_center": {
+    "sim_skill_place_green_center_block": {
         "rlbench_env": None,
         "episode_len": 100,
         "train_subtasks": ["SKILL_PLACE_ON_green_center"],
@@ -69,28 +52,16 @@ SIM_TASK_CONFIG = {
         "lang_to_skill_map": {
             re.compile(
                 r"(?=.*pick)(?=.*red)", flags=re.IGNORECASE
-            ): "sim_skill_pick_red",
-            re.compile(
-                r"(?=.*pick)(?=.*blue)", flags=re.IGNORECASE
-            ): "sim_skill_pick_blue",
+            ): "sim_skill_pick_red_block",
             re.compile(
                 r"(?=.*pick)(?=.*green)", flags=re.IGNORECASE
-            ): "sim_skill_pick_green",
-            re.compile(
-                r"(?=.*pick)(?=.*yellow)", flags=re.IGNORECASE
-            ): "sim_skill_pick_yellow",
+            ): "sim_skill_pick_green_block",
             re.compile(
                 r"(?=.*place)(?=.*red)", flags=re.IGNORECASE
-            ): "sim_skill_place_red",
-            re.compile(
-                r"(?=.*place)(?=.*blue)", flags=re.IGNORECASE
-            ): "sim_skill_place_blue",
-            re.compile(
-                r"(?=.*place)(?=.*green)", flags=re.IGNORECASE
-            ): "sim_skill_place_green",
+            ): "sim_skill_place_red_block",
             re.compile(
                 r"(?=.*place)(?=.*green)(?=.*center)", flags=re.IGNORECASE
-            ): "sim_skill_place_green_center",
+            ): "sim_skill_place_green_center_block",
         },
         "skill_emb": None,
     },
@@ -214,18 +185,65 @@ SIM_TASK_CONFIG = {
             ): "sim_skill_place_ball",
         },
     },
+    ########## stack cups ##########
+    "sim_skill_pick_green_cup": {
+        "rlbench_env": None,
+        "episode_len": 200,
+        "train_subtasks": ["SKILL_PICK_green"],
+        "skill_emb": None,
+    },
+    "sim_skill_pick_blue_cup": {
+        "rlbench_env": None,
+        "episode_len": 200,
+        "train_subtasks": ["SKILL_PICK_blue"],
+        "skill_emb": None,
+    },
+    "sim_skill_place_red_cup": {
+        "rlbench_env": None,
+        "episode_len": 200,
+        "train_subtasks": ["SKILL_PLACE_red"],
+        "skill_emb": None,
+    },
+    "sim_skill_place_green_cup": {
+        "rlbench_env": None,
+        "episode_len": 200,
+        "train_subtasks": ["SKILL_PLACE_green"],
+        "skill_emb": None,
+    },
+    ### Combined tasks
+    "sim_stack_cups": {
+        "rlbench_env": SStackCups,
+        "episode_len": 500,
+        "train_subtasks": ["s_stack_cups"],
+        "skill_emb": None,
+        "lang_to_skill_map": {
+            re.compile(
+                r"(?=.*pick)(?=.*green)", flags=re.IGNORECASE
+            ): "sim_skill_pick_green_cup",
+            re.compile(
+                r"(?=.*pick)(?=.*blue)", flags=re.IGNORECASE
+            ): "sim_skill_pick_blue_cup",
+            re.compile(
+                r"(?=.*place)(?=.*red)", flags=re.IGNORECASE
+            ): "sim_skill_place_red_cup",
+            re.compile(
+                r"(?=.*place)(?=.*green)", flags=re.IGNORECASE
+            ): "sim_skill_place_green_cup",
+        },
+    },
 }
 
 model_path_dict = {
     # Stack blocks
-    "sim_skill_pick_red": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/pick_red_xxx",
-    "sim_skill_pick_blue": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/pick_blue_xxx",
-    "sim_skill_pick_yellow": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/pick_yellow_xxx",
-    "sim_skill_pick_green": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/pick_green_xxx",
-    "sim_skill_place_red": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/place_red_xxx",
-    "sim_skill_place_blue": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/place_blue_xxx",
-    "sim_skill_place_green": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/place_green_xxx",
-    "sim_skill_place_green_center": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/place_green_center_xxx",
+    "sim_skill_pick_red_block": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/pick_red_xxx",
+    "sim_skill_pick_green_block": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/pick_green_xxx",
+    "sim_skill_place_red_block": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/place_red_xxx",
+    "sim_skill_place_green_center_block": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_blocks/vxxx/place_green_center_xxx",
+    # Stack cups
+    "sim_skill_pick_green_cup": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_cups/vxxx/pick_green_xxx",
+    "sim_skill_pick_blue_cup": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_cups/vxxx/pick_blue_xxx",
+    "sim_skill_place_red_cup": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_cups/vxxx/place_red_xxx",
+    "sim_skill_place_green_cup": "/home/local/ASUAD/opatil3/checkpoints/mt_act/stack_cups/vxxx/place_green_xxx",
     # Put item in drawer
     "sim_skill_open_drawer": "/home/local/ASUAD/opatil3/checkpoints/mt_act/put_item_in_drawer/vxxx/open_drawer_xxx",
     "sim_skill_pick_item": "/home/local/ASUAD/opatil3/checkpoints/mt_act/put_item_in_drawer/vxxx/pick_item_xxx",

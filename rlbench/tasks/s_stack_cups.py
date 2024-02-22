@@ -90,10 +90,11 @@ class SStackCups(Task):
         self.register_instructions(
             [
                 [
+                    # Changed for BC
                     "Pick up the %s cup." % other1_name,
-                    "Position the %s cup on top of the %s cup."
+                    "Place the %s cup on top of the %s cup."
                     % (other1_name, target_color_name),
-                    "Grab the %s cup." % other2_name,
+                    "Pick the %s cup." % other2_name,
                     "Place the %s cup on the %s cup." % (other2_name, other1_name),
                 ],
                 [
