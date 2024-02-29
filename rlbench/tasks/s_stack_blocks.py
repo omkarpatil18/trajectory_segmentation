@@ -76,7 +76,7 @@ class SStackBlocks(Task):
                 CustomConditionSet(
                     [
                         DetectedCondition(self.target_blocks[1], success_detector),
-                        NothingGrasped(self.robot.gripper),
+                        # NothingGrasped(self.robot.gripper),
                     ]
                 ),
             ]

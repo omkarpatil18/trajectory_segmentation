@@ -193,7 +193,9 @@ def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
             )
 
     avg_per_task_status = np.mean(task_status, axis=0)
-    task_success_rate = np.mean([(1 if task_s == [True]*len(task_s) else 0) for task_s in task_status])
+    task_success_rate = np.mean(
+        [(1 if task_s == [True] * len(task_s) else 0) for task_s in task_status]
+    )
     # save success rate to txt
     result_file_name = "result_" + ckpt_name.split(".")[0] + f".txt"
     with open(os.path.join(task_dir, result_file_name), "w") as f:
