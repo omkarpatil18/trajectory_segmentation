@@ -28,15 +28,15 @@ from rlbench.sim2real.domain_randomization import (
 FLAGS = flags.FLAGS
 flags.DEFINE_string(
     "save_path",
-    "/home/local/ASUAD/opatil3/datasets/shoes_in_box_temporal_3",
+    "/home/local/ASUAD/opatil3/datasets/put_item_in_drawer_3",
     "Where to save the demos.",
 )
 flags.DEFINE_list(
     "tasks",
-    ["s_put_shoes_in_box"],
+    ["s_put_item_in_drawer"],
     "The tasks to collect. If empty, all tasks are collected.",
 )
-flags.DEFINE_list("image_size", [224, 224], "The size of the images tp save.")
+flags.DEFINE_list("image_size", [224, 224], "The size of the images to save.")
 flags.DEFINE_enum(
     "renderer",
     "opengl3",

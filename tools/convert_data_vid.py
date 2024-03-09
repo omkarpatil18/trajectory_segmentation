@@ -9,7 +9,7 @@ import jsonlines
 import numpy as np
 from tqdm import tqdm
 
-DATA_DIR = "/home/local/ASUAD/opatil3/datasets/put_item_in_drawer"
+DATA_DIR = "/home/local/ASUAD/opatil3/datasets/shoes_in_box_temporal"
 data_path = os.path.join(DATA_DIR, "data")
 dataset_path = os.path.join(DATA_DIR, "dataset")
 json_path = os.path.join(DATA_DIR, "dataset/json")

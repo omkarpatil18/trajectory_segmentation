@@ -9,7 +9,7 @@ import jsonlines
 import numpy as np
 from tqdm import tqdm
 
-DATA_DIR = "/home/local/ASUAD/opatil3/datasets/shoes_in_box_temporal"
+DATA_DIR = "/home/local/ASUAD/opatil3/datasets/put_item_in_drawer"
 data_path = os.path.join(DATA_DIR, "data")
 dataset_path = os.path.join(DATA_DIR, "dataset")
 json_path = os.path.join(DATA_DIR, "dataset/json")
@@ -125,8 +125,8 @@ def map_to_csv(data):
                     value[0] = value[0] / fps
                     value[1] = value[1] / fps
 
-                    # if value[1] < duration:
-                    #    value[1] += 2
+                    if value[1] < duration:
+                        value[1] += 1
 
                 actions = []
                 gripper = []
