@@ -5,9 +5,9 @@ import sys
 import os
 import shutil
 
-TASK_NAME = "put_item_in_drawer"
+TASK_NAME = "ball_in_hoop_temporal"
 data_map_path = f"/home/local/ASUAD/opatil3/datasets/{TASK_NAME}/dataset/data_map.jsonl"
-data_path = f"/home/local/ASUAD/opatil3/datasets/{TASK_NAME}/dataset/json/"
+data_path = f"/home/local/ASUAD/opatil3/datasets/{TASK_NAME}/dataset/model_results/"
 # data_map_path = (
 #     "/home/local/ASUAD/opatil3/datasets/stack_blocks_temporal/dataset/data_map.jsonl"
 # )
@@ -136,7 +136,7 @@ for obj in reader:
                 int(start),
                 int(end),
                 data_map[obj["vid"]],
-                f"/home/local/ASUAD/opatil3/datasets/{TASK_NAME}/task_data",
+                f"/home/local/ASUAD/opatil3/datasets/{TASK_NAME}/withheld_task_data",
             )
     except Exception as e:
         print("exception", e)

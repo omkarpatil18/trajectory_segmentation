@@ -108,7 +108,7 @@ from rlbench.tasks.weighing_scales import WeighingScales
 from rlbench.tasks.wipe_desk import WipeDesk
 from rlbench.tasks.s_stack_blocks import SStackBlocks
 from rlbench.tasks.s_put_shoes_in_box import SPutShoesInBox
-from rlbench.tasks.s_put_item_in_drawer_2 import SPutItemInDrawer
+from rlbench.tasks.s_put_item_in_drawer import SPutItemInDrawer
 from rlbench.tasks.s_ball_in_hoop import SBallInHoop
 from rlbench.tasks.s_stack_cups import SStackCups
 

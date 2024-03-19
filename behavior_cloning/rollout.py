@@ -24,7 +24,7 @@ from rlbench.observation_config import ObservationConfig
 
 
 def eval_bc(config, ckpt_name, save_episode=True, **kwargs):
-    set_seed(42)
+    set_seed(42567)
     ckpt_dir = config["ckpt_dir"]
     state_dim = config["state_dim"]
     policy_class = config["policy_class"]

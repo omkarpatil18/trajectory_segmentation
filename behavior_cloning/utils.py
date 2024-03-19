@@ -160,8 +160,8 @@ def merge_data():
 
     for i in range(250):
         shutil.move(
-            f"/home/local/ASUAD/opatil3/datasets/stack_cups_2/s_stack_cups/variation0/episodes/episode{i}",
-            f"/home/local/ASUAD/opatil3/datasets/stack_cups_1/s_stack_cups/variation0/episodes/episode{i+250}",
+            f"/home/local/ASUAD/opatil3/datasets/put_item_in_drawer_3/s_put_item_in_drawer/variation0/episodes/episode{i}",
+            f"/home/local/ASUAD/opatil3/datasets/put_item_in_drawer_2/s_put_item_in_drawer/variation0/episodes/episode{i+500}",
         )
 
 
