@@ -1,3 +1,7 @@
+**Learning Temporally Composable Task Segmentations with Language  
+_:rocket::rocket: Paper accepted at IROS 2024!_**  
+Paper link: https://ieeexplore.ieee.org/document/10802712
+
 # Dataset Generation for Trajectory Segmentation
 **Contents:**
 - [Code Changes](#code-changes)
